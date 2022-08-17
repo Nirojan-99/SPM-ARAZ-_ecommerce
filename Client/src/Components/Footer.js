@@ -1,11 +1,4 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  IconButton,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, IconButton, Link, Typography } from "@mui/material";
 //logo
 import logo from "../Assets/logo.png";
 import title from "../Assets/title.png";
@@ -36,7 +29,7 @@ const ShoppingLink = [
 function Footer() {
   return (
     <>
-      <Box p={4} bgcolor={"#406882"} width={"100%"}>
+      <Box p={4} bgcolor={"#406882"}>
         <Grid
           container
           columnGap={1}
@@ -45,7 +38,7 @@ function Footer() {
           alignItems={"start"}
         >
           {/* sec 1 */}
-          <Grid item xs={12} sm={4} md={2}>
+          <Grid item xs={10} sm={4} md={2}>
             <Box>
               <Typography
                 sx={{
@@ -81,7 +74,7 @@ function Footer() {
             </Box>
           </Grid>
           {/* sec 2 */}
-          <Grid item xs={12} sm={4} md={2}>
+          <Grid item xs={10} sm={4} md={2}>
             <Box>
               <Typography
                 sx={{
@@ -117,7 +110,7 @@ function Footer() {
             </Box>
           </Grid>
           {/* sec 3 */}
-          <Grid item xs={12} sm={4} md={3}>
+          <Grid item xs={10} sm={4} md={3}>
             <Box>
               <Typography
                 sx={{
@@ -147,7 +140,7 @@ function Footer() {
             </Box>
           </Grid>
           {/* sec 4 */}
-          <Grid item xs={12} sm={4} md={2} sx={{ mt: { xs: 2, sm: 0 } }}>
+          <Grid item xs={10} sm={4} md={2} sx={{ mt: { xs: 2, sm: 0 } }}>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <img src={logo} style={{ width: 30 }} />
               <Box pl={2} />

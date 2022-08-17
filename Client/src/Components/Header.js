@@ -70,7 +70,7 @@ function Header() {
   );
   return (
     <>
-      <AppBar elevation={0}>
+      <AppBar elevation={0} position="sticky">
         <Toolbar>
           <Box
             sx={{

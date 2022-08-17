@@ -25,7 +25,7 @@ function App() {
         button: "#2B4865",
       },
       status: {
-        // danger: "",
+        main: "#ddd",
       },
       background: {
         default: "#1A374D",

@@ -3,13 +3,16 @@ import Page from "./Pages/Page";
 
 //mui
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+//components
 import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 
 function App() {
   //theme data
   let theme1 = createTheme({
     typography: {
-      mode:"light",
+      mode: "light",
       primary: {
         main: "#073050",
       },
@@ -51,9 +54,10 @@ function App() {
 
   return (
     <ThemeProvider theme={theme1}>
-      <Header />
       <Router>
+        <Header />
         <Page />
+        <Footer />
       </Router>
     </ThemeProvider>
   );

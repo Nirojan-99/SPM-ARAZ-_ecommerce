@@ -1,11 +1,15 @@
 import { Navigate, Route, Routes } from "react-router";
-import Product from "./Product/Product";
+
+//pages
+import CustomerProduct from "./Product_Detail/Product";
+import AdminProduct from "./Product_Manage/Product";
 
 function Page() {
   return (
     <Routes>
-      <Route path="/products/new" element={<Product />} />
-      <Route path="/products/:id" element={<Product />} />
+      <Route path="/products/view/:id" element={<CustomerProduct />} />
+      <Route path="/products/new" element={<AdminProduct />} />
+      <Route path="/products/:id" element={<AdminProduct />} />
     </Routes>
   );
 }

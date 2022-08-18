@@ -1,4 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
+import Favorite_Product from "./Favorite_Products/Favorite_Product";
+import Favorite_Products from "./Favorite_Products/Favorite_Products";
 
 //pages
 import Dashboard from "./Dashboard/Dashboard";
@@ -16,6 +18,8 @@ function Page() {
       <Route path="/products/view/:id" element={<CustomerProduct />} />
       <Route path="/products/new" element={<AdminProduct />} />
       <Route path="/products/:id" element={<AdminProduct />} />
+
+      <Route path="/Favorites" element={<Favorite_Products />} />
     </Routes>
   );
 }

@@ -10,7 +10,6 @@ import { Container } from "@mui/system";
 
 //icon
 import StarIcon from "@mui/icons-material/Star";
-import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useState } from "react";
 import Review from "./Review";
@@ -131,9 +130,13 @@ function Product() {
                   >
                     {[1, 2, 3, 4, 5].map((row, index) => {
                       if (review >= row) {
-                        return <StarIcon key={index} sx={{ color: "#FEC260" }} />;
+                        return (
+                          <StarIcon key={index} sx={{ color: "#FEC260" }} />
+                        );
                       } else {
-                        return <StarBorderIcon key={index} sx={{ color: "#333" }} />;
+                        return (
+                          <StarBorderIcon key={index} sx={{ color: "#333" }} />
+                        );
                       }
                     })}
                     <Typography

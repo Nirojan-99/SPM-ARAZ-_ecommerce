@@ -66,67 +66,49 @@ function Review(props) {
         </Typography>
       </Box>
       {/* reply sec */}
-      {true ? (
-        <Box my={1} mb={2} pl={{ xs: 0, sm: 8 }}>
-          <Input maxRows={4} minRows={3} />
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button
-              sx={{
-                width: { xs: "100%", sm: 10 },
-                my: 1,
-              }}
-              variant="contained"
-              disableElevation
-              color="info"
-            >
-              Reply
-            </Button>
-          </Box>
-        </Box>
-      ) : (
-        // seller reply
-        <Box my={1} mb={2} pl={{ xs: 0, sm: 8 }}>
+
+      {/* // seller reply */}
+      <Box my={1} mb={2} pl={{ xs: 0, sm: 8 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
           <Box
             sx={{
+              bgcolor: "#D8D8D8",
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              py: 0.2,
+              px: 0.6,
+              borderRadius: 0.6,
             }}
           >
-            <Box
+            <Typography
               sx={{
-                bgcolor: "#D8D8D8",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                py: 0.2,
-                px: 0.6,
-                borderRadius: 0.6,
+                color: "#333",
+                fontFamily: "open sans",
+                fontSize: 13,
+                fontWeight: "700",
               }}
             >
-              <Typography
-                sx={{
-                  color: "#333",
-                  fontFamily: "open sans",
-                  fontSize: 13,
-                  fontWeight: "700",
-                }}
-              >
-                Seller
-              </Typography>
-              <EditIcon sx={{ color: "#333", width: 15, heigh: 15, ml: 1 }} />
-            </Box>
-          </Box>
-          <Box>
-            <Typography
-              sx={{ fontWeight: "600", fontFamily: "open sans", fontSize: 13 }}
-            >
-              Video provides a powerful way to help you prove your point.
+              Seller
             </Typography>
+            <EditIcon sx={{ color: "#333", width: 15, heigh: 15, ml: 1 }} />
           </Box>
         </Box>
-      )}
+        <Box>
+          <Typography
+            sx={{ fontWeight: "600", fontFamily: "open sans", fontSize: 13 }}
+          >
+            Video provides a powerful way to help you prove your point.
+          </Typography>
+        </Box>
+      </Box>
+
       <hr
         style={{
           borderTop: "2px dashed #1597BB",

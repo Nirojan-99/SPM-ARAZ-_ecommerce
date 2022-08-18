@@ -23,10 +23,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function Header() {
   //state
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const Menu = (
     <>
@@ -128,7 +131,12 @@ function Header() {
                     }}
                   >
                     <Badge showZero color="error" badgeContent={0}>
-                      <FavoriteIcon sx={{ color: "#fff" }} />
+                      <FavoriteIcon
+                        sx={{ color: "#fff" }}
+                        onClick={() => {
+                          navigate("/Favorites");
+                        }}
+                      />
                     </Badge>
                   </IconButton>
                 </Tooltip>

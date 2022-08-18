@@ -2,34 +2,24 @@ import {
   Autocomplete,
   Box,
   Button,
-  Container,
   Grid,
-  IconButton,
-  Pagination,
-  TextField,
   Typography,
+  IconButton,
+  TextField,
 } from "@mui/material";
+import { Container } from "@mui/system";
 
-//icon
+import { useState } from "react";
+
+//icons
 import SearchIcon from "@mui/icons-material/Search";
 import CircularProgress from "@mui/material/CircularProgress";
+import Store from "./Store";
 
-import { useEffect, useState } from "react";
-import Product from "./Product";
-
-function Store() {
-  // delet
+function Stores() {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
-
-  const [page, setPage] = useState(1);
-
-  //pagination handler
-  const handleChange = (event, value) => {
-    setPage(value);
-  };
-
   return (
     <>
       <Box>
@@ -53,22 +43,11 @@ function Store() {
                 my: 1.5,
               }}
             >
-              Your Store
+              Stores
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
-            <Button
-              href="/products/new"
-              sx={{
-                textTransform: "none",
-                color: "#1597BB",
-                p: 0,
-                display: { sm: "none", xs: "block" },
-              }}
-            >
-              + Add Product
-            </Button>
           </Box>
-          {/* search bar */}
+          {/*  */}
           <Box
             sx={{
               bgcolor: "#406882",
@@ -80,12 +59,6 @@ function Store() {
             mb={2}
           >
             <Grid container justifyContent={"center"} alignItems="center">
-              <Grid
-                item
-                xs={0}
-                sm={2}
-                sx={{ display: { xs: "none", sm: "block" } }}
-              ></Grid>
               {/* search field */}
               <Grid item sm={7} xs={12}>
                 <Box
@@ -150,58 +123,25 @@ function Store() {
                   </IconButton>
                 </Box>
               </Grid>
-              <Grid item xs={3} sx={{ display: { xs: "none", sm: "block" } }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Box sx={{ flexGrow: 1 }} />
-                  <Button
-                    href="/products/new"
-                    sx={{
-                      color: "#fff",
-                      textTransform: "none",
-                      color: "#D8D8D8",
-                      mr: 2,
-                    }}
-                  >
-                    + Add Product
-                  </Button>
-                </Box>
-              </Grid>
             </Grid>
           </Box>
-          {/* end of search */}
-          {/* products */}
+          {/* stores sec */}
           <Grid
             container
             justifyContent={"space-evenly"}
             alignItems="center"
-            rowSpacing={2}
-            columnSpacing={1}
+            rowSpacing={3}
+            columnSpacing={5}
             sx={{ my: 3 }}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((row, index) => {
-              return <Product key={index} />;
+            {[1, 2, 3, 4, 5, 6, 7].map((row, index) => {
+              return <Store key={index} />;
             })}
           </Grid>
-          <Box
-            my={3}
-            sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
-          >
-            <Pagination
-              shape="rounded"
-              count={5}
-              color="primary"
-              onChange={handleChange}
-            />
-          </Box>
         </Container>
       </Box>
     </>
   );
 }
 
-export default Store;
+export default Stores;

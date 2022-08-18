@@ -29,7 +29,7 @@ function App() {
       },
       background: {
         default: "#1A374D",
-        paper: "#D8D8D8",
+        paper: "#fff",
         button: "#2B4865",
       },
       divider: "#2B4865",

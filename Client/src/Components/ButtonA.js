@@ -4,6 +4,7 @@ function ButtonA(props) {
   return (
     <>
       <Button
+        fullWidth={props.fullWidth}
         disabled={props.disabled}
         color="secondary"
         variant="contained"

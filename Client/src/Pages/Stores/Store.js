@@ -1,5 +1,4 @@
 import { CardMedia, Grid, Box, Typography, Button } from "@mui/material";
-import { Stack } from "@mui/system";
 
 //image
 import storeRoof from "../../Assets/roof.png";

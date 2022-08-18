@@ -25,6 +25,7 @@ function Input(props) {
         required
         sx={{ mb: 1, ...props.sx }}
         hidden={props.hidden}
+        placeholder={props.placeholder}
       />
     </>
   );

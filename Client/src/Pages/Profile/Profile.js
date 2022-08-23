@@ -3,8 +3,11 @@ import { Box } from "@mui/system";
 import ButtonA from "../../Components/ButtonA";
 import AddressBook from "../AddressBook/AddressBook";
 import Options from "./Options";
+import { useParams } from "react-router";
+import EditAddresss from "../AddressBook/EditAddresss";
 
 function Profile() {
+  const { page } = useParams();
   return (
     <>
       <Container maxWidth="lg">
@@ -20,7 +23,8 @@ function Profile() {
                 <Options />
               </Grid>
               <Grid item xs={12} sm={8}>
-                <AddressBook />
+                {page === "addressbook" && <AddressBook />}
+                {page === "editaddress" && <EditAddresss />}
               </Grid>
             </Grid>
           </Box>

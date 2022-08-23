@@ -2,8 +2,10 @@ import { Grid, Typography, Button } from "@mui/material";
 import ButtonA from "../../Components/ButtonA";
 import { Box } from "@mui/system";
 import Text from "./Components/Text";
+import { useNavigate } from "react-router";
 
 function Address(props) {
+  const navigator = useNavigate();
   return (
     <>
       <Box
@@ -66,7 +68,9 @@ function Address(props) {
               fontWeight: "700",
               textTransform: "none",
             }}
-            onClick={() => {}}
+            onClick={() => {
+              navigator("/profile/editaddress");
+            }}
           >
             edit
           </Button>

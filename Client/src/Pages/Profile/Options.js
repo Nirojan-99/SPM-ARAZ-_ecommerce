@@ -10,33 +10,21 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
+
+import { useNavigate } from "react-router-dom";
 import { Box, Container } from "@mui/system";
-
-// import { makeStyles } from "@mui/material/styles";
-
-// import { makeStyles } from "@mui/material";
 
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { Link } from "react-router-dom";
-
-// const useStyle = makeStyles({
-//   btn: {
-//     color: "#fff",
-//     textDecoration: "none",
-//     fontFamily: "Arial",
-//     fontWeight: "bold",
-//     fontSize: "15px",
-//   },
-// });
+import ButtonA from "../../Components/ButtonA";
 
 function Options() {
   return (
     <>
       <Paper elevation={4}>
         <Box
-          p={2}
-          sx={{ bgcolor: "#FFFFFF", borderRadius: "3px", textAlign: "center" }}
+          p={1}
+          sx={{ bgcolor: "#FFFFFF", borderRadius: "6px", textAlign: "center" }}
           pb={10}
           height="64vh"
         >
@@ -58,37 +46,12 @@ function Options() {
                 alignItems: "center",
               }}
             >
-              <Button
-                variant="contained"
-                size="large"
-                m={1}
-                p={1}
-                // sx={{
-                //   color: "#fff",
-                //   textDecoration: "none",
-                //   fontFamily: "Arial",
-                //   fontWeight: "bold",
-                //   fontSize: "15px",
-                // }}
-              >
-                Outlined
-              </Button>
-              <br />
-              <Button variant="contained" size="large">
-                Outlined
-              </Button>
-              <br />
-              <Button variant="contained" size="large">
-                Outlined
-              </Button>{" "}
-              <br />
-              <Button variant="contained" size="large">
-                Outlined
-              </Button>{" "}
-              <br />
-              <Button variant="contained" size="large">
-                Outlined
-              </Button>
+              <ButtonMenu title="My profile" link={"/profile/details"} />
+              <ButtonMenu title="Security" link={"/profile/security"} />
+              <ButtonMenu title="Address Book" link={"/profile/addressbook"} />
+              <ButtonMenu title="Your Orders" link={"/profile/order"} />
+              <ButtonMenu title="Payments Options" link={"/profile/payment"} />
+              <ButtonMenu title="Points" link={"/profile/points"} />
             </Box>
           </Grid>
         </Box>
@@ -97,32 +60,39 @@ function Options() {
   );
 }
 
-const Btn = (props) => {
-  // const classes = useStyle();
-  //   const { page } = useParams();
-  //   const bcolor = page === props.link ? "#094F88" : "#073A63";
+const ButtonMenu = (props) => {
+  const navigator = useNavigate();
   return (
     <>
-      <Link
+      <Button
+        fullWidth
+        variant="contained"
+        size="large"
         sx={{
-          color: "#fff",
-          textDecoration: "none",
+          textTransform: "none",
           fontFamily: "Arial",
           fontWeight: "bold",
           fontSize: "15px",
+          bgcolor: "#D8D8D8",
+          borderRadius: 3,
         }}
-        to={`${props.link}`}
+        onClick={() => {
+          navigator(props.link);
+        }}
+        style={{ backgroundColor: "#D8D8D8" }}
       >
-        <Box
-          elevation={4}
-          my={2}
-          p={2}
-          py={1.5}
-          sx={{ color: "#fff", borderRadius: "6px" }}
+        <Typography
+          sx={{
+            fontWeight: "900",
+            fontFamily: "Arial",
+            textTransform: "none",
+            color: "#1A374D",
+          }}
         >
           {props.title}
-        </Box>
-      </Link>
+        </Typography>
+      </Button>
+      <br />
     </>
   );
 };

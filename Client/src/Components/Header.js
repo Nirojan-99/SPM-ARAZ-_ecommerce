@@ -145,6 +145,9 @@ function Header() {
 
             <Tooltip title="Your Account">
               <IconButton
+                onClick={() => {
+                  navigate("/profile/details");
+                }}
                 sx={{
                   bgcolor: "#1597BB",
                   "&:hover": { bgcolor: "#FEC260" },

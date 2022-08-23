@@ -28,13 +28,12 @@ function Options() {
           pb={10}
           height="64vh"
         >
-          <Grid mb={6} mt={2} container justifyContent="center">
+          <Grid mb={3} mt={2} container justifyContent="center">
             <Avatar
               variant="rounded"
-              alt="User DP"
-              src="https://stock.adobe.com/search?k=profile"
-              sx={{ width: 56, height: 56 }}
-            ></Avatar>
+              alt="UserDP"
+              sx={{ width: 56, height: 56, borderRadius: 3 }}
+            />
           </Grid>
           <Grid item>
             <Box

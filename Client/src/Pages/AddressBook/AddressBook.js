@@ -14,13 +14,10 @@ import Input from "../../Components/Input";
 import Address from "./Address";
 import Heading from "./Components/Heading";
 
-
 //province data
 import { DATA } from "../../Store/Province";
-import ButtonA from "../../Components/ButtonA";
 
 function AddressBook() {
-
   const [districts, setDistricts] = useState([]);
   const [show, setshow] = useState(false);
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
@@ -39,7 +36,8 @@ function AddressBook() {
                 bgcolor: "#D8D8D8",
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-around",
+                // justifyContent: "space-around",
+                justifyContent: "space-between",
               }}
             >
               <Box p={1}>

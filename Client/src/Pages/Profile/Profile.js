@@ -5,6 +5,9 @@ import AddressBook from "../AddressBook/AddressBook";
 import Options from "./Options";
 import { useParams } from "react-router";
 import EditAddresss from "../AddressBook/EditAddresss";
+import Profile_Details from "./Components/Profile_Details";
+import Order from "../Orders/Order";
+import Orders from "../Orders/Orders";
 
 function Profile() {
   const { page } = useParams();
@@ -25,6 +28,8 @@ function Profile() {
               <Grid item xs={12} sm={8}>
                 {page === "addressbook" && <AddressBook />}
                 {page === "editaddress" && <EditAddresss />}
+                {page === "details" && <Profile_Details />}
+                {page === "order" && <Orders />}
               </Grid>
             </Grid>
           </Box>

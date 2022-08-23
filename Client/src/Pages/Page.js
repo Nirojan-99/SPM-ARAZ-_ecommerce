@@ -29,9 +29,8 @@ function Page() {
       <Route path="/products/:id" element={<AdminProduct />} />
 
       <Route path="/Favorites" element={<Favorite_Products />} />
-      <Route path="/profile/details" element={<Profile />} />
-      <Route path="/profile/:page" element={<Profile />} />
 
+      <Route path="/profile/:page" element={<Profile />} />
     </Routes>
   );
 }

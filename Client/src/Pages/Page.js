@@ -10,6 +10,7 @@ import Store from "./Store/Store";
 import Stores from "./Stores/Stores";
 import RegisterStore from "./Store_Register/RegisterStore";
 import CustomerProduct from "./Product_Detail_Customer/ProductDetails";
+import Profile from "./Profile/Profile";
 
 function Page() {
   return (
@@ -27,6 +28,8 @@ function Page() {
       <Route path="/products/:id" element={<AdminProduct />} />
 
       <Route path="/Favorites" element={<Favorite_Products />} />
+
+      <Route path="/profile/:page" element={<Profile />} />
     </Routes>
   );
 }

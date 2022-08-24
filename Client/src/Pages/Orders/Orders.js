@@ -12,18 +12,22 @@ function Orders() {
           pt={5}
           pb={10}
         >
-          <Typography
-            sx={{
-              fontFamily: "open sans",
-              fontWeight: "1000",
-              color: "#2B4865",
-              letterSpacing: -0.9,
-              fontSize: 20,
-              my: 1.5,
-            }}
-          >
-            Your Orders
-          </Typography>
+          <Box>
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontFamily: "open sans",
+                fontWeight: "1000",
+                color: "#2B4865",
+                letterSpacing: -0.9,
+                fontSize: 20,
+                my: 1.5,
+              }}
+            >
+              Your Orders
+            </Typography>
+          </Box>
+
           <br />
           <Order />
           <Order />

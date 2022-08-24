@@ -17,6 +17,7 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 
 function Order() {
+
   const Orderdata = [
     {
       product: "product1",
@@ -98,6 +99,7 @@ function Order() {
               <TableHead>
                 <TableRow>
                   <TableCell
+                    align="left"
                     style={{
                       fontFamily: "open sans",
                       fontWeight: "800",
@@ -108,6 +110,7 @@ function Order() {
                     Product Name
                   </TableCell>
                   <TableCell
+                    align="left"
                     style={{
                       fontFamily: "open sans",
                       fontWeight: "800",
@@ -117,6 +120,7 @@ function Order() {
                   >
                     qyt
                   </TableCell>
+
                   <TableCell
                     style={{
                       fontFamily: "open sans",
@@ -127,7 +131,9 @@ function Order() {
                   >
                     Status
                   </TableCell>
+
                   <TableCell
+                    align="justify"
                     style={{
                       fontFamily: "open sans",
                       fontWeight: "800",

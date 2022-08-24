@@ -1,17 +1,8 @@
-import { Grid, Paper, Typography, Select, MenuItem } from "@mui/material";
-import { Box } from "@mui/system";
-import { useState } from "react";
-import Label from "../../Components/Label";
-import InputLabel from "@mui/material/InputLabel";
+import { Select, MenuItem } from "@mui/material";
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
+import { useState } from "react";
+
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
 
 function Order_Product(Props) {
   const [Status, setStatus] = useState("penting");
@@ -45,6 +36,7 @@ function Order_Product(Props) {
       >
         {Props.data.qty}
       </TableCell>
+
       <TableCell
         align="left"
         style={{
@@ -56,8 +48,8 @@ function Order_Product(Props) {
       >
         {Props.data.status}
       </TableCell>
+
       <TableCell
-        align="left"
         style={{
           fontFamily: "open sans",
           fontWeight: "600",
@@ -94,73 +86,6 @@ function Order_Product(Props) {
           })}
         </Select>
       </TableCell>
-
-      {/* <Box>
-          <Typography
-            sx={{
-              color: "#2B4865",
-              fontFamily: "open sans",
-              fontWeight: "600",
-              fontSize: 15,
-            }}
-          >
-            Product 1
-          </Typography>
-        </Box>
-        <Box>
-          <Typography
-            sx={{
-              color: "#1597BB",
-              fontFamily: "open sans",
-              fontWeight: "600",
-              fontSize: 15,
-            }}
-          >
-            Qty: 2
-          </Typography>
-        </Box>
-        <Box>
-          <Typography
-            sx={{
-              color: "#1597BB",
-              fontFamily: "open sans",
-              fontWeight: "600",
-              fontSize: 15,
-            }}
-          >
-            {Status}
-          </Typography>
-        </Box>
-        <Box mt={-1}>
-          <Select
-            sx={{ color: "#1597BB", fontWeight: "500" }}
-            onChange={(event) => {
-              setStatus(event.target.value);
-            }}
-            fullWidth
-            required
-            size="small"
-            color="info"
-            id="Status"
-            value={Status}
-          >
-            {DATA.map((row, index) => {
-              return (
-                <MenuItem
-                  key={index}
-                  sx={{
-                    fontFamily: "open sans",
-                    fontSize: 15,
-                    color: "#333",
-                  }}
-                  value={row.status}
-                >
-                  {row.status}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </Box> */}
     </>
   );
 }

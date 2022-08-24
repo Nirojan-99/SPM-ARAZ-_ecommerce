@@ -1,4 +1,4 @@
-import { Paper, MenuItem, Button, Select } from "@mui/material";
+import { Paper, MenuItem, Button, Select, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 
@@ -44,7 +44,7 @@ function AddressBook() {
   });
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   // this status usestate use for status management
   const [Status, setStatus] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -74,6 +74,22 @@ function AddressBook() {
           pt={5}
           pb={10}
         >
+          <Box>
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontFamily: "open sans",
+                fontWeight: "1000",
+                color: "#2B4865",
+                letterSpacing: -0.9,
+                fontSize: 20,
+                my: 1.5,
+              }}
+            >
+              Your Address
+            </Typography>
+          </Box>
+          <br />
           <TableContainer component={Paper}>
             <Table
               sx={{ minWidth: "200", bgcolor: "#D8D8D8" }}
@@ -165,6 +181,7 @@ function AddressBook() {
                 <TableRow>
                   <TablePagination
                     rowsPerPageOptions={[
+                      3,
                       5,
                       10,
                       25,

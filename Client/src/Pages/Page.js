@@ -12,6 +12,9 @@ import RegisterStore from "./Store_Register/RegisterStore";
 import CustomerProduct from "./Product_Detail_Customer/ProductDetails";
 import Profile from "./Profile/Profile";
 
+import { Checkbox } from "@mui/material";
+import Checkout from "./Checkout/Checkout";
+
 function Page() {
   return (
     <Routes>
@@ -30,6 +33,7 @@ function Page() {
       <Route path="/Favorites" element={<Favorite_Products />} />
 
       <Route path="/profile/:page" element={<Profile />} />
+      <Route path="/shipping" element={<Checkout />} />
     </Routes>
   );
 }

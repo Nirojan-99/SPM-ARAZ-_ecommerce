@@ -1,0 +1,81 @@
+const Address_DATA = [
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+  {
+    name: "sayanthan",
+    Province: "jaffna",
+    districts: "puloly",
+    contactnumber: "2372872832",
+    default: "default",
+  },
+];
+
+export { Address_DATA };

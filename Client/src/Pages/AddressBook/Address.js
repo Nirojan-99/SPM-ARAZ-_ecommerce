@@ -1,7 +1,5 @@
-import { Grid, Typography, Button } from "@mui/material";
-import ButtonA from "../../Components/ButtonA";
-import { Box } from "@mui/system";
-import Text from "./Components/Text";
+import { Typography, Button } from "@mui/material";
+
 import { useNavigate } from "react-router";
 import TableCell from "@mui/material/TableCell";
 

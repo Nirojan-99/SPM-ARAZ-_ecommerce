@@ -1,95 +1,91 @@
-import { Grid, Paper, Typography, Select, MenuItem } from "@mui/material";
-import { Box } from "@mui/system";
+import { Select, MenuItem } from "@mui/material";
+
 import { useState } from "react";
-import Label from "../../Components/Label";
-import InputLabel from "@mui/material/InputLabel";
 
-function Order_Product() {
-  const [districts, setDistricts] = useState("penting");
+import TableCell from "@mui/material/TableCell";
 
-  const DATA = [
+function Order_Product(Props) {
+  const [Status, setStatus] = useState("penting");
+
+  const SatatusDATA = [
     { status: "penting" },
     { status: "shipping" },
     { status: "delivered" },
   ];
   return (
     <>
-      <Grid
-        p={1}
-        sx={{
-          bgcolor: "#D8D8D8",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
+      <TableCell
+        align="left"
+        style={{
+          fontFamily: "open sans",
+          fontWeight: "600",
+          fontSize: 16,
+          color: "#1A374D",
         }}
       >
-        <Box>
-          <Typography
-            sx={{
-              color: "#2B4865",
-              fontFamily: "open sans",
-              fontWeight: "600",
-              fontSize: 15,
-            }}
-          >
-            Product 1
-          </Typography>
-        </Box>
-        <Box>
-          <Typography
-            sx={{
-              color: "#1597BB",
-              fontFamily: "open sans",
-              fontWeight: "600",
-              fontSize: 15,
-            }}
-          >
-            Qty: 2
-          </Typography>
-        </Box>
-        <Box>
-          <Typography
-            sx={{
-              color: "#1597BB",
-              fontFamily: "open sans",
-              fontWeight: "600",
-              fontSize: 15,
-            }}
-          >
-            {districts}
-          </Typography>
-        </Box>
-        <Box mt={-1}>
-          <Select
-            sx={{ color: "#1597BB", fontWeight: "500" }}
-            onChange={(event) => {
-              setDistricts(event.target.value);
-            }}
-            fullWidth
-            required
-            size="small"
-            color="info"
-            id="Status"
-            value={districts}
-          >
-            {DATA.map((row, index) => {
-              return (
-                <MenuItem
-                  key={index}
-                  sx={{
-                    fontFamily: "open sans",
-                    fontSize: 15,
-                    color: "#333",
-                  }}
-                  value={row.status}
-                >
-                  {row.status}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </Box>
-      </Grid>
+        {Props.data.product}
+      </TableCell>
+      <TableCell
+        align="left"
+        style={{
+          fontFamily: "open sans",
+          fontWeight: "600",
+          fontSize: 16,
+          color: "#1A374D",
+        }}
+      >
+        {Props.data.qty}
+      </TableCell>
+
+      <TableCell
+        align="left"
+        style={{
+          fontFamily: "open sans",
+          fontWeight: "600",
+          fontSize: 16,
+          color: "#1A374D",
+        }}
+      >
+        {Props.data.status}
+      </TableCell>
+
+      <TableCell
+        style={{
+          fontFamily: "open sans",
+          fontWeight: "600",
+          fontSize: 16,
+          color: "#1A374D",
+        }}
+      >
+        <Select
+          sx={{ color: "#FFF", fontWeight: "500", bgcolor: "#406882" }}
+          onChange={(event) => {
+            setStatus(event.target.value);
+          }}
+          fullWidth
+          required
+          size="small"
+          color="info"
+          id="Status"
+          value={Status}
+        >
+          {SatatusDATA.map((row, index) => {
+            return (
+              <MenuItem
+                key={index}
+                sx={{
+                  fontFamily: "open sans",
+                  fontSize: 15,
+                  color: "#333",
+                }}
+                value={row.status}
+              >
+                {row.status}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </TableCell>
     </>
   );
 }

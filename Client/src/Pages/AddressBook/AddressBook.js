@@ -1,26 +1,70 @@
-import {
-  colors,
-  Grid,
-  Paper,
-  MenuItem,
-  Typography,
-  Button,
-  Select,
-} from "@mui/material";
+import { Paper, MenuItem, Button, Select, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
+
+// label and input
 import Label from "../../Components/Label";
 import Input from "../../Components/Input";
+// address Components
 import Address from "./Address";
-import Heading from "./Components/Heading";
+// all the table imports
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
+
+// usetheme
+import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
+
+// using icons for table pageination
+import IconButton from "@mui/material/IconButton";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
 
 //province data
 import { DATA } from "../../Store/Province";
+import { Address_DATA } from "./AddressData";
+// import axios
+import axios from "axios";
 
 function AddressBook() {
+  // take from fetching data
+  const [getAlladdress, setgetAlladdress] = useState([]);
+  useEffect(() => {
+    // fetching data
+    // TODO
+    axios.get().then().catch();
+  });
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
+  // this status usestate use for status management
+  const [Status, setStatus] = useState([]);
   const [districts, setDistricts] = useState([]);
+  // hide from the addnew address
   const [show, setshow] = useState(false);
+  // using change the color after clicking
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - Address_DATA.length) : 0;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <>
       <Paper elevation={4}>
@@ -30,39 +74,138 @@ function AddressBook() {
           pt={5}
           pb={10}
         >
-          <Grid>
-            <Box
+          <Box>
+            <Typography
               sx={{
-                bgcolor: "#D8D8D8",
-                display: "flex",
-                flexDirection: "row",
-                // justifyContent: "space-around",
-                justifyContent: "space-between",
+                textAlign: "center",
+                fontFamily: "open sans",
+                fontWeight: "1000",
+                color: "#2B4865",
+                letterSpacing: -0.9,
+                fontSize: 20,
+                my: 1.5,
               }}
             >
-              <Box p={1}>
-                <Heading Name="Name" />
-              </Box>
-              <Box p={1}>
-                <Heading Name="Address" />
-              </Box>
-              <Box p={1}>
-                <Heading Name="Contact No" />
-              </Box>
-              <Box p={1}>
-                <Heading Name="default" />
-              </Box>
-              <Box p={1}>
-                <Heading Name="sasasa" />
-              </Box>
-            </Box>
-          </Grid>
-          <Grid>
-            <Address />
-            <Address />
-            <Address />
-            <Address />
-          </Grid>
+              Your Address
+            </Typography>
+          </Box>
+          <br />
+          <TableContainer component={Paper}>
+            <Table
+              sx={{ minWidth: "200", bgcolor: "#D8D8D8" }}
+              aria-label="caption table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align="left"
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Name
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Address
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Contact No
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    default
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    edit details
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(rowsPerPage > 0
+                  ? Address_DATA.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : Address_DATA
+                ).map((row, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <Address data={row} />
+                  </TableRow>
+                ))}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[
+                      3,
+                      5,
+                      10,
+                      25,
+                      { label: "All", value: -1 },
+                    ]}
+                    colSpan={3}
+                    count={Address_DATA.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        "aria-label": "rows per page",
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+
           <br />
           <Box mt={1} sx={{ textAlign: "right" }}>
             <Button
@@ -186,5 +329,77 @@ function AddressBook() {
     </>
   );
 }
+
+// this function using for Pagination
+
+function TablePaginationActions(props) {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+};
+//
 
 export default AddressBook;

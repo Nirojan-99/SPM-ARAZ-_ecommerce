@@ -14,7 +14,6 @@ function Address(props) {
         >
           {props.data.name}
         </Typography>
-        {/* {props.data.name} */}
       </TableCell>
       <TableCell
         align="justify"

@@ -47,6 +47,7 @@ function AddressBook() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   // this status usestate use for status management
   const [Status, setStatus] = useState([]);
+  const [districts, setDistricts] = useState([]);
   // hide from the addnew address
   const [show, setshow] = useState(false);
   // using change the color after clicking
@@ -225,11 +226,11 @@ function AddressBook() {
               <Select
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 onChange={(event) => {
-                  setStatus(() => {
+                  setDistricts(() => {
                     let data = DATA.filter((item, index) => {
                       return item.province === event.target.value;
                     });
-                    return data[0].Status;
+                    return data[0].districts;
                   });
                 }}
                 fullWidth
@@ -254,17 +255,17 @@ function AddressBook() {
                   );
                 })}
               </Select>
-              {/* Status */}
-              <Label for="Status" title="Status" />
+              {/* district */}
+              <Label for="district" title="District" />
               <Select
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 fullWidth
                 required
                 size="small"
                 color="info"
-                id="Status"
+                id="district"
               >
-                {Status.map((row, index) => {
+                {districts.map((row, index) => {
                   return (
                     <MenuItem
                       key={index}

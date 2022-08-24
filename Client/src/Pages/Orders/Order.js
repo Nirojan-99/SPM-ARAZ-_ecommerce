@@ -6,7 +6,59 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import Order_Product from "./Order_Product";
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
+
 function Order() {
+  const Orderdata = [
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+    {
+      product: "product1",
+      qty: 3,
+      status: "penting",
+    },
+  ];
   return (
     <>
       <Accordion sx={{ bgcolor: "#D8D8D8" }}>
@@ -41,12 +93,66 @@ function Order() {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            <Order_Product />
-            <Order_Product />
-            <Order_Product />
-            <Order_Product />
-          </Typography>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: "200" }} aria-label="caption table">
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Product Name
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    qyt
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Status
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Mange Status
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Orderdata.map((row, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <Order_Product data={row} />
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </AccordionDetails>
       </Accordion>
       <br />

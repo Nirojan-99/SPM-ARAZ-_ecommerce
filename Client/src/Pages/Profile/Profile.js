@@ -8,31 +8,34 @@ import EditAddresss from "../AddressBook/EditAddresss";
 import Profile_Details from "./Components/Profile_Details";
 import Order from "../Orders/Order";
 import Orders from "../Orders/Orders";
+import Loyalty from "../Loyalty/Loyalty";
 
 function Profile() {
   const { page } = useParams();
   return (
     <>
       <Container maxWidth="lg">
-        <Box py={3}>
-          <Box>
-            <Grid
-              container
-              spacing={{ xs: 1, sm: 2 }}
-              alignContent="center"
-              justifyContent={"center"}
-            >
-              <Grid item xs={4} display={{ sm: "block", xs: "none" }}>
-                <Options />
-              </Grid>
-              <Grid item xs={12} sm={8}>
+        <Box my={3} minHeight={400}>
+          <Grid
+            container
+            spacing={{ xs: 1, sm: 2 }}
+            alignItems="stretch"
+            justifyContent={"center"}
+          >
+            <Grid item xs={3} display={{ sm: "block", xs: "none" }}>
+              <Options />
+            </Grid>
+            <Grid item xs={12} sm={9}>
+              <Box>
                 {page === "addressbook" && <AddressBook />}
                 {page === "editaddress" && <EditAddresss />}
                 {page === "details" && <Profile_Details />}
                 {page === "order" && <Orders />}
-              </Grid>
+                {/* lavaniyah */}
+                {page === "loyalty" && <Loyalty />}
+              </Box>
             </Grid>
-          </Box>
+          </Grid>
         </Box>
       </Container>
     </>

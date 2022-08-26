@@ -1,22 +1,16 @@
-import { Button, Grid, Paper, Typography } from "@mui/material";
-import { Box, textAlign } from "@mui/system";
+import { Button, Grid, Paper, Typography, Pagination } from "@mui/material";
+import { Box } from "@mui/system";
 import { Address_DATA } from "../../AddressBook/AddressData";
 import SingleShippingAddress from "./Single_Shipping_address";
 
 import Radio from "@mui/material/Radio";
 import { useState } from "react";
+import ShippingAddress_Form from "./ShippingAddress_Form";
 
-// all the table imports
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-function ShippingAddress() {
-  const [selectedValue, setSelectedValue] = useState("");
+function ShippingAddress(props) {
+  const [hideshippingaddress, sethideshippingaddress] = useState(false);
+  const [show, setshow] = useState(true);
+  const [selectedValue, setSelectedValue] = useState("1");
   console.log(selectedValue);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -30,127 +24,163 @@ function ShippingAddress() {
   });
   return (
     <>
-      <Paper elevation={4}>
-        <Box
-          p={3}
-          sx={{
-            // width: "123vh",
-            borderRadius: "6px",
-            bgcolor: "#FFFFFF",
-          }}
-        >
-          <Box>
-            <Typography
-              p={2}
-              style={{
-                fontsize: 25,
-                color: "#2B4865",
-                textAlign: "left",
-                fontWeight: "1000",
-                fontFamily: "open sans",
+      <Box
+        p={3}
+        sx={{
+          borderRadius: "6px",
+          bgcolor: "#FFFFFF",
+        }}
+      >
+        <Grid container>
+          {show && (
+            <Box
+              p={3}
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: { md: "row", xs: "column" },
+                justifyContent: "space-between",
               }}
             >
-              Default Shipping Address
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box p={5} sx={{}}>
-              <TableContainer component={Paper}>
-                <Table
-                  size="medium"
-                  sx={{ minWidth: "100", bgcolor: "#D8D8D8" }}
-                  aria-label="caption table"
+              <Box>
+                <Typography
+                  p={2}
+                  sx={{
+                    fontsize: { md: 45, xs: 25 },
+                    color: "#2B4865",
+                    textAlign: { md: "left", xs: "center" },
+                    fontWeight: "1000",
+                    fontFamily: "open sans",
+                  }}
                 >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell
-                        align="left"
-                        style={{
-                          fontFamily: "open sans",
-                          fontWeight: "800",
-                          fontSize: 16,
-                          color: "#1A374D",
-                        }}
-                      >
-                        Options
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{
-                          fontFamily: "open sans",
-                          fontWeight: "800",
-                          fontSize: 16,
-                          color: "#1A374D",
-                        }}
-                      >
-                        Name
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{
-                          fontFamily: "open sans",
-                          fontWeight: "800",
-                          fontSize: 16,
-                          color: "#1A374D",
-                        }}
-                      >
-                        Province
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{
-                          fontFamily: "open sans",
-                          fontWeight: "800",
-                          fontSize: 16,
-                          color: "#1A374D",
-                        }}
-                      >
-                        Districts
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{
-                          fontFamily: "open sans",
-                          fontWeight: "800",
-                          fontSize: 16,
-                          color: "#1A374D",
-                        }}
-                      >
-                        Contact Number
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {Address_DATA.map((row, index) => (
-                      <TableRow
-                        key={index}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <Radio
-                          {...controlProps(row._id)}
-                          sx={{ marginTop: "8px" }}
-                        />
-                        <SingleShippingAddress data={row} />
-                        <br />
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                  Default Shipping Address
+                </Typography>
+              </Box>
+              <Box mt={1}>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    textAlign: { sm: "left", xs: "right" },
+                    fontWeight: "700",
+                    fontFamily: "open sans",
+                    textTransform: "none",
+                    "&:hover": {
+                      bgcolor: "#D8D874",
+                    },
+                  }}
+                  onClick={() => {
+                    sethideshippingaddress(true);
+                    setshow(false);
+                  }}
+                >
+                  add new Shipping Address
+                </Button>
+              </Box>
             </Box>
+          )}
 
-            <Box>
-              <Button>addnew</Button>
+          {hideshippingaddress ? (
+            <ShippingAddress_Form />
+          ) : (
+            <Box
+              p={2}
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                borderRadius: "20px",
+                // bgcolor: "#E8E5E5",
+                justifyContent: "center",
+              }}
+            >
+              <Box sx={{}}>
+                <Grid
+                  container
+                  p={2}
+                  m={2}
+                  spacing={2}
+                  sx={{
+                    width: "92%",
+                    border: 0,
+                    borderRadius: "6px",
+                    // bgcolor: "#D8D8D8",
+                    justifyContent: "center",
+                  }}
+                >
+                  {Address_DATA.map((row, index) => (
+                    <Grid
+                      item
+                      m={2}
+                      key={index}
+                      sx={{
+                        // width: { xs: "100%",md:"50%" },
+                        justifyContent: "center",
+                        // width: "100%",
+                        borderRadius: "10px",
+                        border: "3px solid #406882",
+                        "&:hover": {
+                          transform: "scale(1.01)",
+                          bgcolor: "#D8D874",
+                          transitionDuration: ".2s",
+                          transitionProperty: "all",
+                        },
+                      }}
+                    >
+                      <Radio
+                        {...controlProps(row._id)}
+                        sx={{ marginTop: "8px", color: "#406882" }}
+                      />
+                      <SingleShippingAddress data={row} />
+                    </Grid>
+                  ))}
+                </Grid>
+                {/* pagination */}
+                <Box
+                  my={6}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    shape="rounded"
+                    count={5}
+                    color="primary"
+                    // onChange={handleChange}
+                  />
+                </Box>
+              </Box>
             </Box>
+          )}
 
-            <Box>
-              <Button>addnew</Button>
+          <Box
+            p={3}
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: { md: "row", sm: "row", xs: "row" },
+              justifyContent: "space-between",
+            }}
+          >
+            {" "}
+            <Box></Box>
+            <Box ml={1} pl={1}>
+              <Button
+                variant="contained"
+                sx={{
+                  fontWeight: "700",
+                  fontFamily: "open sans",
+                  textTransform: "none",
+                }}
+                onClick={props.handleNext}
+              >
+                Next
+              </Button>
             </Box>
           </Box>
-        </Box>
-      </Paper>
+        </Grid>
+      </Box>
     </>
   );
 }

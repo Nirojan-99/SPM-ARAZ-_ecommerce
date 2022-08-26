@@ -44,6 +44,8 @@ function Page() {
       <Route path="/shipping" element={<Checkout />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/checkout/newshippingaddress" element={<Checkout />} />
     </Routes>
   );
 }

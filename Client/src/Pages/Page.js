@@ -14,6 +14,8 @@ import CustomerProduct from "./Product_Detail_Customer/ProductDetails";
 import Profile from "./Profile/Profile";
 import SignUp from "./Signup/Signup";
 import Login from "./Login/Login";
+import Cart from "./Cart/Cart";
+
 
 import { Checkbox } from "@mui/material";
 import Checkout from "./Checkout/Checkout";
@@ -32,6 +34,9 @@ function Page() {
       <Route path="/products/new" element={<AdminProduct />} />
       <Route path="/products/:id/offers" element={<Offer />} />
       <Route path="/products/:id" element={<AdminProduct />} />
+
+      {/* lavaniyah */}
+      <Route path="/cart" element={<Cart />} />
 
       <Route path="/Favorites" element={<Favorite_Products />} />
 

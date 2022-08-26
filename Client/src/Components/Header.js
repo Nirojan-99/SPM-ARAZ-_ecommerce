@@ -111,6 +111,9 @@ function Header() {
               <>
                 <Tooltip title="Your Cart">
                   <IconButton
+                    onClick={() => {
+                      navigate("/cart");
+                    }}
                     sx={{
                       bgcolor: "#1597BB",
                       "&:hover": { bgcolor: "#FEC260" },

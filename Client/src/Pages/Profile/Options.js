@@ -1,61 +1,44 @@
-import {
-  Avatar,
-  Button,
-  Drawer,
-  Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { Box, Container } from "@mui/system";
-
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-import { Link } from "react-router-dom";
-import ButtonA from "../../Components/ButtonA";
+import { Box } from "@mui/system";
 
 function Options() {
   return (
-    <>
-      <Paper elevation={4}>
+    <Box
+      p={1}
+      sx={{ bgcolor: "#FFFFFF", borderRadius: "6px", textAlign: "center" }}
+      pb={10}
+      height="64vh"
+      component={Paper}
+      elevation={2}
+    >
+      <Grid mb={3} mt={2} container justifyContent="center">
+        <Avatar
+          variant="rounded"
+          alt="UserDP"
+          sx={{ width: 56, height: 56, borderRadius: 3 }}
+        />
+      </Grid>
+      <Grid item>
         <Box
-          p={1}
-          sx={{ bgcolor: "#FFFFFF", borderRadius: "6px", textAlign: "center" }}
-          pb={10}
-          height="64vh"
+          p={2}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <Grid mb={3} mt={2} container justifyContent="center">
-            <Avatar
-              variant="rounded"
-              alt="UserDP"
-              sx={{ width: 56, height: 56, borderRadius: 3 }}
-            />
-          </Grid>
-          <Grid item>
-            <Box
-              p={2}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ButtonMenu title="My profile" link={"/profile/details"} />
-              <ButtonMenu title="Security" link={"/profile/security"} />
-              <ButtonMenu title="Address Book" link={"/profile/addressbook"} />
-              <ButtonMenu title="Your Orders" link={"/profile/order"} />
-              <ButtonMenu title="Payments Options" link={"/profile/payment"} />
-              <ButtonMenu title="Points" link={"/profile/points"} />
-            </Box>
-          </Grid>
+          <ButtonMenu title="My profile" link={"/profile/details"} />
+          <ButtonMenu title="Security" link={"/profile/security"} />
+          <ButtonMenu title="Address Book" link={"/profile/addressbook"} />
+          <ButtonMenu title="Your Orders" link={"/profile/order"} />
+          <ButtonMenu title="Payments Options" link={"/profile/payment"} />
+          <ButtonMenu title="Points" link={"/profile/loyalty"} />
         </Box>
-      </Paper>
-    </>
+      </Grid>
+    </Box>
   );
 }
 

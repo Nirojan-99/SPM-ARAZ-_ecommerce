@@ -11,33 +11,33 @@ function Checkout() {
   return (
     <>
       <Container maxWidth="lg">
-        <Grid container p={3} alignContent="center" justifyContent="center">
-          <Grid
-            mt={5}
-            item
-            sx={{
-              alignItems: "center",
-              textAlign: "center",
-              borderRadius: "6px",
-              bgcolor: "#FFFFFF",
-              width: "80%",
-              height: "10%",
-            }}
-          >
-            <Box p={3}>
-              <Stepper activeStep={1} alternativeLabel>
-                {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Box>
+        <Box
+          mt={5}
+          item
+          sx={{
+            alignItems: "center",
+            textAlign: "center",
+            borderRadius: "6px",
+            bgcolor: "#FFFFFF",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {" "}
+          *
+          <Grid item p={3}>
+            <Stepper activeStep={1} alternativeLabel>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           </Grid>
-          <Grid item p={3} mt={2} mb={6}>
-            <ShippingAddress />
-          </Grid>
-        </Grid>
+        </Box>
+        <Box p={2} mt={2} mb={6}>
+          <ShippingAddress />
+        </Box>
       </Container>
     </>
   );

@@ -12,7 +12,10 @@ import Stores from "./Stores/Stores";
 import RegisterStore from "./Store_Register/RegisterStore";
 import CustomerProduct from "./Product_Detail_Customer/ProductDetails";
 import Profile from "./Profile/Profile";
+import SignUp from "./Signup/Signup";
+import Login from "./Login/Login";
 import Cart from "./Cart/Cart";
+
 
 import { Checkbox } from "@mui/material";
 import Checkout from "./Checkout/Checkout";
@@ -38,6 +41,9 @@ function Page() {
       <Route path="/Favorites" element={<Favorite_Products />} />
 
       <Route path="/profile/:page" element={<Profile />} />
+      <Route path="/shipping" element={<Checkout />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/checkout/newshippingaddress" element={<Checkout />} />
     </Routes>

@@ -5,6 +5,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { Grid, Paper, Container } from "@mui/material";
 import ShippingAddress from "./ShippingAddress/ShippingAddress";
+import ShippingAddress_Form from "./ShippingAddress/ShippingAddress_Form";
 
 const steps = ["ShippingAddress", "Paymentmethod"];
 function Checkout() {
@@ -36,7 +37,8 @@ function Checkout() {
           </Grid>
         </Box>
         <Box p={2} mt={2} mb={6}>
-          <ShippingAddress />
+          {/* <ShippingAddress /> */}
+          <ShippingAddress_Form />
         </Box>
       </Container>
     </>

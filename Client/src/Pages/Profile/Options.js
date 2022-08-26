@@ -9,7 +9,7 @@ function Options() {
       p={1}
       sx={{ bgcolor: "#FFFFFF", borderRadius: "6px", textAlign: "center" }}
       pb={10}
-      height="64vh"
+      height="67vh"
       component={Paper}
       elevation={2}
     >

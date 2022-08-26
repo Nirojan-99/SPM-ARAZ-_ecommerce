@@ -1,6 +1,6 @@
-import { Paper, MenuItem, Button, Select, Typography } from "@mui/material";
+import { MenuItem, Button, Select, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Label from "../../../Components/Label";
 import Input from "../../../Components/Input";
 import { DATA } from "../../../Store/Province";
@@ -9,13 +9,7 @@ function ShippingAddress_Form() {
   const [districts, setDistricts] = useState([]);
   return (
     <>
-      <Box
-        p={3}
-        sx={{
-          borderRadius: "6px",
-          bgcolor: "#FFFFFF",
-        }}
-      >
+      <Box sx={{ width: "100%" }}>
         <Box>
           <Typography
             p={2}

@@ -30,5 +30,10 @@ public interface ProductRepository extends MongoRepository<Product, Integer> {
     })
     List<Product> findAllProducts(int skip, int limit);
 
+    @Aggregation(pipeline = {
+            "{ '$match': {'storeID':?0 } }"
+    })
+    List<Product> findByStoreId(String id);
+
     Product findById(String id);
 }

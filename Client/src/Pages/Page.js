@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router";
-import Favorite_Product from "./Favorite_Products/Favorite_Product";
 import Favorite_Products from "./Favorite_Products/Favorite_Products";
 
 //pages

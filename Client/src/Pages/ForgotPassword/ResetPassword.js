@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Link,
   MenuItem,
   Paper,
   Select,
@@ -11,15 +10,14 @@ import { Container } from "@mui/system";
 import ButtonA from "../../Components/ButtonA";
 import Input from "../../Components/Input";
 import Label from "../../Components/Label";
-function Login() {
+
+function ResetPassword() {
   return (
     <>
-      <Box
-        sx={{
-          my: 10,
-        }}
-      >
+      <Box>
         <Container maxWidth="sm">
+          {/* title */}
+
           <Box component={Paper} sx={{ bgcolor: "#fff" }} p={3} my={2.5}>
             {/* title */}
             <Typography
@@ -33,35 +31,18 @@ function Login() {
                 textAlign: "center",
               }}
             >
-              Welcome Back,
+              Reset Password
             </Typography>
-            {/* Email */}
-            <Label title="Email" for="email" />
-            <Input
-              id="email"
-              autoFocus={true}
-              size="small"
-              placeholder="xxxxxx@gmail.com"
-              type="text"
-            />
 
             {/* Password */}
-            <Label for="password" title="Password" />
+            <Label for="password" title="New Password" />
             <Input id="password" type="password" size="small" />
-            <Link
-              href="/passworForgot"
-              underline="none"
-              color="red"
-              sx={{ mr: "260px" }}
-            >
-              Forgot Password?
-            </Link>
-            <Link href="/signup" underline="none" fontSize={15}>
-              Don't have Account?
-            </Link>
-            {/* login button */}
+            {/* Confirm Password */}
+            <Label for="re_password" title="Confirm Password" />
+            <Input id="re_password" type="password" size="small" />
+            {/* save button */}
             <Box mt={2} />
-            <ButtonA fullWidth={true} title="LOG IN" />
+            <ButtonA fullWidth={true} title="SUBMIT" />
             <Box mt={2} />
           </Box>
         </Container>
@@ -70,4 +51,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ResetPassword;

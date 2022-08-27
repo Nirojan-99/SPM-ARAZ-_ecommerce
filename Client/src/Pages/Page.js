@@ -15,7 +15,7 @@ import Profile from "./Profile/Profile";
 import SignUp from "./Signup/Signup";
 import Login from "./Login/Login";
 import Cart from "./Cart/Cart";
-
+import ForgotPassword from "./ForgotPassword/ForgotPassword";
 
 import { Checkbox } from "@mui/material";
 import Checkout from "./Checkout/Checkout";
@@ -46,6 +46,7 @@ function Page() {
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/checkout/newshippingaddress" element={<Checkout />} />
+      <Route path="/passwordReset" element={<ForgotPassword />} />
     </Routes>
   );
 }

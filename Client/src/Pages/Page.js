@@ -15,9 +15,12 @@ import SignUp from "./Signup/Signup";
 import Login from "./Login/Login";
 import Cart from "./Cart/Cart";
 
-
 import { Checkbox } from "@mui/material";
 import Checkout from "./Checkout/Checkout";
+
+import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import OTP from "./ForgotPassword/OTP";
+import ResetPassword from "./ForgotPassword/ResetPassword";
 
 function Page() {
   return (
@@ -45,6 +48,9 @@ function Page() {
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/checkout/newshippingaddress" element={<Checkout />} />
+      <Route path="/passworForgot" element={<ForgotPassword />} />
+      <Route path="/otp" element={<OTP />} />
+      <Route path="/passwordReset" element={<ResetPassword />} />
     </Routes>
   );
 }

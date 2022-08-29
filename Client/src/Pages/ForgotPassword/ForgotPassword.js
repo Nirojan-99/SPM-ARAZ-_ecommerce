@@ -11,7 +11,8 @@ import { Container } from "@mui/system";
 import ButtonA from "../../Components/ButtonA";
 import Input from "../../Components/Input";
 import Label from "../../Components/Label";
-function Login() {
+
+function ForgotPassword() {
   return (
     <>
       <Box
@@ -33,7 +34,7 @@ function Login() {
                 textAlign: "center",
               }}
             >
-              Welcome Back,
+              Reset Password
             </Typography>
             {/* Email */}
             <Label title="Email" for="email" />
@@ -45,24 +46,23 @@ function Login() {
               type="text"
             />
 
-            {/* Password */}
-            <Label for="password" title="Password" />
-            <Input id="password" type="password" size="small" />
-            <Link
-              href="/passworForgot"
-              underline="none"
-              color="red"
-              sx={{ mr: "260px" }}
+            {/* submit button */}
+            <Box mt={2} />
+            <ButtonA fullWidth={true} title="SUBMIT" />
+            <Box mt={2} />
+            {/* <Typography
+              sx={{
+                fontFamily: "open sans",
+                fontWeight: "500",
+                color: "#2B4865",
+                letterSpacing: -0.9,
+                fontSize: 15,
+                my: 1,
+                textAlign: "right",
+              }}
             >
-              Forgot Password?
-            </Link>
-            <Link href="/signup" underline="none" fontSize={15}>
-              Don't have Account?
-            </Link>
-            {/* login button */}
-            <Box mt={2} />
-            <ButtonA fullWidth={true} title="LOG IN" />
-            <Box mt={2} />
+              1.00
+            </Typography> */}
           </Box>
         </Container>
       </Box>
@@ -70,4 +70,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPassword;

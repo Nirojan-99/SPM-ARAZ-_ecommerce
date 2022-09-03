@@ -10,6 +10,8 @@ import Order from "../Orders/Order";
 import Orders from "../Orders/Orders";
 import Loyalty from "../Loyalty/Loyalty";
 
+import Security from "./Components/Security";
+
 function Profile() {
   const { page } = useParams();
   return (
@@ -33,6 +35,8 @@ function Profile() {
                 {page === "order" && <Orders />}
                 {/* lavaniyah */}
                 {page === "loyalty" && <Loyalty />}
+
+                {page === "security" && <Security />}
               </Box>
             </Grid>
           </Grid>

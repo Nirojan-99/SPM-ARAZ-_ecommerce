@@ -5,11 +5,11 @@ import { useState } from "react";
 import TableCell from "@mui/material/TableCell";
 
 function Order_Product(Props) {
-  const [Status, setStatus] = useState("penting");
+  const [Status, setStatus] = useState("processing");
 
   const SatatusDATA = [
-    { status: "penting" },
-    { status: "shipping" },
+    { status: "processing" },
+    { status: "shipped" },
     { status: "delivered" },
   ];
   return (

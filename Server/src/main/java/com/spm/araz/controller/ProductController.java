@@ -5,6 +5,8 @@ import com.spm.araz.model.Review;
 import com.spm.araz.response.ProductResponse;
 import com.spm.araz.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -241,6 +243,30 @@ public class ProductController {
             productResponse.setMsg("Product is not Deleted");
             return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
         }
+    }
+
+    //get images
+    @GetMapping("/images/{name}")
+    public ResponseEntity<?> getImage(@PathVariable("name") String name) {
+
+        Resource resource = null;
+        try {
+            resource = productService.getFile(name);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        if (resource == null) {
+            return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
+        }
+
+        String contentType = "application/octet-stream";
+        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+                .body(resource);
     }
 
 

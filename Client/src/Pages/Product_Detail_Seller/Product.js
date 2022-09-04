@@ -11,32 +11,69 @@ import { Container } from "@mui/system";
 //icon
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Review from "./Review";
-
-const imageArray = [
-  "https://picsum.photos/id/237/200/300",
-  "https://picsum.photos/seed/picsum/200/300",
-  "https://picsum.photos/200/300?grayscale",
-  "https://picsum.photos/200/300/?blur=2",
-  "https://picsum.photos/200/300.jpg",
-  "https://picsum.photos/200/300.jpg",
-];
+import axios from "axios";
+import { useParams } from "react-router";
+import calNewPrice from "../../Helper/calNewPrice";
 
 const review = 4;
 function Product() {
   //state
-  const [previewImage, setPreviewImage] = useState(imageArray[0]);
+  const [previewImage, setPreviewImage] = useState([]);
 
   //image handler
   const setImage = (index) => {
     setPreviewImage(imageArray[index]);
   };
+
+  //id
+  const { id } = useParams();
+
+  //url
+  const baseURL = "http://localhost:5000/";
+
+  //data
+  const [imageArray, setImageArray] = useState([]);
+  const [product, setProduct] = useState({});
+
+  //get images
+  const getImages = (name) => {
+    axios
+      .get(`${baseURL}products/images/${name}`)
+      .then((res) => {
+        console.log(res)
+        return res.data;
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
+
+  //get data
+  useEffect(() => {
+    axios
+      .get(`${baseURL}products/${id}`)
+      .then((res) => {
+        const product = res.data.product;
+        setProduct(product);
+        res.data.product?.images?.forEach((element) => {
+          const data = getImages(element);
+          setImageArray((pre) => {
+            const array = [...pre];
+            array.push(data);
+            return array;
+          });
+        });
+      })
+      .catch((er) => {});
+  }, []);
   return (
     <>
       <Box>
         <Container maxWidth="md">
           {/* product detail sec */}
+          <img src={imageArray[0]}/>
           <Box my={4} component={Paper} elevation={1} sx={{ bgcolor: "#fff" }}>
             <Grid
               sx={{ borderRadius: 10 }}
@@ -116,8 +153,7 @@ function Product() {
                       letterSpacing: -0.5,
                     }}
                   >
-                    Computer with 2TB hard disk and 256 SSD, 11th generation..
-                    aaa s dad s fsf f gfg
+                    {product.title}
                   </Typography>
                   {/* rating sec */}
                   <Box
@@ -148,7 +184,7 @@ function Product() {
                         ml: 2,
                       }}
                     >
-                      102 Rating
+                      {review?.length}
                     </Typography>
                   </Box>
                   {/* peice sec */}
@@ -161,21 +197,25 @@ function Product() {
                         fontWeight: "800",
                       }}
                     >
-                      Rs : 200,000.00
+                      Rs : {calNewPrice(product.price, product?.offer)}
                     </Typography>
                   </Box>
                   {/* discount sec */}
                   <Box>
-                    <Typography
-                      sx={{
-                        color: "silver",
-                        fontSize: 14,
-                        fontFamily: "open sans",
-                        fontWeight: "700",
-                      }}
-                    >
-                      <s>Rs : 200,000.00 -15%</s>
-                    </Typography>
+                    {product?.offer?.percentage && (
+                      <Typography
+                        sx={{
+                          color: "silver",
+                          fontSize: 14,
+                          fontFamily: "open sans",
+                          fontWeight: "700",
+                        }}
+                      >
+                        <s>
+                          Rs : {product.price} {product?.offer?.percentage}
+                        </s>
+                      </Typography>
+                    )}
                   </Box>
                   {/* descrption sec */}
                   <Box sx={{ mt: 2, flexGrow: 1 }}>
@@ -184,18 +224,10 @@ function Product() {
                         fontWeight: "600",
                         fontFamily: "open sans",
                         fontSize: 13,
+                        overflow: "hidden",
                       }}
                     >
-                      Video provides a powerful way to help you prove your
-                      point. When you click Online Video, you can paste in the
-                      embed code for the video you want to add. You can also
-                      type a keyword to search online for the video that best
-                      fits your document. To make your document look
-                      professionally produced, Word provides header, footer,
-                      cover page, and text box designs that complement each
-                      other. For example, you can add a matching cover page,
-                      header, and sidebar. Click Insert and then choose the
-                      elements you
+                      {product.description}
                     </Typography>
                   </Box>
                 </Box>
@@ -226,8 +258,10 @@ function Product() {
             {/* divider */}
             <hr style={{ borderTop: "2px dashed #1597BB", bgcolor: "none" }} />
             {/* reviews */}
-            <Review />
-            <Review />
+            {product?.review?.map((item, index) => {
+              return <Review key={index} />;
+            })}
+            {product?.review || <Typography>No review</Typography>}
           </Box>
         </Container>
       </Box>

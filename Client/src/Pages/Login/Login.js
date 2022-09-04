@@ -49,7 +49,7 @@ function Login() {
             <Label for="password" title="Password" />
             <Input id="password" type="password" size="small" />
             <Link
-              href="/signup"
+              href="/passworForgot"
               underline="none"
               color="red"
               sx={{ mr: "260px" }}

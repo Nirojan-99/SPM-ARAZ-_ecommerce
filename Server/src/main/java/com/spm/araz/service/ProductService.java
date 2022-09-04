@@ -82,4 +82,10 @@ public class ProductService {
         productRepository.save(product);
         return true;
     }
+
+    //find by store
+    public List<Product> getStoreProducts(String id){
+        List<Product> products = productRepository.findByStoreId(id);
+        return products;
+    }
 }

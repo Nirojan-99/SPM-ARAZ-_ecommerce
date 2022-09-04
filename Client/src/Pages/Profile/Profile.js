@@ -26,6 +26,8 @@ import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Security from "./Components/Security";
+
 function Profile() {
   const { page } = useParams();
   const navigate = useNavigate();
@@ -128,6 +130,8 @@ function Profile() {
                 {page === "order" && <Orders />}
                 {/* lavaniyah */}
                 {page === "loyalty" && <Loyalty />}
+
+                {page === "security" && <Security />}
               </Box>
             </Grid>
           </Grid>

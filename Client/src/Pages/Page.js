@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router";
-import Favorite_Product from "./Favorite_Products/Favorite_Product";
 import Favorite_Products from "./Favorite_Products/Favorite_Products";
 
 //pages
@@ -16,9 +15,12 @@ import SignUp from "./Signup/Signup";
 import Login from "./Login/Login";
 import Cart from "./Cart/Cart";
 
-
 import { Checkbox } from "@mui/material";
 import Checkout from "./Checkout/Checkout";
+
+import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import OTP from "./ForgotPassword/OTP";
+import ResetPassword from "./ForgotPassword/ResetPassword";
 
 function Page() {
   return (
@@ -45,6 +47,13 @@ function Page() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
+<<<<<<< HEAD
+=======
+      <Route path="/checkout/newshippingaddress" element={<Checkout />} />
+      <Route path="/passworForgot" element={<ForgotPassword />} />
+      <Route path="/otp" element={<OTP />} />
+      <Route path="/passwordReset" element={<ResetPassword />} />
+>>>>>>> 1b8e7d43532ad0995d7109ca0b3e6a7e6272ddbb
     </Routes>
   );
 }

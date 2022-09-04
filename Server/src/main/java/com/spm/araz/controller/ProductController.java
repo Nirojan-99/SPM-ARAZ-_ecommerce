@@ -6,6 +6,7 @@ import com.spm.araz.response.ProductResponse;
 import com.spm.araz.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -29,13 +31,41 @@ public class ProductController {
 
 
     //add new product
-    @PostMapping("")
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody Product product) {
+    @PostMapping(value = "", produces = {MediaType.IMAGE_JPEG_VALUE, "application/json"})
+    public ResponseEntity<ProductResponse> addProduct(@RequestParam("images") MultipartFile[] item,
+                                                      @RequestParam("price") int price,
+                                                      @RequestParam("title") String title,
+                                                      @RequestParam("description") String description,
+                                                      @RequestParam("category") String category) {
+        Product product = new Product();
+        product.setTitle(title);
+        product.setPrice(price);
+        product.setDescription(description);
+        product.setCategory(category);
+
+        ArrayList<String> images = new ArrayList<>();
+
+        //store images
+        Path uploadDir = Paths.get("Product-images");
+        for (MultipartFile file : item) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            images.add(file.getOriginalFilename());
+            try (InputStream inputStream = file.getInputStream()) {
+                Path filePath = uploadDir.resolve(fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException E) {
+                System.out.println(E.getStackTrace());
+            }
+        }
+
+        product.setImages(images);
+
         productService.addProduct(product);
 
         ProductResponse productResponse = new ProductResponse();
         productResponse.setMsg("Product added");
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
+
     }
 
     //get all products
@@ -139,29 +169,49 @@ public class ProductController {
 
     //update product
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody Product product, @PathVariable(required = true) String id) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable(required = true) String id,
+                                                         @RequestParam(value = "images", required = false) MultipartFile[] item,
+                                                         @RequestParam(value = "price", required = false) int price,
+                                                         @RequestParam(value = "title", required = false) String title,
+                                                         @RequestParam(value = "description", required = false) String description,
+                                                         @RequestParam(value = "category", required = false) String category) {
+
+        ArrayList<String> images = new ArrayList<>();
+        //store images
+        Path uploadDir = Paths.get("Product-images");
+        for (MultipartFile file : item) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            images.add(file.getOriginalFilename());
+            try (InputStream inputStream = file.getInputStream()) {
+                Path filePath = uploadDir.resolve(fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException E) {
+                System.out.println(E.getStackTrace());
+            }
+        }
+
         ProductResponse productResponse = new ProductResponse();
 
         //check product existence
         Product existingProduct = productService.getProduct(id);
+
+        existingProduct.setImages(images);
+
         if (existingProduct == null) {
             productResponse.setMsg("No product found");
             return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
         } else {
-            if (product.getCategory() != null) {
-                existingProduct.setCategory(product.getCategory());
+            if (category != null) {
+                existingProduct.setCategory(category);
             }
-            if (product.getDescription() != null) {
-                existingProduct.setDescription(product.getDescription());
+            if (category != null) {
+                existingProduct.setDescription(category);
             }
-            if (product.getImages() != null) {
-                //TODO
+            if (price != 0) {
+                existingProduct.setPrice(price);
             }
-            if (product.getPrice() != 0) {
-                existingProduct.setPrice(product.getPrice());
-            }
-            if (product.getTitle() != null) {
-                existingProduct.setTitle(product.getTitle());
+            if (title != null) {
+                existingProduct.setTitle(title);
             }
             //save
             boolean res = productService.updateProduct(existingProduct);
@@ -174,6 +224,22 @@ public class ProductController {
                 productResponse.setMsg("Unable to update");
                 return new ResponseEntity<>(productResponse, HttpStatus.NOT_MODIFIED);
             }
+        }
+    }
+
+    //delete product
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable("id") String id) {
+        Product product = productService.getProduct(id);
+        ProductResponse productResponse = new ProductResponse();
+
+        if (product != null) {
+            productService.deleteById(id);
+            productResponse.setMsg("Product Deleted");
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        } else {
+            productResponse.setMsg("Product is not Deleted");
+            return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
         }
     }
 

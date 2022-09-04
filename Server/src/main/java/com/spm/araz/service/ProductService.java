@@ -88,4 +88,10 @@ public class ProductService {
         List<Product> products = productRepository.findByStoreId(id);
         return products;
     }
+
+    //delete by id
+    public boolean deleteById(String id){
+        productRepository.deleteById(id);
+        return true;
+    }
 }

@@ -16,15 +16,15 @@ import Review from "./Review";
 import axios from "axios";
 import { useParams } from "react-router";
 import calNewPrice from "../../Helper/calNewPrice";
+import calReview from "../../Helper/calReview";
 
-const review = 4;
 function Product() {
   //state
-  const [previewImage, setPreviewImage] = useState([]);
+  const [previewImage, setPreviewImage] = useState();
 
   //image handler
   const setImage = (index) => {
-    setPreviewImage(imageArray[index]);
+    setPreviewImage(`${baseURL}products/images/${product?.images[index]}`);
   };
 
   //id
@@ -36,19 +36,7 @@ function Product() {
   //data
   const [imageArray, setImageArray] = useState([]);
   const [product, setProduct] = useState({});
-
-  //get images
-  const getImages = (name) => {
-    axios
-      .get(`${baseURL}products/images/${name}`)
-      .then((res) => {
-        console.log(res)
-        return res.data;
-      })
-      .catch((er) => {
-        console.log(er);
-      });
-  };
+  const [review, setReview] = useState(0);
 
   //get data
   useEffect(() => {
@@ -57,14 +45,8 @@ function Product() {
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
-        res.data.product?.images?.forEach((element) => {
-          const data = getImages(element);
-          setImageArray((pre) => {
-            const array = [...pre];
-            array.push(data);
-            return array;
-          });
-        });
+        setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
+        setReview(calReview(res.data.product?.review));
       })
       .catch((er) => {});
   }, []);
@@ -73,7 +55,7 @@ function Product() {
       <Box>
         <Container maxWidth="md">
           {/* product detail sec */}
-          <img src={imageArray[0]}/>
+          <img src={imageArray[0]} />
           <Box my={4} component={Paper} elevation={1} sx={{ bgcolor: "#fff" }}>
             <Grid
               sx={{ borderRadius: 10 }}
@@ -106,7 +88,7 @@ function Product() {
                     }}
                   >
                     <Grid container sx={{ p: 0, m: 0 }}>
-                      {imageArray.map((row, index) => {
+                      {product?.images?.map((row, index) => {
                         return (
                           <Grid key={index} item xs={12 / imageArray.length}>
                             <Box mx={0.5}>
@@ -120,12 +102,12 @@ function Product() {
                                 style={{
                                   width: "100%",
                                   maxHeight: "60px",
-                                  minHeight: "50px",
+                                  height: "50px",
                                   margin: 1,
                                   cursor: "pointer",
                                   border: "1px solid #fff",
                                 }}
-                                src={imageArray[index]}
+                                src={`${baseURL}products/images/${product?.images[index]}`}
                               />
                             </Box>
                           </Grid>

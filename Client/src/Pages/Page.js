@@ -43,11 +43,10 @@ function Page() {
       <Route path="/Favorites" element={<Favorite_Products />} />
 
       <Route path="/profile/:page" element={<Profile />} />
-      <Route path="/shipping" element={<Checkout />} />
+
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
-      <Route path="/checkout/newshippingaddress" element={<Checkout />} />
       <Route path="/passworForgot" element={<ForgotPassword />} />
       <Route path="/otp" element={<OTP />} />
       <Route path="/passwordReset" element={<ResetPassword />} />

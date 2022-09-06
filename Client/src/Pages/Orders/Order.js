@@ -13,11 +13,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
 
 function Order() {
-
   const Orderdata = [
     {
       product: "product1",
@@ -130,18 +127,6 @@ function Order() {
                     }}
                   >
                     Status
-                  </TableCell>
-
-                  <TableCell
-                    align="justify"
-                    style={{
-                      fontFamily: "open sans",
-                      fontWeight: "800",
-                      fontSize: 16,
-                      color: "#1A374D",
-                    }}
-                  >
-                    Mange Status
                   </TableCell>
                 </TableRow>
               </TableHead>

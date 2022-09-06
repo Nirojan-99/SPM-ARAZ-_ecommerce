@@ -2,6 +2,9 @@ import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import Product from "./Product";
 
+//icon
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+
 function Cart() {
   return (
     <>
@@ -125,6 +128,21 @@ function Cart() {
                     </Typography>
                   </Grid>
                 </Grid>
+              </Box>
+              {/* btn */}
+              <Box my={2}>
+                <Button
+                  disableElevation
+                  sx={{
+                    width: { xs: "100%", sm: "auto" },
+                    textTransform: "none",
+                  }}
+                  color="info"
+                  variant="contained"
+                  endIcon={<ShoppingCartCheckoutIcon />}
+                >
+                  Checkout
+                </Button>
               </Box>
             </Box>
           </Box>

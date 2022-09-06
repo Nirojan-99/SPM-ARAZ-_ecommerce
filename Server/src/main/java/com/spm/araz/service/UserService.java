@@ -48,4 +48,16 @@ public class UserService {
         return true;
     }
 
+    //find user
+    public User getUser(String id) {
+        User user = userRepository.findById(id);
+        return user;
+    }
+
+    //save updated user
+    public boolean updateUser(User user) {
+        userRepository.save(user);
+        return true;
+    }
+
 }

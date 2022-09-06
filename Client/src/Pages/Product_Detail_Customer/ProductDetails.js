@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
+import { ToastContainer, toast } from "react-toastify";
 
 //icon
 import StarIcon from "@mui/icons-material/Star";
@@ -74,7 +75,16 @@ function ProductDetails() {
 
   //add to cart
   const addToCart = () => {
-    axios.post(`${baseURL}products`)
+    const data = { productId: id, count, userId: "" };
+
+    axios
+      .post(`${baseURL}users/cart`, data)
+      .then((res) => {
+        toast("Added to cart", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to add to cart", { type: "error" });
+      });
   };
 
   //get data
@@ -98,6 +108,7 @@ function ProductDetails() {
 
   return (
     <>
+      <ToastContainer />
       <Box>
         <Container maxWidth="md">
           <Box
@@ -343,6 +354,7 @@ function ProductDetails() {
                     }}
                   >
                     <Button
+                      onClick={addToCart}
                       color="success"
                       variant="contained"
                       disableElevation
@@ -395,14 +407,7 @@ function ProductDetails() {
                 fontSize: 13,
               }}
             >
-              Video provides a powerful way to help you prove your point. When
-              you click Online Video, you can paste in the embed code for the
-              video you want to add. You can also type a keyword to search
-              online for the video that best fits your document. To make your
-              document look professionally produced, Word provides header,
-              footer, cover page, and text box designs that complement each
-              other. For example, you can add a matching cover page, header, and
-              sidebar. Click Insert and then choose the elements you
+              {product.description}
             </Typography>
           </Box>
           {/* review sec */}
@@ -501,9 +506,10 @@ function ProductDetails() {
               }}
             />
             {/* review */}
-            {[1, 2, 3, 4].map((item, index) => {
+            {product?.review?.map((item, index) => {
               return <Review key={index} />;
             })}
+            {product?.review ?? <Typography>No reviews</Typography>}
           </Box>
         </Container>
       </Box>

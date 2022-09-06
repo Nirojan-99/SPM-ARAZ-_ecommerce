@@ -139,7 +139,8 @@ public class ProductController {
 
     //update product
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody Product product, @PathVariable(required = true) String id) {
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody Product product,
+            @PathVariable(required = true) String id) {
         ProductResponse productResponse = new ProductResponse();
 
         //check product existence
@@ -176,10 +177,7 @@ public class ProductController {
             }
         }
     }
-
-<<<<<<< HEAD
-=======
-
+    
     //test
     @PostMapping("/file")
     public void test(@RequestParam("file") MultipartFile[] item) {
@@ -196,5 +194,5 @@ public class ProductController {
         }
 
     }
->>>>>>> 1b8e7d43532ad0995d7109ca0b3e6a7e6272ddbb
+
 }

@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Paper } from "@mui/material";
 import { Box } from "@mui/system";
-import Order_Product from "./Order_Product";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,7 +13,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-function Order() {
+import Manage_Products from "./Manage_Products";
+
+function OrderManage() {
   const Orderdata = [
     {
       product: "product1",
@@ -119,6 +120,7 @@ function Order() {
                   </TableCell>
 
                   <TableCell
+                    align="justify"
                     style={{
                       fontFamily: "open sans",
                       fontWeight: "800",
@@ -126,7 +128,7 @@ function Order() {
                       color: "#1A374D",
                     }}
                   >
-                    Status
+                    Mange Status
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -138,7 +140,7 @@ function Order() {
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <Order_Product data={row} />
+                    <Manage_Products data={row} />
                   </TableRow>
                 ))}
               </TableBody>
@@ -151,4 +153,4 @@ function Order() {
   );
 }
 
-export default Order;
+export default OrderManage;

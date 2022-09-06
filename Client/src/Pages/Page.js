@@ -47,13 +47,9 @@ function Page() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
-<<<<<<< HEAD
-=======
-      <Route path="/checkout/newshippingaddress" element={<Checkout />} />
       <Route path="/passworForgot" element={<ForgotPassword />} />
       <Route path="/otp" element={<OTP />} />
       <Route path="/passwordReset" element={<ResetPassword />} />
->>>>>>> 1b8e7d43532ad0995d7109ca0b3e6a7e6272ddbb
     </Routes>
   );
 }

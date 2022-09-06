@@ -27,6 +27,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Security from "./Components/Security";
+import OrderManages from "../OrderManage_Admin/OrderManages";
 
 function Profile() {
   const { page } = useParams();
@@ -128,6 +129,7 @@ function Profile() {
                 {page === "editaddress" && <EditAddresss />}
                 {page === "details" && <Profile_Details />}
                 {page === "order" && <Orders />}
+                {page === "order-manage" && <OrderManages />}
                 {/* lavaniyah */}
                 {page === "loyalty" && <Loyalty />}
 

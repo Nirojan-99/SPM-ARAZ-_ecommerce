@@ -34,6 +34,7 @@ function Options() {
           <ButtonMenu title="Security" link={"/profile/security"} />
           <ButtonMenu title="Address Book" link={"/profile/addressbook"} />
           <ButtonMenu title="Your Orders" link={"/profile/order"} />
+          <ButtonMenu title="Manage Orders" link={"/profile/order-manage"} />
           <ButtonMenu title="Payments Options" link={"/profile/payment"} />
           <ButtonMenu title="Points" link={"/profile/loyalty"} />
         </Box>

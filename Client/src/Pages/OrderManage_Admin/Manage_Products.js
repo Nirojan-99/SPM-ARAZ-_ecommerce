@@ -1,8 +1,10 @@
+import { Select, MenuItem } from "@mui/material";
+
 import { useState } from "react";
 
 import TableCell from "@mui/material/TableCell";
 
-function Order_Product(Props) {
+function Manage_Products(Props) {
   const [Status, setStatus] = useState("processing");
 
   const SatatusDATA = [
@@ -36,7 +38,6 @@ function Order_Product(Props) {
       </TableCell>
 
       <TableCell
-        align="left"
         style={{
           fontFamily: "open sans",
           fontWeight: "600",
@@ -44,10 +45,37 @@ function Order_Product(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.status}
+        <Select
+          sx={{ color: "#FFF", fontWeight: "500", bgcolor: "#406882" }}
+          onChange={(event) => {
+            setStatus(event.target.value);
+          }}
+          fullWidth
+          required
+          size="small"
+          color="info"
+          id="Status"
+          value={Status}
+        >
+          {SatatusDATA.map((row, index) => {
+            return (
+              <MenuItem
+                key={index}
+                sx={{
+                  fontFamily: "open sans",
+                  fontSize: 15,
+                  color: "#333",
+                }}
+                value={row.status}
+              >
+                {row.status}
+              </MenuItem>
+            );
+          })}
+        </Select>
       </TableCell>
     </>
   );
 }
 
-export default Order_Product;
+export default Manage_Products;

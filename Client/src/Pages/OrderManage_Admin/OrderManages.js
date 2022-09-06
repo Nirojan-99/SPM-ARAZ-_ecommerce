@@ -1,8 +1,8 @@
-import Order from "./Order";
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import OrderManage from "./OrderManage";
 
-function Orders() {
+function OrderManages() {
   return (
     <>
       <Paper elevation={4}>
@@ -29,13 +29,13 @@ function Orders() {
           </Box>
 
           <br />
-          <Order />
-          <Order />
-          <Order />
+          <OrderManage />
+          <OrderManage />
+          <OrderManage />
         </Box>
       </Paper>
     </>
   );
 }
 
-export default Orders;
+export default OrderManages;

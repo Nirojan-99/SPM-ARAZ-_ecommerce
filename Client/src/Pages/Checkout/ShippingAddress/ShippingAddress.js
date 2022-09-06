@@ -110,7 +110,7 @@ function ShippingAddress(props) {
                   {Address_DATA.map((row, index) => (
                     <Grid
                       item
-                      m={2}
+                      my={2}
                       key={index}
                       sx={{
                         // width: { xs: "100%",md:"50%" },
@@ -135,7 +135,7 @@ function ShippingAddress(props) {
                   ))}
                 </Grid>
                 {/* pagination */}
-                <Box
+                {/* <Box
                   my={6}
                   sx={{
                     display: "flex",
@@ -149,7 +149,7 @@ function ShippingAddress(props) {
                     color="primary"
                     // onChange={handleChange}
                   />
-                </Box>
+                </Box> */}
               </Box>
             </Box>
           )}

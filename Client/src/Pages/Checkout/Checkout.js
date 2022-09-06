@@ -25,15 +25,13 @@ function Checkout() {
         return <ShippingAddress handleNext={handleNext} />;
       case 1:
         return <Payment handleNext={handleNext} handleBack={handleBack} />;
-      // case 2:
-      //   return <OTP id={ID} handleNext={handleNext} handleBack={handleBack} />;
       default:
         throw new Error("Unknown step");
     }
   }
   return (
     <>
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box
           mt={5}
           item
@@ -46,7 +44,6 @@ function Checkout() {
             height: "100%",
           }}
         >
-          {" "}
           <Grid item p={3}>
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label) => (
@@ -73,9 +70,9 @@ function Checkout() {
               </Typography>
               <Typography variant="subtitle1">
                 Your order number is{" "}
-                <span style={{ color: "green" }}>#{"63263262362"}</span>. We have emailed
-                your order confirmation, and will send you an update when your
-                order has shipped.
+                <span style={{ color: "green" }}>#{"63263262362"}</span>. We
+                have emailed your order confirmation, and will send you an
+                update when your order has shipped.
               </Typography>
               <Box
                 p={3}
@@ -102,16 +99,12 @@ function Checkout() {
           </>
         ) : (
           <>
-            <Box p={2} mt={2} mb={10}>
-              {getStepContent(activeStep)}
+            <Box mt={2} mb={1}>
+              {/* {getStepContent(activeStep)} */}
+              <Payment />
             </Box>
-            {/* <Box sx={{ display: "flex", justifyContent: "flex-end" }}></Box> */}
           </>
         )}
-
-        {/* <Box p={2} mt={2} mb={6}>
-          <ShippingAddress_Form />
-        </Box> */}
       </Container>
     </>
   );

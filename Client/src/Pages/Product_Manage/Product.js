@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Grid,
+  MenuItem,
   Paper,
   Select,
   Tooltip,
@@ -13,57 +14,179 @@ import Label from "../../Components/Label";
 import Input from "../../Components/Input";
 
 //react
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //icons
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import ButtonA from "../../Components/ButtonA";
+import Ack from "../../Components/Ack";
 
 function Product() {
   //product id
   const { id } = useParams();
 
   //state
-  const [isLoaded, setIsloaded] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
+  const [categories, setCategories] = useState(["electronic", "kids"]);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   //data
   const [imageArray, setImageArray] = useState([]);
+  const [images, setImages] = useState([]);
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
 
-  const baseURL = "http://localhost:5000/categories";
+  const [nameError, setNameError] = useState(false);
+  const [categoryError, setCategoryError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
+
+  const baseURL = "http://localhost:5000/";
 
   useEffect(() => {
     if (id) {
-      // logic to fetch product data
-      //   TODO
+      setIsloading(true);
+      axios
+        .get(`${baseURL}products/${id}`)
+        .then((res) => {
+          const product = res.data.product;
+          setName(product.title);
+          setPrice(product.price);
+          setDescription(product.description);
+          setCategory(product.category);
+          setIsloading(false);
+        })
+        .catch((er) => {
+          setIsloading(false);
+        });
     }
-    axios
-      .get(baseURL)
-      .then((res) => {
-        setCategories(res.data.data);
-        setIsloaded(true);
-      })
-      .catch((er) => {
-        setIsloaded(true);
-      });
+    // axios
+    //   .get(baseURL)
+    //   .then((res) => {
+    //     setCategories(res.data.data);
+    //     setIsloading(false);
+    //   })
+    //   .catch((er) => {
+    //     setIsloading(false);
+    //   });
   }, []);
 
   //drag image handler
   const imageHandler = (file, index) => {
-    // console.log(file);
+    setImages((pre) => {
+      let array = [...pre];
+      array[index] = file;
+      return array;
+    });
     setImageArray((pre) => {
       let array = [...pre];
       array[index] = URL.createObjectURL(file);
       return array;
     });
-    console.log(imageArray);
+  };
+
+  //add new product handler
+  const submitHandler = () => {
+    const product = new FormData();
+
+    //
+    setNameError(false);
+    setCategoryError(false);
+    setDescriptionError(false);
+    setPriceError(false);
+
+    if (!name.trim()) {
+      toast("Invalid title", { type: "error" });
+      return setNameError(true);
+    }
+    if (!category.trim()) {
+      toast("Invalid category", { type: "error" });
+      return setCategoryError(true);
+    }
+    if (!description.trim() || description.length < 50) {
+      toast("Invalid description", { type: "error" });
+      return setDescriptionError(true);
+    }
+    if (!price) {
+      toast("Invalid price", { type: "error" });
+      return setPriceError(true);
+    }
+    if (images.length < 1) {
+      return toast("Select atleast one image", { type: "error" });
+    }
+
+    images.forEach((element, index) => {
+      product.append("images", images[index]);
+    });
+    product.append("storeID", "630a093393cb77158863980b");
+    product.append("title", name);
+    product.append("description", description);
+    product.append("price", price);
+    product.append("category", category);
+
+    setIsloading(true);
+
+    if (id) {
+      axios
+        .put(`${baseURL}products/${id}`, product)
+        .then((res) => {
+          toast("Product updated successfully", { type: "info" });
+          setIsloading(false);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        })
+        .catch((er) => {
+          console.log(er);
+          setIsloading(false);
+        });
+    } else {
+      axios
+        .post(`${baseURL}products`, product)
+        .then((res) => {
+          toast("Product added successfully", { type: "info" });
+          setIsloading(false);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        })
+        .catch((er) => {
+          console.log(er);
+          setIsloading(false);
+        });
+    }
+  };
+
+  //handle delete
+  const handleDelete = () => {
+    axios
+      .delete(`${baseURL}products/${id}`)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((er) => {
+        toast("Unable to delete", { type: "error" });
+      });
   };
 
   return (
     <>
-      <Box>
+      <Ack
+        open={open}
+        handleClose={() => setOpen(false)}
+        title={"Alert"}
+        msg={"Do you want to delete ?"}
+        handleYes={handleDelete}
+      />
+      <ToastContainer />
+      {<Box id="1">
         <Container maxWidth="sm">
           <Box
             component={Paper}
@@ -87,20 +210,33 @@ function Product() {
               {/* product name */}
               <Label for="product_name" title="Product Name" />
               <Input
+                onFocus={() => {
+                  setNameError(false);
+                }}
+                error={nameError}
                 type="text"
                 id="product_name"
                 size="small"
                 autoFocus={true}
+                value={name}
+                set={setName}
               />
               {/* product category */}
               <Label for="product_category" title="Product Category" />
               <Select
-                sx={{ mb: 1 }}
+                error={categoryError}
+                sx={{ mb: 1, color: "#1597BB" }}
                 fullWidth
                 required
                 size="small"
                 color="info"
                 id="product_category"
+                value={category}
+                onChange={(event) => {
+                  setCategory(event.target.value);
+                  setCategoryError(false);
+                }}
+                set={setCategory}
               >
                 {categories.map((row, index) => {
                   return (
@@ -110,6 +246,7 @@ function Product() {
                         fontFamily: "open sans",
                         fontSize: 15,
                         color: "#333",
+                        fontWeight: 600,
                       }}
                       value={row}
                     >
@@ -121,14 +258,30 @@ function Product() {
               {/* product description */}
               <Label for="product_description" title="Product Description" />
               <Input
+                error={descriptionError}
+                onFocus={() => {
+                  setDescriptionError(false);
+                }}
                 size="small"
                 id="product_description"
                 minRows={5}
                 maxRows={10}
+                value={description}
+                set={setDescription}
               />
               {/* product price */}
               <Label for="product_pice" title="Product Price (Rs)" />
-              <Input size="small" id="product_pice" type="number" />
+              <Input
+                value={price}
+                set={setPrice}
+                size="small"
+                id="product_pice"
+                type="number"
+                error={priceError}
+                onFocus={() => {
+                  setPriceError(false);
+                }}
+              />
               {/* product images */}
               <Label for="product_image" title="Product Images" />
               <Grid
@@ -183,25 +336,37 @@ function Product() {
                 })}
               </Grid>
               {/* button */}
-              <ButtonA title="SAVE" />
+              <ButtonA
+                disabled={isLoading}
+                handler={submitHandler}
+                title={"SAVE"}
+              />
               {/* bottom section */}
-              <Box mt={1} sx={{ display: "flex", flexDirection: "row" }}>
-                <Button sx={{ textTransform: "none" }} color="error">
-                  Delete
-                </Button>
-                <Box sx={{ flexGrow: 1 }} />
-                <Button
-                  sx={{ textTransform: "none" }}
-                  href={`/products/${id}/offers`}
-                  color="info"
-                >
-                  Manage Offer
-                </Button>
-              </Box>
+              {id && (
+                <Box mt={1} sx={{ display: "flex", flexDirection: "row" }}>
+                  <Button
+                    onClick={() => {
+                      setOpen(true);
+                    }}
+                    sx={{ textTransform: "none" }}
+                    color="error"
+                  >
+                    Delete
+                  </Button>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Button
+                    sx={{ textTransform: "none" }}
+                    href={`/products/${id}/offers`}
+                    color="info"
+                  >
+                    Manage Offer
+                  </Button>
+                </Box>
+              )}
             </Box>
           </Box>
         </Container>
-      </Box>
+      </Box>}
     </>
   );
 }

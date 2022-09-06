@@ -4,8 +4,9 @@ function Input(props) {
   return (
     <>
       <TextField
+      helperText={props.helperText}
         onFocus={() => {
-          props.onFocus();
+          props?.onFocus && props.onFocus();
         }}
         autoFocus={props.autoFocus}
         size={props.size}

@@ -36,7 +36,7 @@ function Product(props) {
               overflow: "scroll",
               borderRadius: { sm: "3px 0 0 3px", xs: "3px 3px 0 0 " },
             }}
-            image={"https://cdn.hswstatic.com/gif/chess-4.jpg"}
+            image={"http://localhost:5000/products/images/IMG_20200311_202624.jpg"}
           />
         </Grid>
         <Grid item xs={12} sm={9}>

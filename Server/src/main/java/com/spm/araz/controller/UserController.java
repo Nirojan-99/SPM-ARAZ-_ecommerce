@@ -255,8 +255,8 @@ public class UserController {
         }
 
     }
-<<<<<<< HEAD
-  }
+
+  
 
 
 
@@ -309,8 +309,8 @@ public class UserController {
 
 
 }
-=======
->>>>>>> e2cdb7e23d3a397eba6b4131c693f7bf20ec3aae
+
+
 }
 
 

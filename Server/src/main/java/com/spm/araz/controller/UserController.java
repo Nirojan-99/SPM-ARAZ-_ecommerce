@@ -187,58 +187,56 @@ public class UserController {
         }
     }
 
-  }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable(required = true) String id,
+            @RequestBody(required = true) User user
+    ) {
+        UserResponse userResponse = new UserResponse();
+        User exisitngUser = userService.getUser(id);
 
-  @PutMapping("/{id}")
-  public ResponseEntity<UserResponse> updateUser(
-          @PathVariable(required = true) String id,
-          @RequestBody(required = true) User user
-  ){
-      UserResponse userResponse=new UserResponse();
-      User exisitngUser= userService.getUser(id);
+        if (exisitngUser == null) {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getName() != null) {
+                exisitngUser.setName(user.getName());
+            }
+            if (user.getEmail() != null) {
+                exisitngUser.setEmail(user.getEmail());
+            }
+            if (user.getPassword() != null) {
+                exisitngUser.setPassword(user.getPassword());
+            }
+            if (user.getContactNo() != 0) {
+                exisitngUser.setContactNo(user.getContactNo());
+            }
+            if (user.getAddress() != null) {
+                exisitngUser.setAddress(user.getAddress());
+            }
+            if (user.getDob() != null) {
+                exisitngUser.setDob(user.getDob());
+            }
+            if (user.getGender() != null) {
+                exisitngUser.setGender(user.getGender());
+            }
+            if (user.getUserType() != null) {
+                exisitngUser.setUserType(user.getUserType());
+            }
 
-      if (exisitngUser==null){
-          userResponse.setMsg("No user found");
-          return new ResponseEntity<>(userResponse,HttpStatus.NOT_FOUND);
-      }else{
-          if(user.getName() != null){
-              exisitngUser.setName(user.getName());
-          }
-          if(user.getEmail() != null){
-              exisitngUser.setEmail(user.getEmail());
-          }
-          if(user.getPassword() != null){
-              exisitngUser.setPassword(user.getPassword());
-          }
-          if(user.getContactNo() != 0){
-              exisitngUser.setContactNo(user.getContactNo());
-          }
-          if(user.getAddress() != null){
-              exisitngUser.setAddress(user.getAddress());
-          }
-          if(user.getDob() != null){
-              exisitngUser.setDob(user.getDob());
-          }
-          if(user.getGender() != null){
-              exisitngUser.setGender(user.getGender());
-          }
-          if(user.getUserType() != null){
-              exisitngUser.setUserType(user.getUserType());
-          }
+        }
+        //save
+        boolean res = userService.updateUser(exisitngUser);
 
-      }
-      //save
-      boolean res = userService.updateUser(exisitngUser);
+        if (res) {
+            userResponse.setMsg("Updated");
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
 
-      if (res) {
-          userResponse.setMsg("Updated");
-          return new ResponseEntity<>(userResponse, HttpStatus.OK);
-
-      } else {
-          userResponse.setMsg("Unable to update");
-          return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
-      }
-  }
+        } else {
+            userResponse.setMsg("Unable to update");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable String id) {

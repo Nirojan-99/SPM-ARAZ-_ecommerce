@@ -42,13 +42,13 @@ const review = 4;
 
 function ProductDetails() {
   //state
-  const [previewImage, setPreviewImage] = useState(imageArray[0]);
+  const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
   const [count, setCount] = useState(1);
 
   //image handler
   const setImage = (index) => {
-    setPreviewImage(imageArray[index]);
+    setPreviewImage(`${baseURL}products/images/${product?.images[index]}`);
   };
 
   //id
@@ -58,20 +58,9 @@ function ProductDetails() {
   const baseURL = "http://localhost:5000/";
 
   //data
-  // const [imageArray, setImageArray] = useState([]);
+  const [imageArray, setImageArray] = useState([]);
   const [product, setProduct] = useState({});
 
-  //get images
-  const getImages = (name) => {
-    axios
-      .get(`${baseURL}products/images/${name}`)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((er) => {
-        console.log(er);
-      });
-  };
 
   //handle favorite click
   // const handlefavorite = (val) => {
@@ -113,14 +102,7 @@ function ProductDetails() {
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
-        res.data.product?.images?.forEach((element) => {
-          const data = getImages(element);
-          setImageArray((pre) => {
-            const array = [...pre];
-            array.push(data);
-            return array;
-          });
-        });
+        setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
       })
       .catch((er) => {});
   }, []);
@@ -152,6 +134,7 @@ function ProductDetails() {
                       height: 300,
                       overflow: "scroll",
                       borderRadius: "5px 0 0 0px",
+                      objectFit:"cover"
                     }}
                     image={previewImage}
                   />
@@ -164,10 +147,11 @@ function ProductDetails() {
                       justifyContent: "space-between",
                       alignItems: "stretch",
                       bgcolor: "#2B4865",
+                      objectFit:"cover"
                     }}
                   >
                     <Grid container sx={{ p: 0, m: 0 }}>
-                      {imageArray.map((row, index) => {
+                      {product?.images?.map((row, index) => {
                         return (
                           <Grid key={index} item xs={12 / imageArray.length}>
                             <Box mx={0.5}>
@@ -181,12 +165,12 @@ function ProductDetails() {
                                 style={{
                                   width: "100%",
                                   maxHeight: "60px",
-                                  minHeight: "50px",
+                                  height: "50px",
                                   margin: 1,
                                   cursor: "pointer",
                                   border: "1px solid #fff",
                                 }}
-                                src={imageArray[index]}
+                                src={`${baseURL}products/images/${product?.images[index]}`}
                               />
                             </Box>
                           </Grid>

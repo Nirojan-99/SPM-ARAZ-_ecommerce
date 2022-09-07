@@ -36,6 +36,7 @@ function Product() {
   const [open, setOpen] = useState(false);
 
   //data
+  const [product, setProduct] = useState();
   const [imageArray, setImageArray] = useState([]);
   const [images, setImages] = useState([]);
   const [name, setName] = useState("");
@@ -62,6 +63,7 @@ function Product() {
           setDescription(product.description);
           setCategory(product.category);
           setIsloading(false);
+          setProduct(res.data.product);
         })
         .catch((er) => {
           setIsloading(false);
@@ -118,7 +120,7 @@ function Product() {
       toast("Invalid price", { type: "error" });
       return setPriceError(true);
     }
-    if (images.length < 1) {
+    if (!id && images.length < 1) {
       return toast("Select atleast one image", { type: "error" });
     }
 
@@ -186,187 +188,189 @@ function Product() {
         handleYes={handleDelete}
       />
       <ToastContainer />
-      {<Box id="1">
-        <Container maxWidth="sm">
-          <Box
-            component={Paper}
-            elevation={1}
-            p={3}
-            my={2.5}
-            sx={{ bgcolor: "#fff" }}
-          >
-            <Typography
-              sx={{
-                fontFamily: "open sans",
-                fontWeight: "900",
-                color: "#1597BB",
-                letterSpacing: -0.6,
-                fontSize: 20,
-              }}
+      {
+        <Box id="1">
+          <Container maxWidth="sm">
+            <Box
+              component={Paper}
+              elevation={1}
+              p={3}
+              my={2.5}
+              sx={{ bgcolor: "#fff" }}
             >
-              {id ? "Edit Product" : "Add New Product"}
-            </Typography>
-            <Box mt={2} sx={{ display: "flex", flexDirection: "column" }}>
-              {/* product name */}
-              <Label for="product_name" title="Product Name" />
-              <Input
-                onFocus={() => {
-                  setNameError(false);
+              <Typography
+                sx={{
+                  fontFamily: "open sans",
+                  fontWeight: "900",
+                  color: "#1597BB",
+                  letterSpacing: -0.6,
+                  fontSize: 20,
                 }}
-                error={nameError}
-                type="text"
-                id="product_name"
-                size="small"
-                autoFocus={true}
-                value={name}
-                set={setName}
-              />
-              {/* product category */}
-              <Label for="product_category" title="Product Category" />
-              <Select
-                error={categoryError}
-                sx={{ mb: 1, color: "#1597BB" }}
-                fullWidth
-                required
-                size="small"
-                color="info"
-                id="product_category"
-                value={category}
-                onChange={(event) => {
-                  setCategory(event.target.value);
-                  setCategoryError(false);
-                }}
-                set={setCategory}
               >
-                {categories.map((row, index) => {
-                  return (
-                    <MenuItem
-                      key={index}
-                      sx={{
-                        fontFamily: "open sans",
-                        fontSize: 15,
-                        color: "#333",
-                        fontWeight: 600,
-                      }}
-                      value={row}
-                    >
-                      {row}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-              {/* product description */}
-              <Label for="product_description" title="Product Description" />
-              <Input
-                error={descriptionError}
-                onFocus={() => {
-                  setDescriptionError(false);
-                }}
-                size="small"
-                id="product_description"
-                minRows={5}
-                maxRows={10}
-                value={description}
-                set={setDescription}
-              />
-              {/* product price */}
-              <Label for="product_pice" title="Product Price (Rs)" />
-              <Input
-                value={price}
-                set={setPrice}
-                size="small"
-                id="product_pice"
-                type="number"
-                error={priceError}
-                onFocus={() => {
-                  setPriceError(false);
-                }}
-              />
-              {/* product images */}
-              <Label for="product_image" title="Product Images" />
-              <Grid
-                container
-                columnSpacing={0.5}
-                rowSpacing={0.5}
-                sx={{ mb: 2 }}
-                justifyContent="space-around"
-              >
-                {[0, 1, 2, 3, 4, 5].map((row, index) => {
-                  return (
-                    <Grid item key={index}>
-                      <Tooltip title="Select image">
-                        <label htmlFor={`file_${index}`}>
-                          <Box
-                            p={0.5}
-                            key={index}
-                            sx={{
-                              bgcolor: "#D8D8D8",
-                              borderRadius: 1,
-                              cursor: "pointer",
-                            }}
-                          >
-                            {imageArray[index] ? (
-                              <img
-                                style={{ width: 70, height: 70, margin: 1 }}
-                                src={imageArray[index]}
-                              />
-                            ) : (
-                              <AddToPhotosIcon
-                                sx={{
-                                  color: "#406882",
-                                  width: 72,
-                                  height: 72,
-                                }}
-                              />
-                            )}
-                          </Box>
-                        </label>
-                      </Tooltip>
-                      <input
-                        type={"file"}
-                        hidden={true}
-                        id={`file_${index}`}
-                        accept="image/*"
-                        onChange={(event) => {
-                          imageHandler(event.target.files[0], index);
+                {id ? "Edit Product" : "Add New Product"}
+              </Typography>
+              <Box mt={2} sx={{ display: "flex", flexDirection: "column" }}>
+                {/* product name */}
+                <Label for="product_name" title="Product Name" />
+                <Input
+                  onFocus={() => {
+                    setNameError(false);
+                  }}
+                  error={nameError}
+                  type="text"
+                  id="product_name"
+                  size="small"
+                  autoFocus={true}
+                  value={name}
+                  set={setName}
+                />
+                {/* product category */}
+                <Label for="product_category" title="Product Category" />
+                <Select
+                  error={categoryError}
+                  sx={{ mb: 1, color: "#1597BB" }}
+                  fullWidth
+                  required
+                  size="small"
+                  color="info"
+                  id="product_category"
+                  value={category}
+                  onChange={(event) => {
+                    setCategory(event.target.value);
+                    setCategoryError(false);
+                  }}
+                  set={setCategory}
+                >
+                  {categories.map((row, index) => {
+                    return (
+                      <MenuItem
+                        key={index}
+                        sx={{
+                          fontFamily: "open sans",
+                          fontSize: 15,
+                          color: "#333",
+                          fontWeight: 600,
                         }}
-                      />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-              {/* button */}
-              <ButtonA
-                disabled={isLoading}
-                handler={submitHandler}
-                title={"SAVE"}
-              />
-              {/* bottom section */}
-              {id && (
-                <Box mt={1} sx={{ display: "flex", flexDirection: "row" }}>
-                  <Button
-                    onClick={() => {
-                      setOpen(true);
-                    }}
-                    sx={{ textTransform: "none" }}
-                    color="error"
-                  >
-                    Delete
-                  </Button>
-                  <Box sx={{ flexGrow: 1 }} />
-                  <Button
-                    sx={{ textTransform: "none" }}
-                    href={`/products/${id}/offers`}
-                    color="info"
-                  >
-                    Manage Offer
-                  </Button>
-                </Box>
-              )}
+                        value={row}
+                      >
+                        {row}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                {/* product description */}
+                <Label for="product_description" title="Product Description" />
+                <Input
+                  error={descriptionError}
+                  onFocus={() => {
+                    setDescriptionError(false);
+                  }}
+                  size="small"
+                  id="product_description"
+                  minRows={5}
+                  maxRows={10}
+                  value={description}
+                  set={setDescription}
+                />
+                {/* product price */}
+                <Label for="product_pice" title="Product Price (Rs)" />
+                <Input
+                  value={price}
+                  set={setPrice}
+                  size="small"
+                  id="product_pice"
+                  type="number"
+                  error={priceError}
+                  onFocus={() => {
+                    setPriceError(false);
+                  }}
+                />
+                {/* product images */}
+                <Label for="product_image" title="Product Images" />
+                <Grid
+                  container
+                  columnSpacing={0.5}
+                  rowSpacing={0.5}
+                  sx={{ mb: 2 }}
+                  justifyContent="space-around"
+                >
+                  {[0, 1, 2, 3, 4, 5].map((row, index) => {
+                    return (
+                      <Grid item key={index}>
+                        <Tooltip title="Select image">
+                          <label htmlFor={`file_${index}`}>
+                            <Box
+                              p={0.5}
+                              key={index}
+                              sx={{
+                                bgcolor: "#D8D8D8",
+                                borderRadius: 1,
+                                cursor: "pointer",
+                              }}
+                            >
+                              {imageArray[index] || product?.images[index] ? (
+                                <img
+                                  style={{ width: 70, height: 70, margin: 1 }}
+                                  src={imageArray[index] || `${baseURL}products/images/${product?.images[index]}`}
+                                />
+                              ) : (
+                                <AddToPhotosIcon
+                                  sx={{
+                                    color: "#406882",
+                                    width: 72,
+                                    height: 72,
+                                  }}
+                                />
+                              )}
+                            </Box>
+                          </label>
+                        </Tooltip>
+                        <input
+                          type={"file"}
+                          hidden={true}
+                          id={`file_${index}`}
+                          accept="image/*"
+                          onChange={(event) => {
+                            imageHandler(event.target.files[0], index);
+                          }}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+                {/* button */}
+                <ButtonA
+                  disabled={isLoading}
+                  handler={submitHandler}
+                  title={"SAVE"}
+                />
+                {/* bottom section */}
+                {id && (
+                  <Box mt={1} sx={{ display: "flex", flexDirection: "row" }}>
+                    <Button
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                      sx={{ textTransform: "none" }}
+                      color="error"
+                    >
+                      Delete
+                    </Button>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Button
+                      sx={{ textTransform: "none" }}
+                      href={`/products/${id}/offers`}
+                      color="info"
+                    >
+                      Manage Offer
+                    </Button>
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </Container>
-      </Box>}
+          </Container>
+        </Box>
+      }
     </>
   );
 }

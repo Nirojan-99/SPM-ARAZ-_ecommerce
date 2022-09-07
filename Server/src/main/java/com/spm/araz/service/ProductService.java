@@ -1,5 +1,6 @@
 package com.spm.araz.service;
 
+import com.spm.araz.model.Offer;
 import com.spm.araz.model.Product;
 import com.spm.araz.model.Review;
 import com.spm.araz.repository.ProductRepository;
@@ -102,23 +103,19 @@ public class ProductService {
         return true;
     }
 
-    //get file
-    public Resource getFile(String name) throws IOException {
-
-        Path dirPath = Paths.get("Product-images");
-
-        Files.list(dirPath).forEach(file -> {
-            if (file.getFileName().toString().startsWith(name)) {
-                foundFile = file;
-                return;
-            }
-        });
-
-        if (foundFile != null) {
-            return new UrlResource(foundFile.toUri());
-        }
-
-        return null;
+    //add offer
+    public boolean addOffer(Product product, Offer offer) {
+        product.setOffer(offer);
+        productRepository.save(product);
+        return true;
     }
+
+    //delete offer
+    public boolean deleteOffer(Product product) {
+        product.setOffer(null);
+        productRepository.save(product);
+        return false;
+    }
+
 
 }

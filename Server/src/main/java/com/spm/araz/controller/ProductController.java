@@ -1,5 +1,7 @@
 package com.spm.araz.controller;
 
+import com.spm.araz.helper.FilesStorageService;
+import com.spm.araz.model.Offer;
 import com.spm.araz.model.Product;
 import com.spm.araz.model.Review;
 import com.spm.araz.response.ProductResponse;
@@ -178,26 +180,29 @@ public class ProductController {
                                                          @RequestParam(value = "description", required = false) String description,
                                                          @RequestParam(value = "category", required = false) String category) {
 
-        ArrayList<String> images = new ArrayList<>();
-        //store images
-        Path uploadDir = Paths.get("Product-images");
-        for (MultipartFile file : item) {
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            images.add(file.getOriginalFilename());
-            try (InputStream inputStream = file.getInputStream()) {
-                Path filePath = uploadDir.resolve(fileName);
-                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException E) {
-                System.out.println(E.getStackTrace());
-            }
-        }
 
         ProductResponse productResponse = new ProductResponse();
 
         //check product existence
         Product existingProduct = productService.getProduct(id);
 
-        existingProduct.setImages(images);
+        if (item != null) {
+            ArrayList<String> images = new ArrayList<>();
+            //store images
+            Path uploadDir = Paths.get("Product-images");
+            for (MultipartFile file : item) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                images.add(file.getOriginalFilename());
+                try (InputStream inputStream = file.getInputStream()) {
+                    Path filePath = uploadDir.resolve(fileName);
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException E) {
+                    System.out.println(E.getStackTrace());
+                }
+            }
+
+            existingProduct.setImages(images);
+        }
 
         if (existingProduct == null) {
             productResponse.setMsg("No product found");
@@ -206,8 +211,8 @@ public class ProductController {
             if (category != null) {
                 existingProduct.setCategory(category);
             }
-            if (category != null) {
-                existingProduct.setDescription(category);
+            if (description != null) {
+                existingProduct.setDescription(description);
             }
             if (price != 0) {
                 existingProduct.setPrice(price);
@@ -245,30 +250,48 @@ public class ProductController {
         }
     }
 
+
     //get images
-    @GetMapping("/images/{name}")
-    public ResponseEntity<?> getImage(@PathVariable("name") String name) {
-
-        Resource resource = null;
-        try {
-            resource = productService.getFile(name);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-        if (resource == null) {
-            return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
-        }
-
-        String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
-
+    @GetMapping("/images/{fileName:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName) {
+        FilesStorageService filesStorageService = new FilesStorageService();
+        Resource file = filesStorageService.load(fileName);
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
-                .body(resource);
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+
     }
 
+    // add offer
+    @PostMapping("/offer/{id}")
+    public ResponseEntity<ProductResponse> addOffer(@RequestBody Offer offer,@PathVariable("id") String id){
+        Product product = productService.getProduct(id);
+
+        ProductResponse productResponse = new ProductResponse();
+
+        if (product == null) {
+            productResponse.setMsg("Not found");
+            return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
+        }else{
+            productService.addOffer(product,offer);
+            return new ResponseEntity<>(productResponse,HttpStatus.OK);
+        }
+    }
+
+    //delete offer
+    @DeleteMapping("/offer/{id}")
+    public ResponseEntity<ProductResponse> deleteOffer(@PathVariable("id") String id){
+        Product product = productService.getProduct(id);
+
+        ProductResponse productResponse = new ProductResponse();
+
+        if (product == null) {
+            productResponse.setMsg("Not found");
+            return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
+        }else{
+            productService.deleteOffer(product);
+            return new ResponseEntity<>(productResponse,HttpStatus.OK);
+        }
+    }
 
     //test
     @PostMapping("/file")

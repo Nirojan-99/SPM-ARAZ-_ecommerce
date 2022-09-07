@@ -26,8 +26,17 @@ public class User {
     private String gender;
     private String dob;
 
-    public User(String id, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob) {
+
+
+    private ArrayList<String> favorites;
+
+
+
+    public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
         this.id = id;
+        this.payments = payments;
+        this.cart = cart;
+        this.loyaltyPoint = loyaltyPoint;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -36,11 +45,13 @@ public class User {
         this.address = address;
         this.gender = gender;
         this.dob = dob;
-        this.payments = new ArrayList<>();
+        this.favorites = favorites;
     }
 
     public User() {
         payments = new ArrayList<>();
+        favorites = new ArrayList<>();
+
     }
 
     public ArrayList<Payment> getPayments() {
@@ -145,4 +156,32 @@ public class User {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    public ArrayList<String> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(ArrayList<String> favorites) {
+        this.favorites = favorites;
+    }
+
+
+    public void addFavorite(String id){
+        favorites.add(id);
+    }
+
+    public void removeFavorite(String id){
+        favorites.remove(id);
+
+//        for (String favorite : favorites) {
+//            if (favorite == id) {
+//                favorites.remove(favorite);
+//            }
+//        }
+    }
+
+
+
+
+
 }

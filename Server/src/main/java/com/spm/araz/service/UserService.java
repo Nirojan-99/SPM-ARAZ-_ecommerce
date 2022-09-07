@@ -60,4 +60,15 @@ public class UserService {
         return true;
     }
 
+    //add user
+    public User createUser(User user){
+        return  userRepository.save(user);
+    }
+
+    //get user by email
+    public User getByEmail(String email){
+        User user=userRepository.findByEmail(email);
+        return user;
+    }
+
 }

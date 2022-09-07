@@ -29,7 +29,7 @@ function Page() {
       <Route path="/stores/new" element={<RegisterStore />} />
       <Route path="/stores" element={<Stores />} />
       <Route path="/store" element={<Store />} />
-      {true && (
+      {false && (
         <Route path="/products/view/:id" element={<CustomerProduct />} />
       )}
       <Route path="/products/view/:id" element={<SellerProduct />} />
@@ -43,11 +43,10 @@ function Page() {
       <Route path="/Favorites" element={<Favorite_Products />} />
 
       <Route path="/profile/:page" element={<Profile />} />
-      <Route path="/shipping" element={<Checkout />} />
+
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
-      <Route path="/checkout/newshippingaddress" element={<Checkout />} />
       <Route path="/passworForgot" element={<ForgotPassword />} />
       <Route path="/otp" element={<OTP />} />
       <Route path="/passwordReset" element={<ResetPassword />} />

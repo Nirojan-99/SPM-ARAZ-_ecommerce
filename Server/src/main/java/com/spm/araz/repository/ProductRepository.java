@@ -36,4 +36,6 @@ public interface ProductRepository extends MongoRepository<Product, Integer> {
     List<Product> findByStoreId(String id);
 
     Product findById(String id);
+
+    void deleteById(String id);
 }

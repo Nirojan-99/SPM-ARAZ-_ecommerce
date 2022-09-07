@@ -11,11 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
+import { ToastContainer, toast } from "react-toastify";
 
 //icon
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Review from "./Review";
 import Input from "../../Components/Input";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -24,6 +25,9 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { useParams } from "react-router";
+import axios from "axios";
+import calNewPrice from "../../Helper/calNewPrice";
 
 const imageArray = [
   "https://picsum.photos/id/237/200/300",
@@ -38,17 +42,55 @@ const review = 4;
 
 function ProductDetails() {
   //state
-  const [previewImage, setPreviewImage] = useState(imageArray[0]);
+  const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
   const [count, setCount] = useState(1);
 
   //image handler
   const setImage = (index) => {
-    setPreviewImage(imageArray[index]);
+    setPreviewImage(`${baseURL}products/images/${product?.images[index]}`);
   };
+
+  //id
+  const { id } = useParams();
+
+  //url
+  const baseURL = "http://localhost:5000/";
+
+  //data
+  const [imageArray, setImageArray] = useState([]);
+  const [product, setProduct] = useState({});
+
+
+  //add to cart
+  const addToCart = () => {
+    const data = { productId: id, count, userId: "" };
+
+    axios
+      .post(`${baseURL}users/cart`, data)
+      .then((res) => {
+        toast("Added to cart", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to add to cart", { type: "error" });
+      });
+  };
+
+  //get data
+  useEffect(() => {
+    axios
+      .get(`${baseURL}products/${id}`)
+      .then((res) => {
+        const product = res.data.product;
+        setProduct(product);
+        setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
+      })
+      .catch((er) => {});
+  }, []);
 
   return (
     <>
+      <ToastContainer />
       <Box>
         <Container maxWidth="md">
           <Box
@@ -73,6 +115,7 @@ function ProductDetails() {
                       height: 300,
                       overflow: "scroll",
                       borderRadius: "5px 0 0 0px",
+                      objectFit:"cover"
                     }}
                     image={previewImage}
                   />
@@ -85,10 +128,11 @@ function ProductDetails() {
                       justifyContent: "space-between",
                       alignItems: "stretch",
                       bgcolor: "#2B4865",
+                      objectFit:"cover"
                     }}
                   >
                     <Grid container sx={{ p: 0, m: 0 }}>
-                      {imageArray.map((row, index) => {
+                      {product?.images?.map((row, index) => {
                         return (
                           <Grid key={index} item xs={12 / imageArray.length}>
                             <Box mx={0.5}>
@@ -102,12 +146,12 @@ function ProductDetails() {
                                 style={{
                                   width: "100%",
                                   maxHeight: "60px",
-                                  minHeight: "50px",
+                                  height: "50px",
                                   margin: 1,
                                   cursor: "pointer",
                                   border: "1px solid #fff",
                                 }}
-                                src={imageArray[index]}
+                                src={`${baseURL}products/images/${product?.images[index]}`}
                               />
                             </Box>
                           </Grid>
@@ -144,9 +188,9 @@ function ProductDetails() {
                         letterSpacing: -0.5,
                       }}
                     >
-                      Computer with 2TB hard disk and 256 SSD, 11th generation..
-                      he sj vd
+                      {product.title}
                     </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
                     <IconButton
                       onClick={() => {
                         setFavorite((pre) => !pre);
@@ -191,7 +235,7 @@ function ProductDetails() {
                         ml: 2,
                       }}
                     >
-                      102 Rating
+                      {product?.review?.length ?? 0} Rating
                     </Typography>
                   </Box>
                   {/* peice sec */}
@@ -204,7 +248,7 @@ function ProductDetails() {
                         fontWeight: "800",
                       }}
                     >
-                      Rs : 200,000.00
+                      Rs : {calNewPrice(product.price, product?.offer)}
                     </Typography>
                   </Box>
                   {/* discount sec */}
@@ -217,7 +261,9 @@ function ProductDetails() {
                         fontWeight: "700",
                       }}
                     >
-                      <s>Rs : 200,000.00 -15%</s>
+                      <s>
+                        Rs : {product.price} {product?.offer?.percentage}
+                      </s>
                     </Typography>
                   </Box>
                   {/* quantity sec */}
@@ -292,6 +338,7 @@ function ProductDetails() {
                     }}
                   >
                     <Button
+                      onClick={addToCart}
                       color="success"
                       variant="contained"
                       disableElevation
@@ -344,14 +391,7 @@ function ProductDetails() {
                 fontSize: 13,
               }}
             >
-              Video provides a powerful way to help you prove your point. When
-              you click Online Video, you can paste in the embed code for the
-              video you want to add. You can also type a keyword to search
-              online for the video that best fits your document. To make your
-              document look professionally produced, Word provides header,
-              footer, cover page, and text box designs that complement each
-              other. For example, you can add a matching cover page, header, and
-              sidebar. Click Insert and then choose the elements you
+              {product.description}
             </Typography>
           </Box>
           {/* review sec */}
@@ -423,7 +463,12 @@ function ProductDetails() {
               </Box>
               {/* form */}
               <Box py={2} pl={{ xs: 0, sm: 5 }}>
-                <Input placeholder="write your review.." size="small" minRows={3} maxRows={5} />
+                <Input
+                  placeholder="write your review.."
+                  size="small"
+                  minRows={3}
+                  maxRows={5}
+                />
               </Box>
             </Box>
             {/* button */}
@@ -445,9 +490,10 @@ function ProductDetails() {
               }}
             />
             {/* review */}
-            {[1, 2, 3, 4].map((item, index) => {
+            {product?.review?.map((item, index) => {
               return <Review key={index} />;
             })}
+            {product?.review ?? <Typography>No reviews</Typography>}
           </Box>
         </Container>
       </Box>

@@ -1,11 +1,18 @@
 package com.spm.araz.service;
 
+import com.spm.araz.model.Offer;
 import com.spm.araz.model.Product;
 import com.spm.araz.model.Review;
 import com.spm.araz.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +22,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     private int limit = 1;
+    private Path foundFile;
 
     //create product
     public boolean addProduct(Product product) {
@@ -84,8 +92,30 @@ public class ProductService {
     }
 
     //find by store
-    public List<Product> getStoreProducts(String id){
+    public List<Product> getStoreProducts(String id) {
         List<Product> products = productRepository.findByStoreId(id);
         return products;
     }
+
+    //delete by id
+    public boolean deleteById(String id) {
+        productRepository.deleteById(id);
+        return true;
+    }
+
+    //add offer
+    public boolean addOffer(Product product, Offer offer) {
+        product.setOffer(offer);
+        productRepository.save(product);
+        return true;
+    }
+
+    //delete offer
+    public boolean deleteOffer(Product product) {
+        product.setOffer(null);
+        productRepository.save(product);
+        return false;
+    }
+
+
 }

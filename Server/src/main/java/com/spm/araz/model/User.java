@@ -19,7 +19,7 @@ public class User {
 
     private String name;
     private String email;
-    private  String password;
+    private String password;
     private String userType;
     private int contactNo;
     private String address;
@@ -85,6 +85,7 @@ public class User {
     public void setLoyaltyPoint(int loyaltyPoint) {
         this.loyaltyPoint = loyaltyPoint;
     }
+
     public String getId() {
         return id;
     }

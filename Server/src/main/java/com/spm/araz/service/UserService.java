@@ -62,13 +62,13 @@ public class UserService {
     }
 
     //add user
-    public User createUser(User user){
-        return  userRepository.save(user);
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
     //get user by email
-    public User getByEmail(String email){
-        User user=userRepository.findByEmail(email);
+    public User getByEmail(String email) {
+        User user = userRepository.findByEmail(email);
         return user;
     }
 

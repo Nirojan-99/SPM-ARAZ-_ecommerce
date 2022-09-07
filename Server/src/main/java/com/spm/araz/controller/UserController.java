@@ -3,6 +3,7 @@ package com.spm.araz.controller;
 import com.spm.araz.model.Payment;
 import com.spm.araz.model.Product;
 import com.spm.araz.model.User;
+import com.spm.araz.response.ProductResponse;
 import com.spm.araz.response.UserResponse;
 import com.spm.araz.service.ProductService;
 import com.spm.araz.service.UserService;
@@ -185,4 +186,73 @@ public class UserController {
       return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
   }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<UserResponse> updateUser(
+          @PathVariable(required = true) String id,
+          @RequestBody(required = true) User user
+  ){
+      UserResponse userResponse=new UserResponse();
+      User exisitngUser= userService.getUser(id);
+
+      if (exisitngUser==null){
+          userResponse.setMsg("No user found");
+          return new ResponseEntity<>(userResponse,HttpStatus.NOT_FOUND);
+      }else{
+          if(user.getName() != null){
+              exisitngUser.setName(user.getName());
+          }
+          if(user.getEmail() != null){
+              exisitngUser.setEmail(user.getEmail());
+          }
+          if(user.getPassword() != null){
+              exisitngUser.setPassword(user.getPassword());
+          }
+          if(user.getContactNo() != 0){
+              exisitngUser.setContactNo(user.getContactNo());
+          }
+          if(user.getAddress() != null){
+              exisitngUser.setAddress(user.getAddress());
+          }
+          if(user.getDob() != null){
+              exisitngUser.setDob(user.getDob());
+          }
+          if(user.getGender() != null){
+              exisitngUser.setGender(user.getGender());
+          }
+          if(user.getUserType() != null){
+              exisitngUser.setUserType(user.getUserType());
+          }
+
+      }
+      //save
+      boolean res = userService.updateUser(exisitngUser);
+
+      if (res) {
+          userResponse.setMsg("Updated");
+          return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+      } else {
+          userResponse.setMsg("Unable to update");
+          return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
+      }
+  }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
+        User user = userService.getUser(id);
+        UserResponse userResponse = new UserResponse();
+
+        if (user != null) {
+
+            userResponse.setUser(user);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } else {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }
+
+    }
 }
+
+

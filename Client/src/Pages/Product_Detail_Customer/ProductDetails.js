@@ -73,6 +73,25 @@ function ProductDetails() {
       });
   };
 
+  //handle favorite click
+  // const handlefavorite = (val) => {
+  //   axios
+  //     .put(
+  //       `http://localhost:5000/users/favorites`,
+  //       {
+  //         _id: userID,
+  //         pid: props.data._id,
+  //         val: val,
+  //       },
+    
+  //     )
+  //     .then((res) => {
+  //       setFav((pre) => !pre);
+  //       props.removeFav(props.index);
+  //     })
+  //     .catch(() => {});
+  // };
+
   //add to cart
   const addToCart = () => {
     const data = { productId: id, count, userId: "" };
@@ -210,6 +229,7 @@ function ProductDetails() {
                     <IconButton
                       onClick={() => {
                         setFavorite((pre) => !pre);
+                        // handleFavorite(!pre);
                       }}
                       disableRipple
                       size="small"

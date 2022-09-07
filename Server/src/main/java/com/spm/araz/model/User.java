@@ -12,6 +12,8 @@ public class User {
     @Id
     private String id;
     private ArrayList<Payment> payments;
+
+
     private Cart cart;
     private int loyaltyPoint;
 

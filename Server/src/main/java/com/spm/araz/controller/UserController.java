@@ -1,5 +1,6 @@
 package com.spm.araz.controller;
 
+import com.spm.araz.model.Favorite;
 import com.spm.araz.model.Payment;
 import com.spm.araz.model.Product;
 import com.spm.araz.model.User;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -253,6 +255,62 @@ public class UserController {
         }
 
     }
+
+  
+
+
+
+
+@PutMapping("/Favorite")
+  public ResponseEntity<UserResponse> addFavorite (@RequestParam("userId") String userId,
+                                                   @RequestParam("productId") String productId,
+                                                   @RequestParam (required = false) boolean val){
+
+
+  System.out.println(val);
+  System.out.println(userId);
+  System.out.println(productId);
+  User user = userService.getUser(userId);
+  UserResponse userResponse = new UserResponse();
+
+  if (user == null) {
+    userResponse.setMsg("Not found");
+    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+  } else {
+    if (val) {
+
+     boolean res=  userService.addFavorite(user, productId);
+     if(res){
+       userResponse.setMsg("Added data");
+       return new ResponseEntity<>(userResponse, HttpStatus.OK);
+     }
+     else {
+       userResponse.setMsg("not added data");
+       return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+     }
+
+
+
+    } else {
+      boolean res= userService.removeFavorite(user, productId);
+      if(res){
+        userResponse.setMsg("remove data");
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+      }
+      else {
+        userResponse.setMsg("not remove data");
+        return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+      }
+
+
+
+    }
+  }
+
+
+}
+
+
 }
 
 

@@ -10,13 +10,13 @@ import java.util.List;
 @Service
 public class AddressService {
     @Autowired
-   private AddressRepository addressRepository;
+    private AddressRepository addressRepository;
 
 
     private int limit = 1;
 
     public Address addAddress (Address address){
-       return addressRepository.save(address);
+        return addressRepository.save(address);
 
     }
 
@@ -30,9 +30,9 @@ public class AddressService {
 
     }
     //get all Address
-    public List<Address> getAllAddress(int page) {
-        int skip = (page - 1) * 1;
-        List<Address> addresses = addressRepository.findAllAddress(skip, limit);
+    public List<Address> getAllAddress() {
+
+        List<Address> addresses = addressRepository.findAll();
         return addresses;
     }
 

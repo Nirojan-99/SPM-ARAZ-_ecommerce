@@ -61,6 +61,19 @@ function ProductDetails() {
   const [imageArray, setImageArray] = useState([]);
   const [product, setProduct] = useState({});
 
+  //handle favorite click
+  const handlefavorite = (val) => {
+    axios
+      .put(`http://localhost:5000/User/Favorite`, {
+        userId: userID,
+        productId: props.data._id,
+        val: val,
+      })
+      .then((res) => {
+        setFavorite((pre) => !pre);
+      })
+      .catch(() => {});
+  };
 
   //add to cart
   const addToCart = () => {
@@ -115,7 +128,7 @@ function ProductDetails() {
                       height: 300,
                       overflow: "scroll",
                       borderRadius: "5px 0 0 0px",
-                      objectFit:"cover"
+                      objectFit: "cover",
                     }}
                     image={previewImage}
                   />
@@ -128,7 +141,7 @@ function ProductDetails() {
                       justifyContent: "space-between",
                       alignItems: "stretch",
                       bgcolor: "#2B4865",
-                      objectFit:"cover"
+                      objectFit: "cover",
                     }}
                   >
                     <Grid container sx={{ p: 0, m: 0 }}>
@@ -193,7 +206,7 @@ function ProductDetails() {
                     <Box sx={{ flexGrow: 1 }} />
                     <IconButton
                       onClick={() => {
-                        setFavorite((pre) => !pre);
+                        handlefavorite(!pre);
                       }}
                       disableRipple
                       size="small"

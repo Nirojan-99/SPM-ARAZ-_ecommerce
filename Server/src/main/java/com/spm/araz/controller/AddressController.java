@@ -4,8 +4,10 @@ package com.spm.araz.controller;
 import com.spm.araz.model.Address;
 
 
+import com.spm.araz.repository.UserRepository;
 import com.spm.araz.response.AddressResponse;
 import com.spm.araz.service.AddressService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,29 +25,34 @@ public class AddressController {
     AddressService addressService;
 
 
-    //add
-    // Address create
+
+
+
+    //    add
+//     Address create
     @PostMapping("")
     public ResponseEntity<AddressResponse>  addAddress(@RequestBody Address address ){
+        System.out.println(address);
 
         AddressResponse addressResponse = new AddressResponse();
 
-           List<Address> findaddress = addressService.findDefaultStatus("default");
-           System.out.println(findaddress);
-           System.out.println(findaddress.size());
+        List<Address> findaddress = addressService.findDefaultStatus("default");
+        System.out.println(findaddress);
+
+        System.out.println(findaddress.size());
 
 
-           if (findaddress.size() == 0) {
+        if (findaddress.size() == 0) {
 
-               address.setDefaultStatus("default");
+            address.setDefaultStatus("default");
 
-               addressResponse.setAddress(addressService.addAddress(address));
-               return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
+            addressResponse.setAddress(addressService.addAddress(address));
+            return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
 
-           }
-           address.setDefaultStatus("");
-           addressResponse.setAddress(addressService.addAddress(address));
-           return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
+        }
+        address.setDefaultStatus("");
+        addressResponse.setAddress(addressService.addAddress(address));
+        return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
 
 
     }
@@ -54,27 +61,27 @@ public class AddressController {
 
 
 
-   // get All shipping address
-   @GetMapping("/shipping")
-   public ResponseEntity<AddressResponse> getAllShippingAddress (){
-       AddressResponse addressResponse = new AddressResponse();
-       List< Address> findDefaultAddress = addressService.findDefaultStatus("default");
-       System.out.println(findDefaultAddress);
+    // get All shipping address
+    @GetMapping("/shipping")
+    public ResponseEntity<AddressResponse> getAllShippingAddress (){
+        AddressResponse addressResponse = new AddressResponse();
+        List< Address> findDefaultAddress = addressService.findDefaultStatus("default");
+        System.out.println(findDefaultAddress);
 
-      addressResponse.setAddressList(findDefaultAddress);
-       addressResponse.setMsg("show default address");
-       return new ResponseEntity<>(addressResponse, HttpStatus.OK);
-   }
+        addressResponse.setAddressList(findDefaultAddress);
+        addressResponse.setMsg("show default address");
+        return new ResponseEntity<>(addressResponse, HttpStatus.OK);
+    }
 
 
 
 
     @GetMapping("/")
-    public ResponseEntity<AddressResponse> getAddresses(@RequestParam(required = false, defaultValue = "3") int page){
-       AddressResponse addressResponse = new AddressResponse();
-        System.out.println(page);
+    public ResponseEntity<AddressResponse> getAddresses(){
+        AddressResponse addressResponse = new AddressResponse();
+        System.out.println();
         List<Address> addressList;
-        addressList = addressService.getAllAddress(page);
+        addressList = addressService.getAllAddress();
         addressResponse.setAddressList(addressList);
         if(addressList.size() == 0){
             addressResponse.setMsg("no any data");
@@ -83,7 +90,7 @@ public class AddressController {
 
 
 
-//        return new Response(ResponseCode.OK, addressList, null, null);
+
         addressResponse.setMsg("data get");
         return new ResponseEntity<>(addressResponse, HttpStatus.OK);
 
@@ -99,40 +106,40 @@ public class AddressController {
         AddressResponse addressResponse = new AddressResponse();
         System.out.println("hello");
         System.out.println(id);
-       Address existingaddress = addressService.getAddress(id);
+        Address existingaddress = addressService.getAddress(id);
 
-       if(existingaddress == null){
-           addressResponse.setMsg("No product found");
-           return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
-       }
-       else {
-       }
-           if(address.getName() != null){
-               existingaddress.setName(address.getName());
-           }
-           if(address.getProvince() != null){
-               existingaddress.setProvince(address.getProvince());
-           }
-           if(address.getDistrict() != null){
-               existingaddress.setDistrict(address.getDistrict());
-           }
-           if(address.getAddress() != null){
-               existingaddress.setAddress(address.getAddress());
-           }
-           if(address.getContactNumber() != null){
-               existingaddress.setContactNumber(address.getContactNumber());
-           }
+        if(existingaddress == null){
+            addressResponse.setMsg("No product found");
+            return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
+        }
+        else {
+        }
+        if(address.getName() != null){
+            existingaddress.setName(address.getName());
+        }
+        if(address.getProvince() != null){
+            existingaddress.setProvince(address.getProvince());
+        }
+        if(address.getDistrict() != null){
+            existingaddress.setDistrict(address.getDistrict());
+        }
+        if(address.getAddress() != null){
+            existingaddress.setAddress(address.getAddress());
+        }
+        if(address.getContactNumber() != null){
+            existingaddress.setContactNumber(address.getContactNumber());
+        }
 
-           boolean res = addressService.updateAddress(existingaddress);
-           if(res){
+        boolean res = addressService.updateAddress(existingaddress);
+        if(res){
 
-               addressResponse.setMsg("Updated");
-               return new ResponseEntity<>(addressResponse, HttpStatus.OK);
-           }
-           else {
-               addressResponse.setMsg("Unable to update");
-               return new ResponseEntity<>(addressResponse, HttpStatus.NOT_MODIFIED);
-           }
+            addressResponse.setMsg("Updated");
+            return new ResponseEntity<>(addressResponse, HttpStatus.OK);
+        }
+        else {
+            addressResponse.setMsg("Unable to update");
+            return new ResponseEntity<>(addressResponse, HttpStatus.NOT_MODIFIED);
+        }
 
     }
 

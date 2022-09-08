@@ -162,30 +162,33 @@ public class UserController {
     //get user by email for login
     @PostMapping("/login")
     public ResponseEntity<UserResponse> getUserByEmail(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password
+            @RequestBody(required = true) User luser
     ) {
+        String email=luser.getEmail();
+        String password=luser.getPassword();
+
         User user = userService.getByEmail(email);
 
         UserResponse userResponse = new UserResponse();
 
         if (user == null) {
             userResponse.setMsg("Email Not found");
-
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
             if (user.getPassword().equals(password)) {
                 User user1 = new User();
-                user1.setEmail(user.getEmail());
                 user1.setId(user.getId());
                 user1.setUserType(user.getUserType());
                 userResponse.setUser(user1);
                 userResponse.setMsg("Valid Email and Password");
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
             } else {
+
                 userResponse.setMsg("Invalid Email and Password");
+                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
             }
 
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
         }
     }
 

@@ -40,11 +40,17 @@ const imageArray = [
 
 const review = 4;
 
+// 63187f6429fe6a6deecec979
+
 function ProductDetails() {
   //state
   const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
   const [count, setCount] = useState(1);
+
+  //review state
+  const [review, setReview] = useState("");
+  const [star, setStar] = useState(0);
 
   //image handler
   const setImage = (index) => {
@@ -75,6 +81,29 @@ function ProductDetails() {
       .catch(() => {});
   };
 
+  //add review
+  const addReview = () => {
+    //validate
+    if (star == 0) {
+      return;
+    }
+    if (!review.trim()) {
+      return;
+    }
+
+    //data
+    const data = { userName: "Nirojan", date: new Date(), star, review };
+
+    axios
+      .post(`${baseURL}products/${product.id}/reviews`, data)
+      .then((res) => {
+        toast("Review added", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to add review", { type: "error" });
+      });
+  };
+
   //add to cart
   const addToCart = () => {
     const data = { productId: id, count, userId: "" };
@@ -96,6 +125,7 @@ function ProductDetails() {
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
+        console.log(product)
         setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
       })
       .catch((er) => {});
@@ -446,7 +476,7 @@ function ProductDetails() {
                 <Typography>Bad</Typography>
                 <RadioGroup
                   onChange={(event) => {
-                    console.log(event.target.value);
+                    setStar(event.target.value);
                   }}
                   defaultValue="1"
                   name="radio-buttons-group"
@@ -481,6 +511,8 @@ function ProductDetails() {
                   size="small"
                   minRows={3}
                   maxRows={5}
+                  value={review}
+                  set={setReview}
                 />
               </Box>
             </Box>
@@ -488,6 +520,7 @@ function ProductDetails() {
             <Box mb={2} sx={{ display: "flex", flexDirection: "row" }}>
               <Box sx={{ flexGrow: { xs: 0, sm: 1 } }} />
               <Button
+                onClick={addReview}
                 sx={{ width: { xs: "100%", sm: 100 } }}
                 color="info"
                 variant="contained"
@@ -503,10 +536,10 @@ function ProductDetails() {
               }}
             />
             {/* review */}
-            {product?.review?.map((item, index) => {
-              return <Review key={index} />;
+            {product?.reviews?.map((item, index) => {
+              return <Review data={item} key={index} />;
             })}
-            {product?.review ?? <Typography>No reviews</Typography>}
+            {product?.reviews?.length === 0  && <Typography>No reviews</Typography>}
           </Box>
         </Container>
       </Box>

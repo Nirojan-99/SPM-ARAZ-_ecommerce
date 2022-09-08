@@ -25,7 +25,9 @@ function Store() {
   const loading = open && options.length === 0;
 
   const [page, setPage] = useState(1);
+  const [count, setCount] = useState(1);
   const [products, setProducts] = useState([]);
+  const [title, setTitle] = useState("");
 
   //pagination handler
   const handleChange = (event, value) => {
@@ -36,14 +38,36 @@ function Store() {
 
   useEffect(() => {
     getProducts();
+
+    axios
+      .get(`${baseURL}products/store/${"63198fb108db9a05475a68c8"}/count`)
+      .then((res) => {
+        setCount(Math.ceil(res.data / 6));
+      })
+      .catch((er) => {});
   }, [page]);
 
   //get product
   const getProducts = () => {
     axios
-      .get(`${baseURL}products/stores/63198fb108db9a05475a68c8`)
+      .get(`${baseURL}products/stores/63198fb108db9a05475a68c8?page=${page}`)
       .then((res) => {
         setProducts(res.data?.productList);
+      })
+      .catch((er) => {});
+  };
+
+  //search
+  const search = (title) => {
+    if (!title.trim()) {
+      getProducts();
+    }
+    axios
+      .get(
+        `${baseURL}products/store/${"63198fb108db9a05475a68c8"}/search/${title.trim()}`
+      )
+      .then((res) => {
+        setProducts(res.data);
       })
       .catch((er) => {});
   };
@@ -112,47 +136,18 @@ function Store() {
                   py={0}
                   m={0}
                 >
-                  <Autocomplete
+                  <TextField
+                    onChange={(event) => {
+                      setTitle(event.target.value);
+                      search(event.target.value);
+                    }}
+                    color="status"
                     fullWidth
-                    open={open}
-                    onOpen={() => {
-                      setOpen(true);
+                    placeholder="search..."
+                    size="small"
+                    InputProps={{
+                      style: { color: "#fff" },
                     }}
-                    onClose={() => {
-                      setOpen(false);
-                    }}
-                    onFocus={() => {
-                      //call fun TODO
-                    }}
-                    isOptionEqualToValue={(option, value) =>
-                      option.title === value.title
-                    }
-                    onChange={(event, value) => {
-                      console.log(value);
-                    }}
-                    getOptionLabel={(option) => option.title}
-                    options={options}
-                    loading={loading}
-                    renderInput={(params) => (
-                      <TextField
-                        color="status"
-                        {...params}
-                        placeholder="search..."
-                        size="small"
-                        InputProps={{
-                          style: { color: "#fff" },
-                          ...params.InputProps,
-                          endAdornment: (
-                            <>
-                              {loading ? (
-                                <CircularProgress color="inherit" size={20} />
-                              ) : null}
-                              {params.InputProps.endAdornment}
-                            </>
-                          ),
-                        }}
-                      />
-                    )}
                   />
                   <IconButton
                     sx={{
@@ -196,7 +191,7 @@ function Store() {
           <Grid
             container
             justifyContent={"space-evenly"}
-            alignItems="center"
+            alignItems="stretch"
             rowSpacing={2}
             columnSpacing={1}
             sx={{ my: 3 }}
@@ -215,7 +210,7 @@ function Store() {
           >
             <Pagination
               shape="rounded"
-              count={5}
+              count={count}
               color="primary"
               onChange={handleChange}
             />

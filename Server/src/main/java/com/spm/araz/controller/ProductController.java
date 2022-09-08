@@ -40,12 +40,14 @@ public class ProductController {
                                                       @RequestParam("price") int price,
                                                       @RequestParam("title") String title,
                                                       @RequestParam("description") String description,
-                                                      @RequestParam("category") String category) {
+                                                      @RequestParam("category") String category,
+                                                      @RequestParam("storeID") String storeID) {
         Product product = new Product();
         product.setTitle(title);
         product.setPrice(price);
         product.setDescription(description);
         product.setCategory(category);
+        product.setStoreID(storeID);
 
         ArrayList<String> images = new ArrayList<>();
 
@@ -104,10 +106,11 @@ public class ProductController {
     //get products by store id
     @GetMapping("/stores/{id}")
     public ResponseEntity<ProductResponse> getProductsByStore(@PathVariable(required = true) String id,
-                                                              @RequestParam(required = false) boolean count) {
+                                                              @RequestParam(required = false) boolean count,
+                                                              @RequestParam(required = false, defaultValue = "1") int page) {
         ProductResponse productResponse = new ProductResponse();
 
-        List<Product> products = productService.getStoreProducts(id);
+        List<Product> products = productService.getStoreProducts(id, page);
 
         if (count) {
             productResponse.setMsg(products.size() + "");
@@ -301,6 +304,23 @@ public class ProductController {
             productService.deleteOffer(product);
             return new ResponseEntity<>(productResponse, HttpStatus.OK);
         }
+    }
+
+    //get store product count
+    @GetMapping("/store/{id}/count")
+    public ResponseEntity<Integer> getProductCountForStore(@PathVariable("id") String id) {
+        int count = productService.getStoreProductsCount(id);
+
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
+    //search within store id
+    @GetMapping("/store/{id}/search/{title}")
+    public ResponseEntity<List<Product>> searchWithinStore(@PathVariable("id") String id,
+                                                           @PathVariable("title") String title) {
+        List<Product> products = productService.searchWithinStore(id, title);
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     //test

@@ -58,7 +58,7 @@ function Store(props) {
     axios
       .put(`${baseURL}stores/status/${props.data.id}/${!props.data?.approval}`)
       .then((res) => {
-        toast("Status updated for store " + props.data.storeName, {
+        toast("Status updated for " + props.data.storeName, {
           type: "info",
         });
       })

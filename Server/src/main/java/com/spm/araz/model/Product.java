@@ -94,6 +94,9 @@ public class Product {
     }
 
     public void setReviews(Review review) {
+        if(this.reviews == null){
+            this.reviews = new ArrayList<>();
+        }
         this.reviews.add(review);
     }
 

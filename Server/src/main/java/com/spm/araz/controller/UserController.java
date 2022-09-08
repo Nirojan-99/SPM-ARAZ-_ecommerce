@@ -256,59 +256,51 @@ public class UserController {
 
     }
 
-  
+
+    @PutMapping("/Favorite")
+    public ResponseEntity<UserResponse> addFavorite(@RequestParam("userId") String userId,
+                                                    @RequestParam("productId") String productId,
+                                                    @RequestParam("val") boolean val) {
 
 
+        System.out.println(val);
+        System.out.println(userId);
+        System.out.println(productId);
+        User user = userService.getUser(userId);
+        UserResponse userResponse = new UserResponse();
+
+        if (user == null) {
+            userResponse.setMsg("Not found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (val) {
+
+                boolean res = userService.addFavorite(user, productId);
+                if (res) {
+                    userResponse.setMsg("Added data");
+                    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+                } else {
+                    userResponse.setMsg("not added data");
+                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+                }
 
 
-@PutMapping("/Favorite")
-  public ResponseEntity<UserResponse> addFavorite (@RequestParam("userId") String userId,
-                                                   @RequestParam("productId") String productId,
-                                                   @RequestParam (required = false) boolean val){
+            } else {
+                boolean res = userService.removeFavorite(user, productId);
+                if (res) {
+                    userResponse.setMsg("remove data");
+                    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+                } else {
+                    userResponse.setMsg("not remove data");
+                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+                }
 
 
-  System.out.println(val);
-  System.out.println(userId);
-  System.out.println(productId);
-  User user = userService.getUser(userId);
-  UserResponse userResponse = new UserResponse();
-
-  if (user == null) {
-    userResponse.setMsg("Not found");
-    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-  } else {
-    if (val) {
-
-     boolean res=  userService.addFavorite(user, productId);
-     if(res){
-       userResponse.setMsg("Added data");
-       return new ResponseEntity<>(userResponse, HttpStatus.OK);
-     }
-     else {
-       userResponse.setMsg("not added data");
-       return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-     }
-
-
-
-    } else {
-      boolean res= userService.removeFavorite(user, productId);
-      if(res){
-        userResponse.setMsg("remove data");
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
-      }
-      else {
-        userResponse.setMsg("not remove data");
-        return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-      }
-
+            }
+        }
 
 
     }
-  }
-
-
-}
 
 
 }

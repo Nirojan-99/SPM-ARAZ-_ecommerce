@@ -133,13 +133,26 @@ public class UserController {
         }
     }
 
+    //getPayment
+    @GetMapping("/{id}/payment")
+    public ResponseEntity<ArrayList<Payment>> getPayment(@PathVariable("id") String id) {
+        User user = userService.getUser(id);
+
+        if (user != null) {
+            return new ResponseEntity<>(user.getPayments(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     //get loyalty
     @GetMapping("/{id}/loyalty")
     public ResponseEntity<Integer> getLoyalty(@PathVariable("id") String id) {
         User user = userService.getUser(id);
-        if(user != null){
+        if (user != null) {
             return new ResponseEntity<>(user.getLoyaltyPoint(), HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
 

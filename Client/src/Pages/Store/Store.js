@@ -12,7 +12,6 @@ import {
 
 //icon
 import SearchIcon from "@mui/icons-material/Search";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import { useEffect, useState } from "react";
 import Product from "./Product";

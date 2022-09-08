@@ -2,12 +2,12 @@ package com.spm.araz.model;
 
 public class Payment {
     private String nameOnCard;
-    private int cardNumber;
+    private String cardNumber;
     private int expiryMonth;
     private int expiryYear;
     private int cvc;
 
-    public Payment(String nameOnCard, int cardNumber, int expiryMonth, int expiryYear, int cvc) {
+    public Payment(String nameOnCard, String cardNumber, int expiryMonth, int expiryYear, int cvc) {
         this.nameOnCard = nameOnCard;
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -26,11 +26,11 @@ public class Payment {
         this.nameOnCard = nameOnCard;
     }
 
-    public int getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 

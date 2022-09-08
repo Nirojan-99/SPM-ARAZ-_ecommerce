@@ -3,7 +3,16 @@ import { Typography, Button } from "@mui/material";
 import Label from "../../../Components/Label";
 import NewPayment from "./NewPayment";
 import DefaultPayment from "./DefaultPayment";
+import { useState } from "react";
+
 function Payment(props) {
+  const [val, setVal] = useState(true);
+
+  //handle click
+  const handleNew = () => {
+    setVal(false);
+  };
+
   return (
     <>
       <Box
@@ -29,49 +38,9 @@ function Payment(props) {
             Payment Details
           </Typography>
           {/* form */}
-          {/* <NewPayment /> */}
-          {/* default payment */}
-          <DefaultPayment />
-          {/* button */}
-          <Box
-            py={3}
-            sx={{
-              display: "flex",
-              flexDirection: { md: "row", sm: "row", xs: "row" },
-              justifyContent: "space-between",
-              px: { sm: 5, xs: 2 },
-            }}
-          >
-            {/* button sec */}
-            <Box>
-              <Button
-                disableElevation
-                variant="contained"
-                sx={{
-                  fontWeight: "700",
-                  fontFamily: "open sans",
-                  textTransform: "none",
-                }}
-                onClick={props.handleBack}
-              >
-                Back
-              </Button>
-            </Box>
-            <Box ml={1}>
-              <Button
-                disableElevation
-                variant="contained"
-                sx={{
-                  fontWeight: "700",
-                  fontFamily: "open sans",
-                  textTransform: "none",
-                }}
-                onClick={props.handleNext}
-              >
-                Next
-              </Button>
-            </Box>
-          </Box>
+          {val ? <DefaultPayment new={handleNew} /> : <NewPayment />}
+
+         
         </Box>
       </Box>
     </>

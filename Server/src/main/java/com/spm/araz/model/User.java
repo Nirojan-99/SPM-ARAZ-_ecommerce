@@ -60,7 +60,7 @@ public class User {
 
     public void removePayment(int cardNumber) {
         for (Payment payment : payments) {
-            if (payment.getCardNumber() == cardNumber) {
+            if (payment.getCardNumber().equals(cardNumber)) {
                 payments.remove(payment);
             }
         }

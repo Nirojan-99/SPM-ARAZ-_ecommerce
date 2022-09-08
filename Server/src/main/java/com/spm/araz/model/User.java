@@ -70,7 +70,7 @@ public class User {
         if (this.cart == null) {
             cart = new Cart();
         }
-        return cart;
+        return this.cart;
     }
 
     public void setCart(Cart cart) {

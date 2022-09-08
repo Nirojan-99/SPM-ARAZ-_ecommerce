@@ -28,9 +28,9 @@ public class UserController {
     //add to cart
     @PostMapping("/cart")
     public ResponseEntity<UserResponse> addToCart(
-            @RequestParam String productId,
-            @RequestParam int count,
-            @RequestParam String userId
+            @RequestParam("productId") String productId,
+            @RequestParam("count") int count,
+            @RequestParam("userId") String userId
     ) {
         Product product = productService.getProduct(productId);
 

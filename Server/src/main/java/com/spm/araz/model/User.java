@@ -67,6 +67,9 @@ public class User {
     }
 
     public Cart getCart() {
+        if (this.cart == null) {
+            cart = new Cart();
+        }
         return cart;
     }
 

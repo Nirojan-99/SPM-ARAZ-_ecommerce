@@ -106,10 +106,14 @@ function ProductDetails() {
 
   //add to cart
   const addToCart = () => {
-    const data = { productId: id, count, userId: "" };
+    const data = new FormData();
+
+    data.append("productId", id);
+    data.append("count", count);
+    data.append("userId", "63187f8829fe6a6deecec97a");
 
     axios
-      .post(`${baseURL}users/cart`, data)
+      .post(`${baseURL}User/cart`, data)
       .then((res) => {
         toast("Added to cart", { type: "info" });
       })

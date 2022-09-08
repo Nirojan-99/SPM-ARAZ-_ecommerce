@@ -1,5 +1,6 @@
 package com.spm.araz.service;
 
+import com.spm.araz.model.Favorite;
 import com.spm.araz.model.Payment;
 import com.spm.araz.model.User;
 import com.spm.araz.repository.UserRepository;
@@ -61,14 +62,27 @@ public class UserService {
     }
 
     //add user
-    public User createUser(User user){
-        return  userRepository.save(user);
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
     //get user by email
-    public User getByEmail(String email){
-        User user=userRepository.findByEmail(email);
+    public User getByEmail(String email) {
+        User user = userRepository.findByEmail(email);
         return user;
+    }
+
+
+    public boolean addFavorite(User user, String id) {
+        user.addFavorite(id);
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean removeFavorite (User user, String id){
+        user.removeFavorite(id);
+        userRepository.save(user);
+        return true;
     }
 
 }

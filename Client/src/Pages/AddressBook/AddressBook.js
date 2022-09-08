@@ -27,34 +27,108 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-
+import { useNavigate } from "react-router";
 //province data
 import { DATA } from "../../Store/Province";
-import { Address_DATA } from "./AddressData";
+// import { Address_DATA } from "./AddressData";
 // import axios
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function AddressBook() {
+  const navigate = useNavigate();
+  const [Name, setName] = useState();
+  const [Contactnumber, setContactnumber] = useState();
+  const [Addresses, setAddresses] = useState();
+  const [Pro, setPro] = useState();
+  const [dis, setdis] = useState([]);
+
+  const [nameError, setNameError] = useState(false);
+  const [ContactnumberError, setContactnumberError] = useState(false);
+  const [AddressesError, setAddressesError] = useState(false);
+  const [ProError, setProError] = useState(false);
+  // const [disError, setdisError] = useState(false);
+
+  const onsubmitSave = () => {
+    setNameError(false);
+    setContactnumberError(false);
+    setAddressesError(false);
+    setProError(false);
+    // setdisError(false);
+    if (!Name.trim()) {
+      toast("Invalid Name", { type: "error" });
+      return setNameError(true);
+    }
+    if (!Contactnumber.trim()) {
+      toast("Invalid Contactnumber ", { type: "error" });
+      return setContactnumberError(true);
+    }
+    if (!Addresses.trim()) {
+      toast("Invalid Address", { type: "error" });
+      return setAddressesError(true);
+    }
+    if (!Pro.trim()) {
+      toast("Invalid province", { type: "error" });
+      return setProError(true);
+    }
+    // if (!dis.trim()) {
+    //   toast("Invalid district", { type: "error" });
+    //   return setdisError(true);
+    // }
+    const data = {
+      name: Name,
+      province: Pro,
+      district: dis,
+      address: Addresses,
+      contactNumber: Contactnumber,
+    };
+    console.log(data);
+    axios
+      .post("http://localhost:5000/address", data)
+      .then((res) => {
+        setTimeout(() => {
+          toast("succesfully added new address", { type: "success" });
+        }, 1000);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      })
+      .catch((er) => {
+        toast("succesfully added new address", { type: "error" });
+      });
+  };
   // take from fetching data
   const [getAlladdress, setgetAlladdress] = useState([]);
+  // const [dataempty, setdataempty] = useState("");
+
   useEffect(() => {
     // fetching data
     // TODO
-    axios.get().then().catch();
+    axios
+      .get("http://localhost:5000/address/")
+      .then((res) => {
+        if (res.data.addressList.size === 0) {
+          // setdataempty("no any data");
+        }
+        setgetAlladdress(res.data.addressList);
+      })
+      .catch(() => {});
   });
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
   // this status usestate use for status management
   const [Status, setStatus] = useState([]);
-  const [districts, setDistricts] = useState([]);
+  const [district, setDistricts] = useState([]);
+
   // hide from the addnew address
   const [show, setshow] = useState(false);
   // using change the color after clicking
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - Address_DATA.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - getAlladdress.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -68,6 +142,7 @@ function AddressBook() {
   return (
     <>
       <Paper elevation={4}>
+        <ToastContainer />
         <Box
           p={3}
           sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }}
@@ -117,7 +192,7 @@ function AddressBook() {
                       color: "#1A374D",
                     }}
                   >
-                    Address
+                    Province & District
                   </TableCell>
                   <TableCell
                     align="left"
@@ -139,7 +214,7 @@ function AddressBook() {
                       color: "#1A374D",
                     }}
                   >
-                    default
+                    Default
                   </TableCell>
                   <TableCell
                     align="left"
@@ -150,17 +225,28 @@ function AddressBook() {
                       color: "#1A374D",
                     }}
                   >
-                    edit details
+                    Edit
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    style={{
+                      fontFamily: "open sans",
+                      fontWeight: "800",
+                      fontSize: 16,
+                      color: "#1A374D",
+                    }}
+                  >
+                    Delete
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {(rowsPerPage > 0
-                  ? Address_DATA.slice(
+                  ? getAlladdress.slice(
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage
                     )
-                  : Address_DATA
+                  : getAlladdress
                 ).map((row, index) => (
                   <TableRow
                     key={index}
@@ -188,7 +274,7 @@ function AddressBook() {
                       { label: "All", value: -1 },
                     ]}
                     colSpan={3}
-                    count={Address_DATA.length}
+                    count={getAlladdress.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     SelectProps={{
@@ -230,23 +316,50 @@ function AddressBook() {
             <Box p={1} mt={2} sx={{ display: "flex", flexDirection: "column" }}>
               {" "}
               <Label for="full_name" title="Full Name" />
-              <Input type="text" id="Full_Name" size="small" autoFocus={true} />
+              <Input
+                onFocus={() => {
+                  setNameError(false);
+                }}
+                error={nameError}
+                type="text"
+                id="Full_Name"
+                size="small"
+                autoFocus={true}
+                value={Name}
+                set={setName}
+              />
               <Label for="contact_number" title="Contact Number" />
               <Input
+                onFocus={() => {
+                  setContactnumberError(false);
+                }}
+                error={ContactnumberError}
                 type="text"
                 id="contact_number"
                 size="small"
                 autoFocus={true}
+                value={Contactnumber}
+                set={setContactnumber}
               />
               {/* province */}
               <Label for="province" title="Province" />
               <Select
+                error={ProError}
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 onChange={(event) => {
+                  setProError(false);
+                  // setdisError(false);
+                  setPro(() => {
+                    let data = DATA.filter((item, index) => {
+                      return item.province === event.target.value;
+                    });
+                    return data[0].province;
+                  });
                   setDistricts(() => {
                     let data = DATA.filter((item, index) => {
                       return item.province === event.target.value;
                     });
+
                     return data[0].districts;
                   });
                 }}
@@ -275,14 +388,27 @@ function AddressBook() {
               {/* district */}
               <Label for="district" title="District" />
               <Select
+                // error={disError}
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 fullWidth
                 required
                 size="small"
                 color="info"
                 id="district"
+                onChange={(event) => {
+                  // setdisError(false);
+                  setdis(() => {
+                    let data = district.filter((item, index) => {
+                      if (item === event.target.value) {
+                        return item;
+                      }
+                    });
+
+                    return data[0];
+                  });
+                }}
               >
-                {districts.map((row, index) => {
+                {district.map((row, index) => {
                   return (
                     <MenuItem
                       key={index}
@@ -301,18 +427,26 @@ function AddressBook() {
               {/* address */}
               <Label for="address" title="Address" />
               <Input
+                onFocus={() => {
+                  setAddressesError(false);
+                }}
+                error={AddressesError}
                 id="address"
                 multiple={true}
                 minRows={3}
                 maxRows={4}
                 type="text"
                 size="small"
+                value={Addresses}
+                set={setAddresses}
               />
               <br />
               <Button
                 variant="contained"
                 size="small"
-                onClick={() => {}}
+                onClick={() => {
+                  onsubmitSave();
+                }}
                 sx={{
                   fontFamily: "open sans",
                   fontWeight: "700",

@@ -9,28 +9,21 @@ import java.util.List;
 
 public interface AddressRepository extends MongoRepository<Address, Integer> {
 
-    @Aggregation(pipeline = {
-            "{ '$skip' : ?0 }",
-            "{ '$limit' : ?1 }"
-    })
-    List<Address> findAllAddress(int skip, int limit);
+//    @Aggregation(pipeline = {
+//            "{ '$skip' : ?0 }",
+//            "{ '$limit' : ?1 }"
+//    })
+//    List<Address> findAllAddress();
 
 
     Address findById(String id);
+
     Address deleteById(String id);
 
 
     @Aggregation(pipeline = {
- "{ '$match': {'defaultStatus':{$regex:?0,$options:'i'}} }",
+            "{ '$match': {'defaultStatus':{$regex:?0,$options:'i'}} }",
 
     })
-
-
-
-    List< Address> findDefaultStatus(String defaultStatus);
-
-
-
-
-
+    List<Address> findDefaultStatus(String defaultStatus);
 }

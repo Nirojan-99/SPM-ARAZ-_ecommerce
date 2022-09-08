@@ -30,6 +30,7 @@ import Security from "./Components/Security";
 import OrderManages from "../OrderManage_Admin/OrderManages";
 
 function Profile() {
+ 
   const { page } = useParams();
   const navigate = useNavigate();
   //state
@@ -126,7 +127,7 @@ function Profile() {
             <Grid item xs={12} sm={9}>
               <Box>
                 {page === "addressbook" && <AddressBook />}
-                {page === "editaddress" && <EditAddresss />}
+                {page === "editaddress" && <EditAddresss   />}
                 {page === "details" && <Profile_Details />}
                 {page === "order" && <Orders />}
                 {page === "order-manage" && <OrderManages />}

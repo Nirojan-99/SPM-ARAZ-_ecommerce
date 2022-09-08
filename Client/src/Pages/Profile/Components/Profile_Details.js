@@ -10,7 +10,12 @@ import { Container } from "@mui/system";
 import ButtonA from "../../../Components/ButtonA";
 import Input from "../../../Components/Input";
 import Label from "../../../Components/Label";
+import { login } from "../../../Store/auth";
+import { useSelector } from "react-redux";
+
 function Profile_Details() {
+  const { userID, role } = useSelector((state) => state.loging);
+  console.log(userID, role);
   return (
     <>
       <Paper elevation={4}>

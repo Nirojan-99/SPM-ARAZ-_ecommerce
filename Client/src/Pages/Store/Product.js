@@ -8,6 +8,8 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 function Product(props) {
   const review = 4;
+  const product = props.data;
+
   return (
     <>
       <Grid item sx={{ width: { md: 250, xs: 350 } }}>

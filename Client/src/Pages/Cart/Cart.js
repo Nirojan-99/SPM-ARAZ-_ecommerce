@@ -4,15 +4,86 @@ import Product from "./Product";
 
 //icon
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import { ToastContainer, toast } from "react-toastify";
 
 function Cart() {
+  const baseURL = "http://localhost:5000/";
+
+  //state
+  const [products, setProducts] = useState();
+  const [total, setTotal] = useState(0);
+  const [subTotal, setSubtotal] = useState(0);
+  const [loyalty, setLoyalty] = useState(0);
+  const [addloyalty, setAddLoyalty] = useState(0);
+  const [delivary, setDelivary] = useState(100);
+
+  useEffect(() => {
+    getCart();
+    getLoyalty();
+  }, []);
+
+  //get loyalty
+  const getLoyalty = () => {
+    axios
+      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/loyalty`)
+      .then((res) => {
+        setLoyalty(res.data);
+      })
+      .catch((er) => {});
+  };
+
+  //get cart
+  const getCart = () => {
+    axios
+      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/cart`)
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((er) => {});
+  };
+
+  //cal sub total
+  const calSUbTotal = (count, checked, price) => {
+    setSubtotal((pre) => {
+      let val = price * count;
+      if (checked) {
+        return pre + val;
+      } else {
+        return pre - val;
+      }
+    });
+  };
+
+  //cal sub total
+  const increaseSUbTotal = (price, action) => {
+    setSubtotal((pre) => {
+      if (action === "inc") {
+        return pre + price;
+      } else {
+        return pre - price;
+      }
+    });
+  };
+
   return (
     <>
+      <ToastContainer />
       <Box>
         <Container maxWidth="md">
           <Box p={0.5} my={2}>
-            {[1].map((item, index) => {
-              return <Product key={index} />;
+            {products?.map((item, index) => {
+              return (
+                <Product
+                  click={increaseSUbTotal}
+                  index={index}
+                  checked={calSUbTotal}
+                  data={item}
+                  key={index}
+                />
+              );
             })}
           </Box>
           {/* price sec */}
@@ -29,7 +100,7 @@ function Cart() {
               <Typography
                 sx={{ fontWeight: 700, fontSize: { xs: 18, sm: 20 } }}
               >
-                Sub-Total : 12.00
+                Sub-Total : {subTotal}
               </Typography>
               {/* ponit sec */}
               <Box
@@ -40,8 +111,16 @@ function Cart() {
                   alignItems: "center",
                 }}
               >
-                <Typography sx={{ fontWeight: 700 }}>Points : 100</Typography>
+                <Typography sx={{ fontWeight: 700 }}>
+                  Points : {loyalty}
+                </Typography>
                 <Button
+                  onClick={() => {
+                    if (loyalty !== 0) {
+                      setAddLoyalty(loyalty);
+                    }
+                    setLoyalty(0);
+                  }}
                   sx={{ ml: 2, fontWeight: 700 }}
                   variant="outlined"
                   color="secondary"
@@ -64,39 +143,48 @@ function Cart() {
               <Box sx={{ width: { md: "25%", xs: "55%", sm: "35%" } }}>
                 <Grid container>
                   {/* sub total */}
-                  <Grid xs={5}>
+                  <Grid item xs={5}>
                     <Typography sx={{ fontWeight: 600, color: "#1597BB" }}>
                       Sub Total
                     </Typography>
                   </Grid>
-                  <Grid xs={2}> : </Grid>
-                  <Grid xs={5}>
+                  <Grid item xs={2}>
+                    {" "}
+                    :{" "}
+                  </Grid>
+                  <Grid item xs={5}>
                     <Typography sx={{ fontWeight: 600, color: "#333" }}>
-                      1000
+                      {subTotal}
                     </Typography>
                   </Grid>
                   {/* loyalty */}
-                  <Grid xs={5}>
+                  <Grid item xs={5}>
                     <Typography sx={{ fontWeight: 600, color: "#1597BB" }}>
                       Loyalty
                     </Typography>
                   </Grid>
-                  <Grid xs={2}> : </Grid>
-                  <Grid xs={5}>
+                  <Grid item xs={2}>
+                    {" "}
+                    :{" "}
+                  </Grid>
+                  <Grid item xs={5}>
                     <Typography sx={{ fontWeight: 600, color: "#333" }}>
-                      00
+                      {addloyalty}
                     </Typography>
                   </Grid>
                   {/* delivary */}
-                  <Grid xs={5}>
+                  <Grid item xs={5}>
                     <Typography sx={{ fontWeight: 600, color: "#1597BB" }}>
                       Delivary
                     </Typography>
                   </Grid>
-                  <Grid xs={2}> : </Grid>
-                  <Grid xs={5}>
+                  <Grid item xs={2}>
+                    {" "}
+                    :{" "}
+                  </Grid>
+                  <Grid item xs={5}>
                     <Typography sx={{ fontWeight: 600, color: "#333" }}>
-                      100
+                      {delivary}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -112,19 +200,22 @@ function Cart() {
               {/* total */}
               <Box sx={{ width: { md: "25%", xs: "55%", sm: "35%" } }}>
                 <Grid container>
-                  <Grid xs={5}>
+                  <Grid item xs={5}>
                     <Typography
                       sx={{ fontWeight: 800, color: "#333", fontSize: 20 }}
                     >
                       Total
                     </Typography>
                   </Grid>
-                  <Grid xs={2}> : </Grid>
-                  <Grid xs={5}>
+                  <Grid item xs={2}>
+                    {" "}
+                    :{" "}
+                  </Grid>
+                  <Grid item xs={5}>
                     <Typography
                       sx={{ fontWeight: 600, color: "#333", fontSize: 20 }}
                     >
-                      1000
+                      {subTotal + addloyalty + delivary}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -132,6 +223,7 @@ function Cart() {
               {/* btn */}
               <Box my={2}>
                 <Button
+                href="/checkout"
                   disableElevation
                   sx={{
                     width: { xs: "100%", sm: "auto" },

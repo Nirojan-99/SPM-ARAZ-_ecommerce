@@ -12,8 +12,6 @@ public class User {
     @Id
     private String id;
     private ArrayList<Payment> payments;
-
-
     private Cart cart;
     private int loyaltyPoint;
 
@@ -27,9 +25,7 @@ public class User {
     private String dob;
 
 
-
     private ArrayList<String> favorites;
-
 
 
     public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
@@ -71,7 +67,10 @@ public class User {
     }
 
     public Cart getCart() {
-        return cart;
+        if (this.cart == null) {
+            cart = new Cart();
+        }
+        return this.cart;
     }
 
     public void setCart(Cart cart) {
@@ -167,11 +166,11 @@ public class User {
     }
 
 
-    public void addFavorite(String id){
+    public void addFavorite(String id) {
         favorites.add(id);
     }
 
-    public void removeFavorite(String id){
+    public void removeFavorite(String id) {
         favorites.remove(id);
 
 //        for (String favorite : favorites) {
@@ -180,9 +179,6 @@ public class User {
 //            }
 //        }
     }
-
-
-
 
 
 }

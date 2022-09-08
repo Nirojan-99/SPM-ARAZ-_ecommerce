@@ -1,9 +1,6 @@
 package com.spm.araz.controller;
 
-import com.spm.araz.model.Favorite;
-import com.spm.araz.model.Payment;
-import com.spm.araz.model.Product;
-import com.spm.araz.model.User;
+import com.spm.araz.model.*;
 import com.spm.araz.response.ProductResponse;
 import com.spm.araz.response.UserResponse;
 import com.spm.araz.service.ProductService;
@@ -12,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -28,9 +27,9 @@ public class UserController {
     //add to cart
     @PostMapping("/cart")
     public ResponseEntity<UserResponse> addToCart(
-            @RequestParam String productId,
-            @RequestParam int count,
-            @RequestParam String userId
+            @RequestParam("productId") String productId,
+            @RequestParam("count") int count,
+            @RequestParam("userId") String userId
     ) {
         Product product = productService.getProduct(productId);
 
@@ -50,8 +49,8 @@ public class UserController {
     //remove from cart
     @PutMapping("/cart")
     public ResponseEntity<UserResponse> removeFromCart(
-            @RequestParam String userId,
-            @RequestParam String productId
+            @RequestParam("userId") String userId,
+            @RequestParam("productId") String productId
     ) {
         Product product = productService.getProduct(productId);
 
@@ -85,18 +84,14 @@ public class UserController {
     }
 
     //get cart
-    @GetMapping("/cart")
-    public ResponseEntity<UserResponse> getCart(@RequestParam String userId) {
+    @GetMapping("/{userId}/cart")
+    public ResponseEntity<ArrayList<Item>> getCart(@PathVariable("userId") String userId) {
         User user = userService.getUser(userId);
 
-        UserResponse userResponse = new UserResponse();
-
         if (user == null) {
-            userResponse.setMsg("Not found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            userResponse.setUser(user);
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            return new ResponseEntity<>(user.getCart().getProducts(), HttpStatus.OK);
         }
     }
 
@@ -136,6 +131,18 @@ public class UserController {
             userService.deletePayment(user, cardNumber);
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
+    }
+
+    //get loyalty
+    @GetMapping("/{id}/loyalty")
+    public ResponseEntity<Integer> getLoyalty(@PathVariable("id") String id) {
+        User user = userService.getUser(id);
+        if(user != null){
+            return new ResponseEntity<>(user.getLoyaltyPoint(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
     }
 
     //new user

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -37,7 +38,8 @@ public class StoreController {
 
     //get all stores
     @GetMapping("")
-    public ResponseEntity<StoreResponse> getStores(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false) String title) {
+    public ResponseEntity<StoreResponse> getStores(@RequestParam(required = false, defaultValue = "1") int page,
+                                                   @RequestParam(required = false) String title) {
         List<Store> stores;
 
         if (title != null) {
@@ -87,7 +89,7 @@ public class StoreController {
         StoreResponse storeResponse = new StoreResponse();
 
         if (store != null) {
-            boolean res = storeService.updateStatus(store, status );
+            boolean res = storeService.updateStatus(store, status);
             if (res) {
                 storeResponse.setMsg("updated");
                 return new ResponseEntity<>(storeResponse, HttpStatus.OK);
@@ -99,5 +101,19 @@ public class StoreController {
             storeResponse.setMsg("unable to update");
             return new ResponseEntity<>(storeResponse, HttpStatus.NOT_FOUND);
         }
+    }
+
+    //search store
+    @GetMapping("/search")
+    public ResponseEntity<List<Store>> searchStore(@RequestParam(required = true) String title) {
+        List<Store> stores = storeService.search(title);
+
+        return new ResponseEntity<>(stores, HttpStatus.OK);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getStoreTotalCount() {
+        int count = storeService.getCount();
+        return new ResponseEntity<>(count,HttpStatus.OK);
     }
 }

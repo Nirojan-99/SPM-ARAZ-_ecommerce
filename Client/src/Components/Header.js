@@ -96,6 +96,7 @@ function Header() {
               <>
                 <Tooltip title="Your Store">
                   <IconButton
+                    href="/store"
                     sx={{
                       bgcolor: "#1597BB",
                       "&:hover": { bgcolor: "#FEC260" },

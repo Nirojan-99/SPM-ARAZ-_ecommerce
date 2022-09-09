@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //icon
 import StarIcon from "@mui/icons-material/Star";
@@ -15,9 +15,54 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
+import calreview from "../../Helper/calReview";
+import calNewPrice from "../../Helper/calNewPrice";
+
+import { ToastContainer, toast } from "react-toastify";
 
 function Product(props) {
+  const id = props.data.productID;
+
   const [count, setCount] = useState(1);
+  const [product, setProduct] = useState();
+  const [star, setStar] = useState(0);
+
+  const [isChecked, setChecked] = useState(false);
+
+  //url
+  const baseURL = "http://localhost:5000/";
+
+  //get data
+  useEffect(() => {
+    axios
+      .get(`${baseURL}products/${id}`)
+      .then((res) => {
+        const product = res.data.product;
+        setProduct(product);
+        setCount(props.data.count);
+        setStar(calreview(product?.reviews));
+      })
+      .catch((er) => {});
+  }, []);
+
+  //remove from cart
+  const removeFromCart = () => {
+    const data = new FormData();
+
+    data.append("userId", "63187f8829fe6a6deecec97a");
+    data.append("productId", id);
+
+    axios
+      .put(`${baseURL}User/cart`, data)
+      .then((res) => {
+        toast("Product removed from cart", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to remove product", { type: "error" });
+      });
+  };
+
   return (
     <Box sx={{ bgcolor: "#fff" }} mb={2} p={0}>
       <Grid
@@ -29,14 +74,14 @@ function Product(props) {
         <Grid item xs={12} sm={3}>
           <CardMedia
             component="img"
+            alt="product image"
             sx={{
               width: "100%",
               minHeight: 100,
               height: "100%",
-              overflow: "scroll",
               borderRadius: { sm: "3px 0 0 3px", xs: "3px 3px 0 0 " },
             }}
-            image={"https://cdn.hswstatic.com/gif/chess-4.jpg"}
+            image={`${baseURL}products/images/${product?.images[0]}`}
           />
         </Grid>
         <Grid item xs={12} sm={9}>
@@ -70,11 +115,21 @@ function Product(props) {
                   letterSpacing: -0.5,
                 }}
               >
-                Computer with 2TB hard disk and 256 SSD, 11th generation.. he sj
-                vd
+                {product?.title}
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
-              <Checkbox color="secondary" sx={{ color: "#1597BB" }} />
+              <Checkbox
+                onChange={(event) => {
+                  setChecked(event.target.checked);
+                  props.checked(
+                    count,
+                    event.target.checked,
+                    calNewPrice(product?.price, product?.offer)
+                  );
+                }}
+                color="secondary"
+                sx={{ color: "#1597BB" }}
+              />
             </Box>
             {/* rating sec */}
             <Box
@@ -85,7 +140,7 @@ function Product(props) {
               }}
             >
               {[1, 2, 3, 4, 5].map((row, index) => {
-                if (4 >= row) {
+                if (star >= row) {
                   return <StarIcon key={index} sx={{ color: "#FEC260" }} />;
                 } else {
                   return <StarBorderIcon key={index} sx={{ color: "#333" }} />;
@@ -100,7 +155,7 @@ function Product(props) {
                   ml: 2,
                 }}
               >
-                102 Rating
+                {product?.reviews?.length} Rating
               </Typography>
             </Box>
             {/* peice sec */}
@@ -113,21 +168,36 @@ function Product(props) {
                   fontWeight: "800",
                 }}
               >
-                Rs : 200,000.00
+                Rs : {calNewPrice(product?.price, product?.offer)}
               </Typography>
             </Box>
             {/* discount sec */}
             <Box>
-              <Typography
-                sx={{
-                  color: "silver",
-                  fontSize: 12,
-                  fontFamily: "open sans",
-                  fontWeight: "700",
-                }}
-              >
-                <s>Rs : 200,000.00 -15%</s>
-              </Typography>
+              {product?.offer !== null ? (
+                <Typography
+                  sx={{
+                    color: "silver",
+                    fontSize: 12,
+                    fontFamily: "open sans",
+                    fontWeight: "700",
+                  }}
+                >
+                  <s>
+                    Rs : {product?.price} -{product?.offer.percentage}%
+                  </s>
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{
+                    color: "silver",
+                    fontSize: 12,
+                    fontFamily: "open sans",
+                    fontWeight: "700",
+                  }}
+                >
+                  <s>Offer</s>
+                </Typography>
+              )}
             </Box>
             {/* quantity sec */}
             <Box
@@ -142,6 +212,12 @@ function Product(props) {
               </Typography>
               <IconButton
                 onClick={() => {
+                  if (isChecked) {
+                    props.click(
+                      calNewPrice(product?.price, product?.offer),
+                      "inc"
+                    );
+                  }
                   setCount((pre) => {
                     return ++pre;
                   });
@@ -164,6 +240,12 @@ function Product(props) {
                     if (pre === 1) {
                       return 1;
                     } else {
+                      if (isChecked) {
+                        props.click(
+                          calNewPrice(product?.price, product?.offer),
+                          "dec"
+                        );
+                      }
                       return --pre;
                     }
                   });
@@ -180,7 +262,7 @@ function Product(props) {
                 />
               </IconButton>
               <Box sx={{ flexGrow: 1 }} />
-              <IconButton>
+              <IconButton onClick={removeFromCart}>
                 <DeleteIcon color="error" />
               </IconButton>
             </Box>

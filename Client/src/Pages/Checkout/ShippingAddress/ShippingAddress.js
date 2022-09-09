@@ -11,7 +11,7 @@ function ShippingAddress(props) {
   const [hideshippingaddress, sethideshippingaddress] = useState(false);
   const [show, setshow] = useState(true);
   const [selectedValue, setSelectedValue] = useState("1");
-  console.log(selectedValue);
+
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -73,7 +73,7 @@ function ShippingAddress(props) {
                     setshow(false);
                   }}
                 >
-                  add new Shipping Address
+                  Add New Shipping Address
                 </Button>
               </Box>
             </Box>

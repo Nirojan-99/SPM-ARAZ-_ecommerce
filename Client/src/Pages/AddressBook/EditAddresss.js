@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import Label from "../../Components/Label";
 import Input from "../../Components/Input";
 import { DATA } from "../../Store/Province";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 
 import axios from "axios";
 function EditAddresss(props) {
+  const idd = localStorage.getItem("id");
+  console.log(idd);
+
   const navigate = useNavigate();
   const [name, setname] = useState();
   const [contactNumber, setcontactNumber] = useState();
@@ -16,12 +19,17 @@ function EditAddresss(props) {
   const [disg, setdisg] = useState();
   const [address, setaddress] = useState();
 
+  const [nameError, setNameError] = useState(false);
+  const [ContactnumberError, setContactnumberError] = useState(false);
+  const [AddressesError, setAddressesError] = useState(false);
+  const [ProError, setProError] = useState(false);
+
   const [Pro, setPro] = useState();
   const [dis, setdis] = useState([]);
-  const { id } = useParams();
+  // const { id } = useParams();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/address/" + id)
+      .get("http://localhost:5000/address/" + idd)
       .then((res) => {
         console.log(res.data.name);
         setname(res.data.name);
@@ -35,6 +43,27 @@ function EditAddresss(props) {
 
   const [district, setDistricts] = useState([]);
   const onUpdate = () => {
+    setNameError(false);
+    setContactnumberError(false);
+    setAddressesError(false);
+    setProError(false);
+    // setdisError(false);
+    if (!name.trim()) {
+      toast("Invalid Name", { type: "error" });
+      return setNameError(true);
+    }
+    if (!contactNumber.trim()) {
+      toast("Invalid Contactnumber ", { type: "error" });
+      return setContactnumberError(true);
+    }
+    if (!address.trim()) {
+      toast("Invalid Address", { type: "error" });
+      return setAddressesError(true);
+    }
+    if (!Pro.trim()) {
+      toast("Invalid province", { type: "error" });
+      return setProError(true);
+    }
     const data = {
       name: name,
       province: Pro,
@@ -44,16 +73,15 @@ function EditAddresss(props) {
     };
 
     axios
-      .put("http://localhost:5000/address/" + id, { data })
+      .put("http://localhost:5000/address/" + idd, { data })
       .then((res) => {
         if (res.data.msg === "Updated") {
           setTimeout(() => {
-            toast("succesfully Updated", { type: "success" });
+            toast("Succesfully Updated", { type: "success" });
           }, 1000);
           setTimeout(() => {
-             navigate("/profile/addressbook");
+            navigate("/profile/addressbook");
           }, 3000);
-        
         }
       })
       .catch((er) => {
@@ -72,15 +100,13 @@ function EditAddresss(props) {
         >
           <Typography
             sx={{
+              textAlign: "center",
               fontFamily: "open sans",
               fontWeight: "1000",
               color: "#2B4865",
-
-              fontSize: 18,
+              letterSpacing: -0.9,
+              fontSize: 20,
               my: 1.5,
-              alignItems: "center",
-              alignContent: "center",
-              justifyContent: "center",
             }}
           >
             Update Address
@@ -89,6 +115,7 @@ function EditAddresss(props) {
             {" "}
             <Label for="full_name" title="Full Name" />
             <Input
+              error={nameError}
               type="text"
               id="Full_Name"
               size="small"
@@ -98,6 +125,7 @@ function EditAddresss(props) {
             />
             <Label for="contact_number" title="Contact Number" />
             <Input
+              error={ContactnumberError}
               type="text"
               id="contact_number"
               size="small"
@@ -108,8 +136,10 @@ function EditAddresss(props) {
             {/* province */}
             <Label for="province" title="Province" />
             <Select
+              error={ProError}
               sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
               onChange={(event) => {
+                setProError(false);
                 setPro(() => {
                   let data = DATA.filter((item, index) => {
                     return item.province === event.target.value;
@@ -212,6 +242,7 @@ function EditAddresss(props) {
             {/* address */}
             <Label for="address" title="Address" />
             <Input
+              error={AddressesError}
               id="address"
               multiple={true}
               minRows={3}

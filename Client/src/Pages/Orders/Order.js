@@ -19,42 +19,17 @@ function Order() {
     {
       product: "product1",
       qty: 3,
-      status: "penting",
+      status: "processing",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "product2",
+      qty: 4,
+      status: "delivered",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "product3",
+      qty: 1,
+      status: "shipped",
     },
   ];
   return (
@@ -115,7 +90,7 @@ function Order() {
                       color: "#1A374D",
                     }}
                   >
-                    qyt
+                    Qyt
                   </TableCell>
 
                   <TableCell

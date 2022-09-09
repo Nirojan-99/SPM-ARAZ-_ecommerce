@@ -19,43 +19,23 @@ function OrderManage() {
   const Orderdata = [
     {
       product: "product1",
-      qty: 3,
-      status: "penting",
+      qty: 5,
+      status: "processing",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "product4",
+      qty: 4,
+      status: "shipped",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "product3",
+      qty: 2,
+      status: "processing",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "product2",
+      qty: 1,
+      status: "delivered",
     },
   ];
   return (

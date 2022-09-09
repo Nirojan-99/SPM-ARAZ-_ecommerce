@@ -40,7 +40,7 @@ const imageArray = [
 
 const review = 4;
 
-function ProductDetails() {
+function ProductDetails(props) {
   //state
   const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
@@ -64,13 +64,19 @@ function ProductDetails() {
   //handle favorite click
   const handlefavorite = (val) => {
     axios
-      .put(`http://localhost:5000/User/Favorite`, {
-        userId: userID,
-        productId: props.data._id,
-        val: val,
-      })
-      .then((res) => {
-        setFavorite((pre) => !pre);
+      .put(
+        `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${props.data.id}&val=${val}`
+      ).then((res) => {
+        console.log(res.data);
+        
+        setFavorite((isFavorite) => !isFavorite);
+        if (!isFavorite) {
+          toast("Added to Favoritelist", { type: "info" });
+        }
+        else {
+          toast("remove to Favoritelist", { type: "error" });
+        }
+      
       })
       .catch(() => {});
   };
@@ -206,7 +212,7 @@ function ProductDetails() {
                     <Box sx={{ flexGrow: 1 }} />
                     <IconButton
                       onClick={() => {
-                        handlefavorite(!pre);
+                        handlefavorite(!isFavorite);
                       }}
                       disableRipple
                       size="small"

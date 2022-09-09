@@ -4,10 +4,26 @@ import { Address_DATA } from "../../AddressBook/AddressData";
 import SingleShippingAddress from "./Single_Shipping_address";
 
 import Radio from "@mui/material/Radio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShippingAddress_Form from "./ShippingAddress_Form";
+import axios from "axios";
 
 function ShippingAddress(props) {
+  const [shipping, setshipping] = useState([]);
+  const [empty, setempty] = useState("");
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/address/shipping")
+      .then((res) => {
+        if (res.data.msg == "get") {
+          console.log(res.data);
+          setshipping(res.data.addressList);
+        } else {
+          console.log("empty");
+        }
+      })
+      .catch(() => {});
+  }, []);
   const [hideshippingaddress, sethideshippingaddress] = useState(false);
   const [show, setshow] = useState(true);
   const [selectedValue, setSelectedValue] = useState("1");
@@ -107,32 +123,36 @@ function ShippingAddress(props) {
                     justifyContent: "center",
                   }}
                 >
-                  {Address_DATA.map((row, index) => (
-                    <Grid
-                      item
-                      my={2}
-                      key={index}
-                      sx={{
-                        // width: { xs: "100%",md:"50%" },
-                        justifyContent: "center",
-                        // width: "100%",
-                        borderRadius: "10px",
-                        border: "3px solid #406882",
-                        "&:hover": {
-                          transform: "scale(1.01)",
-                          bgcolor: "#D8D874",
-                          transitionDuration: ".2s",
-                          transitionProperty: "all",
-                        },
-                      }}
-                    >
-                      <Radio
-                        {...controlProps(row._id)}
-                        sx={{ marginTop: "8px", color: "#406882" }}
-                      />
-                      <SingleShippingAddress data={row} />
-                    </Grid>
-                  ))}
+                  {/* {Address_DATA.map((row, index) => ( */}
+                  {shipping.map((row, index) => {
+                    return (
+                      <Grid
+                        item
+                        my={2}
+                        key={index}
+                        sx={{
+                          // width: { xs: "100%",md:"50%" },
+                          justifyContent: "center",
+                          // width: "100%",
+                          borderRadius: "10px",
+                          border: "3px solid #406882",
+                          "&:hover": {
+                            transform: "scale(1.01)",
+                            bgcolor: "#D8D874",
+                            transitionDuration: ".2s",
+                            transitionProperty: "all",
+                          },
+                        }}
+                      >
+                        <Radio
+                          {...controlProps(row.id)}
+                          sx={{ marginTop: "8px", color: "#406882" }}
+                        />
+                        <SingleShippingAddress data={row} />
+                      </Grid>
+                    );
+                  })}
+                  
                 </Grid>
                 {/* pagination */}
                 {/* <Box

@@ -6,7 +6,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function Address(props) {
-  localStorage.setItem("id", props.data.id);
   const OnClickDeleteHandler = () => {
     axios
       .delete("http://localhost:5000/address/" + props.data.id)
@@ -64,6 +63,9 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
+            localStorage.removeItem("id");
+            localStorage.clear();
+            localStorage.setItem("id", props.data.id);
             navigator("/profile/editaddress");
           }}
         >

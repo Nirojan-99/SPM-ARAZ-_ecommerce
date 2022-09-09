@@ -12,8 +12,6 @@ public class User {
     @Id
     private String id;
     private ArrayList<Payment> payments;
-
-
     private Cart cart;
     private int loyaltyPoint;
 
@@ -27,14 +25,15 @@ public class User {
     private String dob;
 
 
-
     private ArrayList<String> favorites;
 
     private ArrayList<Address> addresses;
 
+
     public User(ArrayList<Address> addresses) {
         this.addresses = addresses;
     }
+
 
     public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
         this.id = id;
@@ -69,14 +68,17 @@ public class User {
 
     public void removePayment(int cardNumber) {
         for (Payment payment : payments) {
-            if (payment.getCardNumber() == cardNumber) {
+            if (payment.getCardNumber().equals(cardNumber)) {
                 payments.remove(payment);
             }
         }
     }
 
     public Cart getCart() {
-        return cart;
+        if (this.cart == null) {
+            cart = new Cart();
+        }
+        return this.cart;
     }
 
     public void setCart(Cart cart) {
@@ -172,11 +174,11 @@ public class User {
     }
 
 
-    public void addFavorite(String id){
+    public void addFavorite(String id) {
         favorites.add(id);
     }
 
-    public void removeFavorite(String id){
+    public void removeFavorite(String id) {
         favorites.remove(id);
 
 //        for (String favorite : favorites) {
@@ -209,9 +211,6 @@ public class User {
     public  void updateAddress (Address address){
         addresses.add(address);
     }
-
-
-
 
 
 }

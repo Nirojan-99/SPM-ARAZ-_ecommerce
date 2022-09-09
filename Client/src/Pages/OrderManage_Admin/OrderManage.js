@@ -18,24 +18,24 @@ import Manage_Products from "./Manage_Products";
 function OrderManage() {
   const Orderdata = [
     {
-      product: "product1",
+      product: "Product1",
       qty: 5,
-      status: "processing",
+      status: "Processing",
     },
     {
-      product: "product4",
+      product: "Product4",
       qty: 4,
-      status: "shipped",
+      status: "Shipped",
     },
     {
-      product: "product3",
+      product: "Product3",
       qty: 2,
-      status: "processing",
+      status: "Processing",
     },
     {
-      product: "product2",
+      product: "Product2",
       qty: 1,
-      status: "delivered",
+      status: "Delivered",
     },
   ];
   return (

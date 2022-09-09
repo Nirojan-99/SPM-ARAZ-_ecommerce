@@ -1,17 +1,19 @@
 package com.spm.araz.service;
 
+import com.spm.araz.model.Product;
 import com.spm.araz.model.Store;
 import com.spm.araz.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class StoreService {
     @Autowired
     StoreRepository storeRepository;
-    private int limit = 1;
+    private int limit = 6;
 
     //add Store
     public boolean createStore(Store store) {
@@ -22,7 +24,7 @@ public class StoreService {
 
     //get all stores
     public List<Store> getAllStores(int page) {
-        int skip = (page - 1) * 1;
+        int skip = (page - 1) * 6;
         List<Store> stores = storeRepository.findAllStores(skip, limit);
         return stores;
     }
@@ -48,9 +50,21 @@ public class StoreService {
     }
 
     //update status
-    public boolean updateStatus(Store store,boolean status){
+    public boolean updateStatus(Store store, boolean status) {
         store.setApproval(status);
         storeRepository.save(store);
         return true;
+    }
+
+    //search store
+    public List<Store> search(String title) {
+        List<Store> stores = storeRepository.search(title);
+        return stores;
+    }
+
+    //get count
+    public Integer getCount() {
+        List<Store> stores = storeRepository.findAll();
+        return stores.size();
     }
 }

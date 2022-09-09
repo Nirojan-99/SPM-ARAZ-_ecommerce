@@ -17,19 +17,19 @@ import TableRow from "@mui/material/TableRow";
 function Order() {
   const Orderdata = [
     {
-      product: "product1",
+      product: "Product1",
       qty: 3,
-      status: "processing",
+      status: "Processing",
     },
     {
-      product: "product2",
+      product: "Product2",
       qty: 4,
-      status: "delivered",
+      status: "Delivered",
     },
     {
-      product: "product3",
+      product: "Product3",
       qty: 1,
-      status: "shipped",
+      status: "Shipped",
     },
   ];
   return (

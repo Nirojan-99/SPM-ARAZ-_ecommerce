@@ -17,7 +17,7 @@ function Favorite_Products() {
       .get("http://localhost:5000/User/Favorite/get/63187f6429fe6a6deecec979")
       .then((res) => {
         console.log(res.data.product);
-        setfavorite(res.data.product);
+        setfavorite(res.data);
       })
       .catch();
   }, []);

@@ -91,7 +91,7 @@ function Checkout() {
                     textTransform: "none",
                   }}
                 >
-                  Printe Invoice
+                  Print Invoice
                 </Button>
                 {/* </Box> */}
               </Box>
@@ -101,6 +101,7 @@ function Checkout() {
           <>
             <Box mt={2} mb={1}>
               {getStepContent(activeStep)}
+              {/* <Payment handleNext={handleNext} /> */}
             </Box>
           </>
         )}

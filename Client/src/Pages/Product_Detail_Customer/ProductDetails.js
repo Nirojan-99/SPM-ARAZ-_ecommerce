@@ -41,10 +41,18 @@ const imageArray = [
 const review = 4;
 
 function ProductDetails(props) {
+
+
+  // 63187f6429fe6a6deecec979
+
   //state
   const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
   const [count, setCount] = useState(1);
+
+  //review state
+  const [review, setReview] = useState("");
+  const [star, setStar] = useState(0);
 
   //image handler
   const setImage = (index) => {
@@ -65,28 +73,54 @@ function ProductDetails(props) {
   const handlefavorite = (val) => {
     axios
       .put(
-        `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${props.data.id}&val=${val}`
-      ).then((res) => {
+        `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${product.id}&val=${val}`
+      )
+      .then((res) => {
         console.log(res.data);
-        
+
         setFavorite((isFavorite) => !isFavorite);
         if (!isFavorite) {
           toast("Added to Favoritelist", { type: "info" });
-        }
-        else {
+        } else {
           toast("remove to Favoritelist", { type: "error" });
         }
-      
       })
       .catch(() => {});
   };
 
-  //add to cart
-  const addToCart = () => {
-    const data = { productId: id, count, userId: "" };
+  //add review
+  const addReview = () => {
+    //validate
+    if (star == 0) {
+      return;
+    }
+    if (!review.trim()) {
+      return;
+    }
+
+    //data
+    const data = { userName: "Nirojan", date: new Date(), star, review };
 
     axios
-      .post(`${baseURL}users/cart`, data)
+      .post(`${baseURL}products/${product.id}/reviews`, data)
+      .then((res) => {
+        toast("Review added", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to add review", { type: "error" });
+      });
+  };
+
+  //add to cart
+  const addToCart = () => {
+    const data = new FormData();
+
+    data.append("productId", id);
+    data.append("count", count);
+    data.append("userId", "63187f8829fe6a6deecec97a");
+
+    axios
+      .post(`${baseURL}User/cart`, data)
       .then((res) => {
         toast("Added to cart", { type: "info" });
       })
@@ -102,6 +136,7 @@ function ProductDetails(props) {
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
+        console.log(product);
         setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
       })
       .catch((er) => {});
@@ -452,7 +487,7 @@ function ProductDetails(props) {
                 <Typography>Bad</Typography>
                 <RadioGroup
                   onChange={(event) => {
-                    console.log(event.target.value);
+                    setStar(event.target.value);
                   }}
                   defaultValue="1"
                   name="radio-buttons-group"
@@ -487,6 +522,8 @@ function ProductDetails(props) {
                   size="small"
                   minRows={3}
                   maxRows={5}
+                  value={review}
+                  set={setReview}
                 />
               </Box>
             </Box>
@@ -494,6 +531,7 @@ function ProductDetails(props) {
             <Box mb={2} sx={{ display: "flex", flexDirection: "row" }}>
               <Box sx={{ flexGrow: { xs: 0, sm: 1 } }} />
               <Button
+                onClick={addReview}
                 sx={{ width: { xs: "100%", sm: 100 } }}
                 color="info"
                 variant="contained"
@@ -509,10 +547,12 @@ function ProductDetails(props) {
               }}
             />
             {/* review */}
-            {product?.review?.map((item, index) => {
-              return <Review key={index} />;
+            {product?.reviews?.map((item, index) => {
+              return <Review data={item} key={index} />;
             })}
-            {product?.review ?? <Typography>No reviews</Typography>}
+            {product?.reviews?.length === 0 && (
+              <Typography>No reviews</Typography>
+            )}
           </Box>
         </Container>
       </Box>

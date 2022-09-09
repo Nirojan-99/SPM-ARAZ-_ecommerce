@@ -11,6 +11,7 @@ import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutl
 import axios from "axios";
 
 function Favorite_Product(props) {
+  console.log(props.data.id);
  const review = 3;
   // addshoppingcart fun
   const AddShoppingCart = () => {};

@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 function EditAddresss(props) {
   const idd = localStorage.getItem("id");
+  console.log("local storage");
   console.log(idd);
 
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function EditAddresss(props) {
   const [nameError, setNameError] = useState(false);
   const [ContactnumberError, setContactnumberError] = useState(false);
   const [AddressesError, setAddressesError] = useState(false);
-  const [ProError, setProError] = useState(false);
+  // const [ProError, setProError] = useState(false);
 
   const [Pro, setPro] = useState();
   const [dis, setdis] = useState([]);
@@ -43,10 +44,11 @@ function EditAddresss(props) {
 
   const [district, setDistricts] = useState([]);
   const onUpdate = () => {
+    console.log(contactNumber.length);
     setNameError(false);
     setContactnumberError(false);
     setAddressesError(false);
-    setProError(false);
+    // setProError(false);
     // setdisError(false);
     if (!name.trim()) {
       toast("Invalid Name", { type: "error" });
@@ -56,14 +58,16 @@ function EditAddresss(props) {
       toast("Invalid Contactnumber ", { type: "error" });
       return setContactnumberError(true);
     }
+    if (!(contactNumber.length == 10)) {
+      toast("Phone number should be 10 digit ", { type: "error" });
+      return setContactnumberError(true);
+    }
+
     if (!address.trim()) {
       toast("Invalid Address", { type: "error" });
       return setAddressesError(true);
     }
-    if (!Pro.trim()) {
-      toast("Invalid province", { type: "error" });
-      return setProError(true);
-    }
+
     const data = {
       name: name,
       province: Pro,
@@ -71,10 +75,12 @@ function EditAddresss(props) {
       address: address,
       contactNumber: contactNumber,
     };
+    console.log(data);
 
     axios
-      .put("http://localhost:5000/address/" + idd, { data })
+      .put("http://localhost:5000/address/" + idd, data)
       .then((res) => {
+        console.log(res.data);
         if (res.data.msg === "Updated") {
           setTimeout(() => {
             toast("Succesfully Updated", { type: "success" });
@@ -126,7 +132,7 @@ function EditAddresss(props) {
             <Label for="contact_number" title="Contact Number" />
             <Input
               error={ContactnumberError}
-              type="text"
+              type="number"
               id="contact_number"
               size="small"
               autoFocus={true}
@@ -136,10 +142,9 @@ function EditAddresss(props) {
             {/* province */}
             <Label for="province" title="Province" />
             <Select
-              error={ProError}
+              // error={ProError}
               sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
               onChange={(event) => {
-                setProError(false);
                 setPro(() => {
                   let data = DATA.filter((item, index) => {
                     return item.province === event.target.value;
@@ -158,6 +163,7 @@ function EditAddresss(props) {
               size="small"
               color="info"
               id="province"
+              value={prog}
             >
               {/* <MenuItem value={prog}></MenuItem> */}
               <MenuItem disabled value={prog}>
@@ -199,7 +205,6 @@ function EditAddresss(props) {
               id="district"
               value={disg}
               onChange={(event) => {
-                // setdisError(false);
                 setdis(() => {
                   let data = district.filter((item, index) => {
                     if (item === event.target.value) {

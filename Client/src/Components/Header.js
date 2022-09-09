@@ -25,11 +25,18 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../Store/auth";
+
 function Header() {
   //state
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const { token, role, userID } = useSelector((state) => state.loging);
+  // const [auth, setAuth] = useState(token);
 
   const Menu = (
     <>
@@ -166,6 +173,11 @@ function Header() {
                   bgcolor: "#1597BB",
                   "&:hover": { bgcolor: "#FEC260" },
                   mr: 2,
+                }}
+                onClick={() => {
+                  // setAuth(null);
+                  dispatch(logout());
+                  navigate("/login", { replace: true });
                 }}
               >
                 <LogoutIcon sx={{ color: "#fff" }} />

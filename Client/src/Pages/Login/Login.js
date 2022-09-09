@@ -55,11 +55,11 @@ function Login() {
         );
         setTimeout(() => {
           toast("Login Sucess", { type: "success" });
-        }, 1000);
+        }, 1500);
 
         setTimeout(() => {
-          navigate("/profile/details");
-        }, 1500);
+          navigate("/profile/details", { replace: true });
+        }, 2500);
       })
 
       .catch(() => {

@@ -280,52 +280,141 @@ public class UserController {
     }
 
 
-    @PutMapping("/Favorite")
-    public ResponseEntity<UserResponse> addFavorite(@RequestParam("userId") String userId,
-                                                    @RequestParam("productId") String productId,
-                                                    @RequestParam("val") boolean val) {
 
 
-        System.out.println(val);
-        System.out.println(userId);
-        System.out.println(productId);
-        User user = userService.getUser(userId);
-        UserResponse userResponse = new UserResponse();
+    // sayanthan
+// add favorite
+   @PutMapping("/Favorite")
+   public ResponseEntity<UserResponse> addFavorite (@RequestParam("userId") String userId,
+                                                   @RequestParam("productId") String productId,
+                                                   @RequestParam (required = false) boolean val) {
+       User user = userService.getUser(userId);
+       UserResponse userResponse = new UserResponse();
+       if (user == null) {
+           userResponse.setMsg("Not found");
+           return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+       } else {
+           if (val) {
 
-        if (user == null) {
-            userResponse.setMsg("Not found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        } else {
-            if (val) {
-
-                boolean res = userService.addFavorite(user, productId);
-                if (res) {
-                    userResponse.setMsg("Added data");
-                    return new ResponseEntity<>(userResponse, HttpStatus.OK);
-                } else {
-                    userResponse.setMsg("not added data");
-                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-                }
-
-
-            } else {
-                boolean res = userService.removeFavorite(user, productId);
-                if (res) {
-                    userResponse.setMsg("remove data");
-                    return new ResponseEntity<>(userResponse, HttpStatus.OK);
-                } else {
-                    userResponse.setMsg("not remove data");
-                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-                }
-
-
-            }
-        }
-
-
-    }
+               boolean res = userService.addFavorite(user, productId);
+               if (res) {
+                   userResponse.setMsg("Added data");
+                   return new ResponseEntity<>(userResponse, HttpStatus.OK);
+               } else {
+                   userResponse.setMsg("not added data");
+                   return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+               }
+           } else {
+               boolean res = userService.removeFavorite(user, productId);
+               if (res) {
+                   userResponse.setMsg("remove data");
+                   return new ResponseEntity<>(userResponse, HttpStatus.OK);
+               } else {
+                   userResponse.setMsg("not remove data");
+                   return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+               }
+           }
+       }
+   }
 
 
-}
+// get Favorite
+          @GetMapping("/Favorite/get/{userId}")
+          public ResponseEntity<ProductResponse> getFavorite (@PathVariable("userId") String userId){
+              User user = userService.getUser(userId);
+
+//    UserResponse userResponse = new UserResponse();
+              ProductResponse productResponse = new ProductResponse();
+
+              if (user == null) {
+                  productResponse.setMsg("Not found");
+                  return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
+              } else {
+                  String[] id = userService.getFavorite(user).toArray(new String[0]);
+//        String id = String.valueOf(userService.getFavorite(user));
+//        System.out.println(Arrays.stream(id).toArray());
+                  Product products = null;
+
+                  for (String var : id) {
+                      System.out.println(var);
+                      products = productService.getProduct(var);
+
+                  }
+                  productResponse.setProduct(products);
+                  System.out.println(products);
+
+                  productResponse.setMsg("get data");
+                  return new ResponseEntity<>(productResponse, HttpStatus.OK);
+              }
+
+
+          }
+
+
+// add address user
+          @PostMapping("addresses/{userId}")
+          public ResponseEntity<UserResponse> addAddress (@RequestBody Address address, @PathVariable("userId") String userId){
+              User user = userService.getUser(userId);
+
+              UserResponse userResponse = new UserResponse();
+
+              if (user == null) {
+                  userResponse.setMsg("Not found");
+                  return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+              } else {
+
+                  userService.addAddress(user, address);
+                  userResponse.setMsg("added data");
+                  return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+              }
+          }
+
+
+// delete address user
+          @DeleteMapping("addresses/{addressId}")
+          public ResponseEntity<UserResponse> removeAddress (@RequestParam("userId") String userId,@PathVariable("addressId") int addressId){
+
+              System.out.println(userId);
+
+              User user = userService.getUser(userId);
+
+              UserResponse userResponse = new UserResponse();
+
+              if (user == null) {
+                  userResponse.setMsg("Not found");
+                  return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+              } else {
+                  userService.removeAddress(user, addressId);
+
+                  userResponse.setMsg("remove data");
+                  return new ResponseEntity<>(userResponse, HttpStatus.OK);
+              }
+          }
+
+// get address user
+          @GetMapping("/addresses/{userId}")
+          public ResponseEntity<UserResponse> getAddress (@PathVariable("userId") String userId){
+              User user = userService.getUser(userId);
+
+              UserResponse userResponse = new UserResponse();
+
+
+              if (user == null) {
+                  userResponse.setMsg("Not found");
+                  return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+              } else {
+                  userService.getAddresses(user);
+                  System.out.println(userService.getAddresses(user));
+
+                  userResponse.setMsg("get data");
+                  return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+              }
+
+          }
+
+
+      }
 
 

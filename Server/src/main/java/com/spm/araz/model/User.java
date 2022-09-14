@@ -24,6 +24,8 @@ public class User {
     private String gender;
     private String dob;
 
+    private int otp;
+
 
     private ArrayList<String> favorites;
 
@@ -54,6 +56,7 @@ public class User {
     public User() {
         payments = new ArrayList<>();
         favorites = new ArrayList<>();
+        otp=0;
         addresses = new ArrayList<>();
 
     }
@@ -188,6 +191,13 @@ public class User {
 //        }
     }
 
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
+    }
     public ArrayList<Address> getAddresses() {
         return addresses;
     }

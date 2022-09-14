@@ -35,7 +35,7 @@ function Login() {
       toast("Enter valid Email", { type: "error" });
       return setError(true);
     }
-    if (!password.trim() || password.length < 6) {
+    if (!password.trim() || password.length < 5) {
       toast("Enter valid Password", { type: "error" });
       return setError(true);
     }

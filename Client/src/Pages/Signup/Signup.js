@@ -43,12 +43,12 @@ function SignUp() {
       toast("Enter valid Email", { type: "error" });
       return setError(true);
     }
-    if (!password.trim() || password.length < 6) {
+    if (!password.trim() || password.length < 5) {
       toast("Enter valid Password", { type: "error" });
       return setError(true);
     }
-    if (!cpassword.trim() || cpassword.length < 6 || !(cpassword == password)) {
-      toast("Please check conform password", { type: "error" });
+    if (!cpassword.trim() || cpassword.length < 5 || !(cpassword == password)) {
+      toast("Please check confirm password", { type: "error" });
       return setError(true);
     }
     if (!contactNo.trim() || contactNo.length < 8) {
@@ -143,6 +143,24 @@ function SignUp() {
               value={email}
               set={setEmail}
             />
+            {/* Password */}
+            <Label for="password" title="Password" />
+            <Input
+              id="password"
+              type="password"
+              size="small"
+              value={password}
+              set={setPassword}
+            />
+            {/* Confirm Password */}
+            <Label for="re_password" title="Confirm Password" />
+            <Input
+              id="re_password"
+              type="password"
+              size="small"
+              value={cpassword}
+              set={setCPassword}
+            />
             {/* contact number */}
             <Label title="Contact Number" for="contact_number" />
             <Input
@@ -177,8 +195,6 @@ function SignUp() {
               value={gender}
               set={setGender}
             >
-              {/* <option value="male">Male</option>
-              <option value="female">Female</option> */}
               <MenuItem value={"male"} selected>
                 Male
               </MenuItem>
@@ -187,24 +203,7 @@ function SignUp() {
             {/* dob */}
             <Label title="Date of Birth" for="dob" />
             <Input id="dob" size="small" type="date" value={dob} set={setDob} />
-            {/* Password */}
-            <Label for="password" title="Password" />
-            <Input
-              id="password"
-              type="password"
-              size="small"
-              value={password}
-              set={setPassword}
-            />
-            {/* Confirm Password */}
-            <Label for="re_password" title="Confirm Password" />
-            <Input
-              id="re_password"
-              type="password"
-              size="small"
-              value={cpassword}
-              set={setCPassword}
-            />
+
             {/* save button */}
             <Box mt={2} />
             <ButtonA

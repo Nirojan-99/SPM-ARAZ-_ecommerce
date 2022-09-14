@@ -200,6 +200,8 @@ public class UserController {
         UserResponse userResponse = new UserResponse();
         User exisitngUser = userService.getUser(id);
 
+        System.out.println(id);
+
         if (exisitngUser == null) {
             userResponse.setMsg("No user found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
@@ -228,12 +230,20 @@ public class UserController {
             if (user.getUserType() != null) {
                 exisitngUser.setUserType(user.getUserType());
             }
+            
 
         }
         //save
-        boolean res = userService.updateUser(exisitngUser);
+        User res = userService.updateUserRe(exisitngUser);
+        System.out.println(exisitngUser);
 
-        if (res) {
+        if (res != null) {
+            User user1 = new User();
+            user1.setId(res.getId());
+            user1.setUserType(res.getUserType());
+            userResponse.setUser(user1);
+            userResponse.setUser(user1);
+
             userResponse.setMsg("Updated");
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
 
@@ -243,21 +253,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
-        User user = userService.getUser(id);
-        UserResponse userResponse = new UserResponse();
 
-        if (user != null) {
 
-            userResponse.setUser(user);
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        }
 
-    }
+
 
   
 
@@ -314,6 +313,46 @@ public class UserController {
 }
 
 
+    @GetMapping("/resetPwd/{email}")
+    public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
+        User user = userService.getByEmail(email);
+        UserResponse userResponse = new UserResponse();
+
+        if (user != null) {
+            user.setOtp(1111);
+            //save otp in database
+            boolean res = userService.updateUser(user);
+
+            if (res) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setEmail(user.getEmail());
+                user1.setOtp(user.getOtp());
+                userResponse.setUser(user1);
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }}
+
+
+//@GetMapping("/resetPwd")
+//public ResponseEntity<UserResponse> resetPwd(@PathVariable String id) {
+//    User user = userService.getUser(id);
+//    UserResponse userResponse = new UserResponse();
+//
+//    if (user != null) {
+//
+//        userResponse.setUser(user);
+//        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+//    } else {
+//        userResponse.setMsg("No user found");
+//        return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+//    }
+//
+//}
 }
 
 

@@ -12,7 +12,46 @@ import ButtonA from "../../Components/ButtonA";
 import Input from "../../Components/Input";
 import Label from "../../Components/Label";
 
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+
 function ForgotPassword() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
+
+  const navigate = useNavigate();
+
+  const OnSubmitHandler = () => {
+    setError(false);
+    //validation
+    if (!email.trim() || !email.includes("@") || !email.includes(".")) {
+      toast("Enter valid Email", { type: "error" });
+      return setError(true);
+    }
+
+    axios
+      .get("http://localhost:5000/User/resetPwd/" + email)
+      .then((res) => {
+        if (res) {
+          // navigate("/otp/" + res.data.user.id + "/" + res.data.user.otp);
+          setTimeout(() => {
+            toast("OTP Send to your Email", { type: "success" });
+          }, 1500);
+
+          setTimeout(() => {
+            navigate("/otp/" + res.data.user.id + "/" + res.data.user.otp);
+          }, 2500);
+        }
+      })
+
+      .catch((er) => {
+        toast("No user found", { type: "error" });
+        console.log(er);
+      });
+  };
+
   return (
     <>
       <Box
@@ -20,6 +59,7 @@ function ForgotPassword() {
           my: 10,
         }}
       >
+        <ToastContainer />
         <Container maxWidth="sm">
           <Box component={Paper} sx={{ bgcolor: "#fff" }} p={3} my={2.5}>
             {/* title */}
@@ -44,11 +84,17 @@ function ForgotPassword() {
               size="small"
               placeholder="xxxxxx@gmail.com"
               type="text"
+              value={email}
+              set={setEmail}
             />
 
             {/* submit button */}
             <Box mt={2} />
-            <ButtonA fullWidth={true} title="SUBMIT" />
+            <ButtonA
+              fullWidth={true}
+              title="SUBMIT"
+              handler={OnSubmitHandler}
+            />
             <Box mt={2} />
             {/* <Typography
               sx={{

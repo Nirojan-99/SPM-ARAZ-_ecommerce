@@ -31,7 +31,6 @@ function Orders() {
           <br />
           <Order />
           <Order />
-          <Order />
         </Box>
       </Paper>
     </>

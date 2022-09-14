@@ -20,7 +20,7 @@ public class Address {
     private String defaultStatus;
 
 
-    public Address(String id, String name, String province, String district, String address, String contactNumber, String defaultStatus) {
+    public Address( String id,String name, String province, String district, String address, String contactNumber, String defaultStatus) {
         this.id = id;
         this.name = name;
         this.province = province;

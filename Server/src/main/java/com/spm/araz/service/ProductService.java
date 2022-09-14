@@ -21,7 +21,7 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-    private int limit = 1;
+    private int limit = 6;
     private Path foundFile;
 
     //create product
@@ -92,10 +92,18 @@ public class ProductService {
     }
 
     //find by store
-    public List<Product> getStoreProducts(String id) {
-        List<Product> products = productRepository.findByStoreId(id);
+    public List<Product> getStoreProducts(String id, int page) {
+        int skip = (page - 1) * 6;
+        List<Product> products = productRepository.findByStoreId(id, skip, limit);
         return products;
     }
+
+    //find by store
+    public int getStoreProductsCount(String id) {
+        List<Product> products = productRepository.findByStoreId(id);
+        return products.size();
+    }
+
 
     //delete by id
     public boolean deleteById(String id) {
@@ -115,6 +123,11 @@ public class ProductService {
         product.setOffer(null);
         productRepository.save(product);
         return false;
+    }
+
+    //search within store
+    public List<Product> searchWithinStore(String id, String title) {
+        return productRepository.searchWithStore(id, title);
     }
 
 

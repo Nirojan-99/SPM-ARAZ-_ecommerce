@@ -56,10 +56,11 @@ function Offer() {
       .get(`${baseURL}products/${id}`)
       .then((res) => {
         setProduct(res.data.product);
-        setpercentage(res.data.product?.offer.percentage);
+        setpercentage(res.data.product?.offer?.percentage);
         setDate(res.data.product?.offer?.validUntil);
       })
       .catch((er) => {
+        console.log(er)
         toast("error while getting data", { type: "error" });
       });
   }, []);

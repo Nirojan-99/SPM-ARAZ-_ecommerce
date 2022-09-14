@@ -46,14 +46,14 @@ function AddressBook() {
   const [nameError, setNameError] = useState(false);
   const [ContactnumberError, setContactnumberError] = useState(false);
   const [AddressesError, setAddressesError] = useState(false);
-  const [ProError, setProError] = useState(false);
+
   // const [disError, setdisError] = useState(false);
 
   const onsubmitSave = () => {
     setNameError(false);
     setContactnumberError(false);
     setAddressesError(false);
-    setProError(false);
+
     // setdisError(false);
     if (!Name.trim()) {
       toast("Invalid Name", { type: "error" });
@@ -63,14 +63,18 @@ function AddressBook() {
       toast("Invalid Contactnumber ", { type: "error" });
       return setContactnumberError(true);
     }
+    if (!(Contactnumber.length == 10)) {
+      toast("Contactnumber should be 10 digit ", { type: "error" });
+      return setContactnumberError(true);
+    }
     if (!Addresses.trim()) {
       toast("Invalid Address", { type: "error" });
       return setAddressesError(true);
     }
-    if (!Pro.trim()) {
-      toast("Invalid province", { type: "error" });
-      return setProError(true);
-    }
+    // if (!Pro.trim()) {
+    //   toast("Invalid province", { type: "error" });
+    // }
+
     // if (!dis.trim()) {
     //   toast("Invalid district", { type: "error" });
     //   return setdisError(true);
@@ -92,7 +96,7 @@ function AddressBook() {
 
         setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 1700);
       })
       .catch((er) => {
         toast("succesfully added new address", { type: "error" });
@@ -344,10 +348,8 @@ function AddressBook() {
               {/* province */}
               <Label for="province" title="Province" />
               <Select
-                error={ProError}
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 onChange={(event) => {
-                  setProError(false);
                   // setdisError(false);
                   setPro(() => {
                     let data = DATA.filter((item, index) => {

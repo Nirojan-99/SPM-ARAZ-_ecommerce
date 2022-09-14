@@ -5,18 +5,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cart {
-    private HashMap<String, Integer> products;
+    private ArrayList<Item> products;
 
     public Cart() {
-        products = new HashMap<>();
+        products = new ArrayList<>();
+    }
+
+    public ArrayList<Item> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<Item> products) {
+        this.products = products;
     }
 
     public void addToCart(String productId, int count) {
-        products.put(productId, count);
+        products.add(new Item(productId, count));
     }
 
     public void removeFromCart(String productId) {
-        products.remove(productId);
+        for (Item item : this.products) {
+            if (item.getProductID().equals(productId)) {
+                products.remove(item);
+                return;
+            }
+        }
     }
 
     public void emptyCart() {

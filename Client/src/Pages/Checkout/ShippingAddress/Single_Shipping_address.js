@@ -35,7 +35,7 @@ function SingleShippingAddress(props) {
               fontFamily: "open sans",
             }}
           >
-            {props.data.Province}
+            {props.data.province}
           </Typography>
           <Typography
             style={{
@@ -47,7 +47,7 @@ function SingleShippingAddress(props) {
               fontFamily: "open sans",
             }}
           >
-            {props.data.districts}
+            {props.data.district}
           </Typography>
           <Typography
             style={{
@@ -59,7 +59,7 @@ function SingleShippingAddress(props) {
               fontFamily: "open sans",
             }}
           >
-            {props.data.contactnumber}
+            {props.data.contactNumber}
           </Typography>{" "}
         </Box>
       </Grid>

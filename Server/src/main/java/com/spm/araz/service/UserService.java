@@ -1,6 +1,6 @@
 package com.spm.araz.service;
 
-import com.spm.araz.model.Favorite;
+import com.spm.araz.model.Address;
 import com.spm.araz.model.Payment;
 import com.spm.araz.model.User;
 import com.spm.araz.repository.UserRepository;
@@ -88,6 +88,25 @@ public class UserService {
     public User updateUserRe(User user) {
 
         return  userRepository.save(user);
+    public ArrayList<String> getFavorite(User user) {
+
+       return user.getFavorites();
+
+    }
+
+    public  boolean addAddress(User user, Address address){
+        user.addAddress(address);
+        userRepository.save(user);
+        return true;
+    }
+
+    public  boolean removeAddress (User user, int addresId){
+        user.removeAddress(addresId);
+        userRepository.save(user);
+        return true;
+    }
+    public ArrayList<Address> getAddresses(User user){
+       return user.getAddresses();
     }
 
 }

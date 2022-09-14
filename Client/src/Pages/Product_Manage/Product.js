@@ -127,7 +127,7 @@ function Product() {
     images.forEach((element, index) => {
       product.append("images", images[index]);
     });
-    product.append("storeID", "630a093393cb77158863980b");
+    product.append("storeID", "63198fb108db9a05475a68c8");
     product.append("title", name);
     product.append("description", description);
     product.append("price", price);
@@ -155,9 +155,9 @@ function Product() {
         .then((res) => {
           toast("Product added successfully", { type: "info" });
           setIsloading(false);
-          setTimeout(() => {
-            navigate("/");
-          }, 2000);
+          // setTimeout(() => {
+          //   navigate("/");
+          // }, 2000);
         })
         .catch((er) => {
           console.log(er);

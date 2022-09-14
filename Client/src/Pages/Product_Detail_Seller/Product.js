@@ -18,6 +18,8 @@ import { useParams } from "react-router";
 import calNewPrice from "../../Helper/calNewPrice";
 import calReview from "../../Helper/calReview";
 
+import { ToastContainer, toast } from "react-toastify";
+
 function Product() {
   //state
   const [previewImage, setPreviewImage] = useState();
@@ -50,8 +52,10 @@ function Product() {
       })
       .catch((er) => {});
   }, []);
+
   return (
     <>
+      <ToastContainer />
       <Box>
         <Container maxWidth="md">
           {/* product detail sec */}
@@ -240,10 +244,12 @@ function Product() {
             {/* divider */}
             <hr style={{ borderTop: "2px dashed #1597BB", bgcolor: "none" }} />
             {/* reviews */}
-            {product?.review?.map((item, index) => {
-              return <Review key={index} />;
+            {product?.reviews?.map((item, index) => {
+              return <Review data={item} id={product.id} key={index} />;
             })}
-            {product?.review || <Typography>No review</Typography>}
+            {product?.reviews?.length === 0 && (
+              <Typography>No review</Typography>
+            )}
           </Box>
         </Container>
       </Box>

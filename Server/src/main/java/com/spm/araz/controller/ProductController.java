@@ -40,12 +40,14 @@ public class ProductController {
                                                       @RequestParam("price") int price,
                                                       @RequestParam("title") String title,
                                                       @RequestParam("description") String description,
-                                                      @RequestParam("category") String category) {
+                                                      @RequestParam("category") String category,
+                                                      @RequestParam("storeID") String storeID) {
         Product product = new Product();
         product.setTitle(title);
         product.setPrice(price);
         product.setDescription(description);
         product.setCategory(category);
+        product.setStoreID(storeID);
 
         ArrayList<String> images = new ArrayList<>();
 
@@ -74,7 +76,9 @@ public class ProductController {
 
     //get all products
     @GetMapping("/")
-    public ResponseEntity<ProductResponse> getProducts(@RequestParam(required = false) String category, @RequestParam(required = false) String title, @RequestParam(required = false, defaultValue = "1") int page) {
+    public ResponseEntity<ProductResponse> getProducts(@RequestParam(required = false) String category,
+                                                       @RequestParam(required = false) String title,
+                                                       @RequestParam(required = false, defaultValue = "1") int page) {
         List<Product> products;
         ProductResponse productResponse = new ProductResponse();
 
@@ -101,14 +105,23 @@ public class ProductController {
 
     //get products by store id
     @GetMapping("/stores/{id}")
-    public ResponseEntity<ProductResponse> getProductsByStore(@PathVariable(required = true) String id) {
+    public ResponseEntity<ProductResponse> getProductsByStore(@PathVariable(required = true) String id,
+                                                              @RequestParam(required = false) boolean count,
+                                                              @RequestParam(required = false, defaultValue = "1") int page) {
         ProductResponse productResponse = new ProductResponse();
 
-        List<Product> products = productService.getStoreProducts(id);
+        List<Product> products = productService.getStoreProducts(id, page);
+
+        if (count) {
+            productResponse.setMsg(products.size() + "");
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        }
+
         productResponse.setProductList(products);
 
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
+
 
     //get product by id
     @GetMapping("/{id}")
@@ -263,7 +276,7 @@ public class ProductController {
 
     // add offer
     @PostMapping("/offer/{id}")
-    public ResponseEntity<ProductResponse> addOffer(@RequestBody Offer offer,@PathVariable("id") String id){
+    public ResponseEntity<ProductResponse> addOffer(@RequestBody Offer offer, @PathVariable("id") String id) {
         Product product = productService.getProduct(id);
 
         ProductResponse productResponse = new ProductResponse();
@@ -271,15 +284,15 @@ public class ProductController {
         if (product == null) {
             productResponse.setMsg("Not found");
             return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
-        }else{
-            productService.addOffer(product,offer);
-            return new ResponseEntity<>(productResponse,HttpStatus.OK);
+        } else {
+            productService.addOffer(product, offer);
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
         }
     }
 
     //delete offer
     @DeleteMapping("/offer/{id}")
-    public ResponseEntity<ProductResponse> deleteOffer(@PathVariable("id") String id){
+    public ResponseEntity<ProductResponse> deleteOffer(@PathVariable("id") String id) {
         Product product = productService.getProduct(id);
 
         ProductResponse productResponse = new ProductResponse();
@@ -287,10 +300,27 @@ public class ProductController {
         if (product == null) {
             productResponse.setMsg("Not found");
             return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             productService.deleteOffer(product);
-            return new ResponseEntity<>(productResponse,HttpStatus.OK);
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
         }
+    }
+
+    //get store product count
+    @GetMapping("/store/{id}/count")
+    public ResponseEntity<Integer> getProductCountForStore(@PathVariable("id") String id) {
+        int count = productService.getStoreProductsCount(id);
+
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
+    //search within store id
+    @GetMapping("/store/{id}/search/{title}")
+    public ResponseEntity<List<Product>> searchWithinStore(@PathVariable("id") String id,
+                                                           @PathVariable("title") String title) {
+        List<Product> products = productService.searchWithinStore(id, title);
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     //test

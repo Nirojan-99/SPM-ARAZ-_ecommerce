@@ -3,24 +3,27 @@ import { Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import TableCell from "@mui/material/TableCell";
 import axios from "axios";
-import Ack from "../../Components/Ack";
-import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 function Address(props) {
-
   const OnClickDeleteHandler = () => {
     axios
       .delete("http://localhost:5000/address/" + props.data.id)
       .then((res) => {
-        console.log(res.data);
+        if (res) {
+          toast("Succesfully delete address", { type: "success" });
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        toast("Unable to delete", { type: "success" });
+      });
   };
 
   const navigator = useNavigate();
   return (
     <>
       <TableCell component="th" scope="row">
+        <ToastContainer />
         <Typography
           variant="body"
           sx={{ color: "#2B4865", fontSize: 15, fontFamily: "open sans" }}
@@ -34,8 +37,7 @@ function Address(props) {
       >
         {props.data.province}
         <br />
-        {props.data.district}{" "}
-        {/* <br /> */}
+        {props.data.district} {/* <br /> */}
         {/* {props.data.address} */}
       </TableCell>
       <TableCell
@@ -61,7 +63,10 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
-            navigator("/profile/editaddress/" + props.data.id);
+            localStorage.removeItem("id");
+            localStorage.clear();
+            localStorage.setItem("id", props.data.id);
+            navigator("/profile/editaddress");
           }}
         >
           Edit

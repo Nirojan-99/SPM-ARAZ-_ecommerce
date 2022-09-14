@@ -12,8 +12,6 @@ public class User {
     @Id
     private String id;
     private ArrayList<Payment> payments;
-
-
     private Cart cart;
     private int loyaltyPoint;
 
@@ -29,9 +27,14 @@ public class User {
     private int otp;
 
 
-
     private ArrayList<String> favorites;
 
+    private ArrayList<Address> addresses;
+
+
+    public User(ArrayList<Address> addresses) {
+        this.addresses = addresses;
+    }
 
 
     public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
@@ -54,6 +57,7 @@ public class User {
         payments = new ArrayList<>();
         favorites = new ArrayList<>();
         otp=0;
+        addresses = new ArrayList<>();
 
     }
 
@@ -67,14 +71,17 @@ public class User {
 
     public void removePayment(int cardNumber) {
         for (Payment payment : payments) {
-            if (payment.getCardNumber() == cardNumber) {
+            if (payment.getCardNumber().equals(cardNumber)) {
                 payments.remove(payment);
             }
         }
     }
 
     public Cart getCart() {
-        return cart;
+        if (this.cart == null) {
+            cart = new Cart();
+        }
+        return this.cart;
     }
 
     public void setCart(Cart cart) {
@@ -170,11 +177,11 @@ public class User {
     }
 
 
-    public void addFavorite(String id){
+    public void addFavorite(String id) {
         favorites.add(id);
     }
 
-    public void removeFavorite(String id){
+    public void removeFavorite(String id) {
         favorites.remove(id);
 
 //        for (String favorite : favorites) {
@@ -191,4 +198,29 @@ public class User {
     public void setOtp(int otp) {
         this.otp = otp;
     }
+    public ArrayList<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(ArrayList<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+
+    public  void addAddress(Address address) {
+        addresses.add(address);
+    }
+    public void removeAddress(int addressId){
+        for (Address address: addresses ){
+    if (address == addresses.get(addressId)){
+        addresses.remove(address);
+    }
+        }
+    }
+
+    public  void updateAddress (Address address){
+        addresses.add(address);
+    }
+
+
 }

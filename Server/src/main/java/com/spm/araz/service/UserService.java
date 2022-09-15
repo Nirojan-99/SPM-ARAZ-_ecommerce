@@ -5,6 +5,8 @@ import com.spm.araz.model.Payment;
 import com.spm.araz.model.User;
 import com.spm.araz.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ import java.util.ArrayList;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     //add to card
     public boolean addToCart(User user, String id, int count) {
@@ -87,7 +92,8 @@ public class UserService {
 
     public User updateUserRe(User user) {
 
-        return  userRepository.save(user);
+        return userRepository.save(user);
+    }
     public ArrayList<String> getFavorite(User user) {
 
        return user.getFavorites();
@@ -108,5 +114,21 @@ public class UserService {
     public ArrayList<Address> getAddresses(User user){
        return user.getAddresses();
     }
+
+    public void sendSimpleEmail(String toEmail,
+                                String body,
+                                String subject) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("project2020sliit@gmail.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+
+
+        javaMailSender.send(message);
+        System.out.println("Mail Send...");
+    }
+
 
 }

@@ -48,7 +48,7 @@ function Page() {
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/passworForgot" element={<ForgotPassword />} />
-      <Route path="/otp/:id/:otp" element={<OTP />} />
+      <Route path="/otp/:id" element={<OTP />} />
       <Route path="/passwordReset/:id" element={<ResetPassword />} />
     </Routes>
   );

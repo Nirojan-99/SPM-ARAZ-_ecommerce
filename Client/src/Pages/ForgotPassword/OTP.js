@@ -18,8 +18,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function OTP(props) {
-  const { id, otp } = useParams();
-  console.log(id, otp);
+  const { id } = useParams();
   const [otpPin, setOtpPin] = useState("");
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -35,34 +34,24 @@ function OTP(props) {
       id: id,
       otp: otpPin,
     };
-    if (otp == otpPin) {
-      setTimeout(() => {
-        toast("Otp Matched. You can now reset Password", { type: "success" });
-      }, 1500);
 
-      setTimeout(() => {
-        navigate("/passwordReset/" + id, { replace: true });
-      }, 2500);
-    } else {
-      setTimeout(() => {
-        toast("Otp is not Matched. Try Again", { type: "error" });
-      }, 1500);
-    }
-    // axios
-    //   .post(`http://localhost:5000/User/otp`, data)
-    //   .then((res) => {
-    //     setTimeout(() => {
-    //       toast("Login Sucess", { type: "success" });
-    //     }, 1500);
+    axios
+      .post(`http://localhost:5000/User/otp`, data)
+      .then((res) => {
+        setTimeout(() => {
+          toast("Otp Matched. You can now reset Password", { type: "success" });
+        }, 1500);
 
-    //     setTimeout(() => {
-    //       navigate("/profile/details", { replace: true });
-    //     }, 2500);
-    //   })
+        setTimeout(() => {
+          navigate("/passwordReset/" + id, { replace: true });
+        }, 2500);
+      })
 
-    //   .catch(() => {
-    //     toast("Invalid Email and Password", { type: "error" });
-    //   });
+      .catch(() => {
+        setTimeout(() => {
+          toast("Otp is not Matched. Try Again", { type: "error" });
+        }, 1500);
+      });
   };
 
   return (

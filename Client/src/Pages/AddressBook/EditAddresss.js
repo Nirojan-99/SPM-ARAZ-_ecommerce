@@ -9,7 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 import axios from "axios";
 function EditAddresss(props) {
-  const idd = localStorage.getItem("id");
+  const userId = "63187f8829fe6a6deecec97a";
+  const idd = localStorage.getItem("indexNo");
   console.log("local storage");
   console.log(idd);
 
@@ -30,16 +31,20 @@ function EditAddresss(props) {
   // const { id } = useParams();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/address/" + idd)
+      .get(
+        `http://localhost:5000/User/addresses/?UserId=${userId}&indexNo=${idd}`
+      )
       .then((res) => {
-        console.log(res.data.name);
-        setname(res.data.name);
-        setcontactNumber(res.data.contactNumber);
-        setprog(res.data.province);
-        setdisg(res.data.district);
-        setaddress(res.data.address);
+        console.log(res.data.address);
+        setname(res.data.address.name);
+        setcontactNumber(res.data.address.contactNumber);
+        setprog(res.data.address.province);
+        setdisg(res.data.address.district);
+        setaddress(res.data.address.address);
       })
-      .catch(() => {});
+      .catch((er) => {
+        console.log(er);
+      });
   }, []);
 
   const [district, setDistricts] = useState([]);
@@ -78,9 +83,13 @@ function EditAddresss(props) {
     console.log(data);
 
     axios
-      .put("http://localhost:5000/address/" + idd, data)
+      // .put("http://localhost:5000/address/" + idd, data)
+      .put(
+        `http://localhost:5000/User/addresses/?UserId=${userId}&indexNo=${idd}`,
+        data
+      )
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.msg);
         if (res.data.msg === "Updated") {
           setTimeout(() => {
             toast("Succesfully Updated", { type: "success" });

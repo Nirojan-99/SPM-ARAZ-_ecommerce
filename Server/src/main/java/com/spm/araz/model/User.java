@@ -181,11 +181,6 @@ public class User {
     public void removeFavorite(String id) {
         favorites.remove(id);
 
-//        for (String favorite : favorites) {
-//            if (favorite == id) {
-//                favorites.remove(favorite);
-//            }
-//        }
     }
 
     public ArrayList<Address> getAddresses() {
@@ -197,19 +192,31 @@ public class User {
     }
 
 
-    public  void addAddress(Address address) {
+    public void addAddress(Address address) {
         addresses.add(address);
-    }
-    public void removeAddress(int addressId){
-        for (Address address: addresses ){
-    if (address == addresses.get(addressId)){
-        addresses.remove(address);
-    }
-        }
     }
 
-    public  void updateAddress (Address address){
-        addresses.add(address);
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+    }
+
+
+
+
+
+
+    public Address checkDefaultAddress(String defaultStatus) {
+        for (Address address : addresses) {
+
+
+            if (address.getDefaultStatus().equals(defaultStatus)) {
+
+
+                return address;
+            }
+
+        }
+        return null;
     }
 
 

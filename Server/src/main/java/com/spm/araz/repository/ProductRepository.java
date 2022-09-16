@@ -50,4 +50,6 @@ public interface ProductRepository extends MongoRepository<Product, Integer> {
             "{ '$match': {'storeID':?0 ,'title' : {$regex:?1,$options:'i'} } }"
     })
     List<Product> searchWithStore(String id, String title);
+
+
 }

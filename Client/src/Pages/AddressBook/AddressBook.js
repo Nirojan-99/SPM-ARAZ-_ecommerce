@@ -36,6 +36,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function AddressBook() {
+  const userId = "63187f8829fe6a6deecec97a";
   const navigate = useNavigate();
   const [Name, setName] = useState();
   const [Contactnumber, setContactnumber] = useState();
@@ -86,9 +87,9 @@ function AddressBook() {
       address: Addresses,
       contactNumber: Contactnumber,
     };
-    console.log(data);
+
     axios
-      .post("http://localhost:5000/address", data)
+      .post("http://localhost:5000/User/addresses/" + userId, data)
       .then((res) => {
         setTimeout(() => {
           toast("succesfully added new address", { type: "success" });
@@ -99,7 +100,7 @@ function AddressBook() {
         }, 1700);
       })
       .catch((er) => {
-        toast("succesfully added new address", { type: "error" });
+        toast("Unable to add address", { type: "error" });
       });
   };
   // take from fetching data
@@ -110,10 +111,10 @@ function AddressBook() {
     // fetching data
     // TODO
     axios
-      .get("http://localhost:5000/address/")
+      .get("http://localhost:5000/User/addresses/" + userId)
       .then((res) => {
+    
         if (res.data.addressList.size === 0) {
-          // setdataempty("no any data");
         }
         setgetAlladdress(res.data.addressList);
       })
@@ -251,14 +252,13 @@ function AddressBook() {
                       page * rowsPerPage + rowsPerPage
                     )
                   : getAlladdress
-                ).map((row, index) => (
+                ).map((row, index, array) => (
                   <TableRow
-                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <Address data={row} />
+                    <Address data={row} index={index} saya={array} />
                   </TableRow>
                 ))}
                 {emptyRows > 0 && (

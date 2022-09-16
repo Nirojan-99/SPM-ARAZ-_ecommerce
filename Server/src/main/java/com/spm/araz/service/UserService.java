@@ -2,17 +2,24 @@ package com.spm.araz.service;
 
 import com.spm.araz.model.Address;
 import com.spm.araz.model.Payment;
+import com.spm.araz.model.Product;
 import com.spm.araz.model.User;
+import com.spm.araz.repository.ProductRepository;
 import com.spm.araz.repository.UserRepository;
+import com.spm.araz.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+
+    ProductRepository productRepository;
 
     //add to card
     public boolean addToCart(User user, String id, int count) {
@@ -85,11 +92,7 @@ public class UserService {
         return true;
     }
 
-    public ArrayList<String> getFavorite(User user) {
 
-       return user.getFavorites();
-
-    }
 
     public  boolean addAddress(User user, Address address){
         user.addAddress(address);
@@ -97,13 +100,25 @@ public class UserService {
         return true;
     }
 
-    public  boolean removeAddress (User user, int addresId){
-        user.removeAddress(addresId);
+    public  boolean removeAddress (User user,Address address){
+        user.removeAddress(address);
         userRepository.save(user);
         return true;
     }
-    public ArrayList<Address> getAddresses(User user){
-       return user.getAddresses();
+
+
+    public  boolean updateAddress(User user){
+        userRepository.save(user);
+        return true;
     }
+
+   public Address checkDefaultAddress(User user,String defaultStatus) {
+
+       return  user.checkDefaultAddress(defaultStatus);
+   }
+   public List<Product> findFavoriteProducts(String [] id){
+
+        return userRepository.findFavoriteProduct(id);
+   }
 
 }

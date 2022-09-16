@@ -35,13 +35,14 @@ function ForgotPassword() {
       .get("http://localhost:5000/User/resetPwd/" + email)
       .then((res) => {
         if (res) {
-          // navigate("/otp/" + res.data.user.id + "/" + res.data.user.otp);
           setTimeout(() => {
-            toast("OTP Send to your Email", { type: "success" });
-          }, 1500);
+            toast("OTP Send to your " + res.data.user.email + " Email.", {
+              type: "success",
+            });
+          }, 2000);
 
           setTimeout(() => {
-            navigate("/otp/" + res.data.user.id + "/" + res.data.user.otp);
+            navigate("/otp/" + res.data.user.id);
           }, 2500);
         }
       })

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -158,128 +159,6 @@ public class UserController {
 
     }
 
-    //new user
-    @PostMapping("")
-    public ResponseEntity<UserResponse> addUser(
-            @RequestBody(required = true) User user
-    ) {
-        User res = userService.createUser(user);
-
-        UserResponse userResponse = new UserResponse();
-        if (res.getId() != null) {
-            User user1 = new User();
-            user1.setId(res.getId());
-            user1.setUserType(res.getUserType());
-            userResponse.setUser(user1);
-            userResponse.setMsg("User created");
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("Unable to create User");
-            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    //get user by email for login
-    @PostMapping("/login")
-    public ResponseEntity<UserResponse> getUserByEmail(
-            @RequestBody(required = true) User luser
-    ) {
-        String email=luser.getEmail();
-        String password=luser.getPassword();
-
-        User user = userService.getByEmail(email);
-
-        UserResponse userResponse = new UserResponse();
-
-        if (user == null) {
-            userResponse.setMsg("Email Not found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        } else {
-            if (user.getPassword().equals(password)) {
-                User user1 = new User();
-                user1.setId(user.getId());
-                user1.setUserType(user.getUserType());
-                userResponse.setUser(user1);
-                userResponse.setMsg("Valid Email and Password");
-                return new ResponseEntity<>(userResponse, HttpStatus.OK);
-            } else {
-
-                userResponse.setMsg("Invalid Email and Password");
-                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-            }
-
-
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(
-            @PathVariable(required = true) String id,
-            @RequestBody(required = true) User user
-    ) {
-        UserResponse userResponse = new UserResponse();
-        User exisitngUser = userService.getUser(id);
-
-        System.out.println(id);
-
-        if (exisitngUser == null) {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        } else {
-            if (user.getName() != null) {
-                exisitngUser.setName(user.getName());
-            }
-            if (user.getEmail() != null) {
-                exisitngUser.setEmail(user.getEmail());
-            }
-            if (user.getPassword() != null) {
-                exisitngUser.setPassword(user.getPassword());
-            }
-            if (user.getContactNo() != 0) {
-                exisitngUser.setContactNo(user.getContactNo());
-            }
-            if (user.getAddress() != null) {
-                exisitngUser.setAddress(user.getAddress());
-            }
-            if (user.getDob() != null) {
-                exisitngUser.setDob(user.getDob());
-            }
-            if (user.getGender() != null) {
-                exisitngUser.setGender(user.getGender());
-            }
-            if (user.getUserType() != null) {
-                exisitngUser.setUserType(user.getUserType());
-            }
-            
-
-        }
-        //save
-        User res = userService.updateUserRe(exisitngUser);
-        System.out.println(exisitngUser);
-
-        if (res != null) {
-            User user1 = new User();
-            user1.setId(res.getId());
-            user1.setUserType(res.getUserType());
-            userResponse.setUser(user1);
-            userResponse.setUser(user1);
-
-            userResponse.setMsg("Updated");
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-
-        } else {
-            userResponse.setMsg("Unable to update");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
-        }
-    }
-
-
-
-
-
-
-
-
 
     // sayanthan
 // add favorite
@@ -342,47 +221,6 @@ public class UserController {
                   productResponse.setProduct(products);
                   System.out.println(products);
 
-    @GetMapping("/resetPwd/{email}")
-    public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
-        User user = userService.getByEmail(email);
-        UserResponse userResponse = new UserResponse();
-
-        if (user != null) {
-            user.setOtp(1111);
-            //save otp in database
-            boolean res = userService.updateUser(user);
-
-            if (res) {
-                User user1 = new User();
-                user1.setId(user.getId());
-                user1.setEmail(user.getEmail());
-                user1.setOtp(user.getOtp());
-                userResponse.setUser(user1);
-                return new ResponseEntity<>(userResponse, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        } else {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        }}
-
-
-//@GetMapping("/resetPwd")
-//public ResponseEntity<UserResponse> resetPwd(@PathVariable String id) {
-//    User user = userService.getUser(id);
-//    UserResponse userResponse = new UserResponse();
-//
-//    if (user != null) {
-//
-//        userResponse.setUser(user);
-//        return new ResponseEntity<>(userResponse, HttpStatus.OK);
-//    } else {
-//        userResponse.setMsg("No user found");
-//        return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-//    }
-//
-//}
-}
                   productResponse.setMsg("get data");
                   return new ResponseEntity<>(productResponse, HttpStatus.OK);
               }
@@ -455,6 +293,184 @@ public class UserController {
           }
 
 
-      }
+
+
+
+    //new user
+    @PostMapping("")
+    public ResponseEntity<UserResponse> addUser(
+            @RequestBody(required = true) User user
+    ) {
+        User res = userService.createUser(user);
+
+        UserResponse userResponse = new UserResponse();
+        if (res.getId() != null) {
+            User user1 = new User();
+            user1.setId(res.getId());
+            user1.setUserType(res.getUserType());
+            userResponse.setUser(user1);
+            userResponse.setMsg("User created");
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } else {
+            userResponse.setMsg("Unable to create User");
+            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //get user by email for login
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> getUserByEmail(
+            @RequestBody(required = true) User luser
+    ) {
+        String email=luser.getEmail();
+        String password=luser.getPassword();
+
+        User user = userService.getByEmail(email);
+
+        UserResponse userResponse = new UserResponse();
+
+        if (user == null) {
+            userResponse.setMsg("Email Not found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getPassword().equals(password)) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setUserType(user.getUserType());
+                userResponse.setUser(user1);
+                userResponse.setMsg("Valid Email and Password");
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            } else {
+
+                userResponse.setMsg("Invalid Email and Password");
+                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+            }
+
+
+        }
+    }
+
+    //update the user deatils
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable(required = true) String id,
+            @RequestBody(required = true) User user
+    ) {
+        UserResponse userResponse = new UserResponse();
+        User exisitngUser = userService.getUser(id);
+
+
+
+        if (exisitngUser == null) {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getName() != null) {
+                exisitngUser.setName(user.getName());
+            }
+            if (user.getEmail() != null) {
+                exisitngUser.setEmail(user.getEmail());
+            }
+            if (user.getPassword() != null) {
+                exisitngUser.setPassword(user.getPassword());
+            }
+            if (user.getContactNo() != 0) {
+                exisitngUser.setContactNo(user.getContactNo());
+            }
+            if (user.getAddress() != null) {
+                exisitngUser.setAddress(user.getAddress());
+            }
+            if (user.getDob() != null) {
+                exisitngUser.setDob(user.getDob());
+            }
+            if (user.getGender() != null) {
+                exisitngUser.setGender(user.getGender());
+            }
+            if (user.getUserType() != null) {
+                exisitngUser.setUserType(user.getUserType());
+            }
+
+
+        }
+        //save
+        User res = userService.updateUserRe(exisitngUser);
+
+
+        if (res != null) {
+            User user1 = new User();
+            user1.setId(res.getId());
+            user1.setUserType(res.getUserType());
+            userResponse.setUser(user1);
+            userResponse.setUser(user1);
+
+            userResponse.setMsg("Updated");
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+        } else {
+            userResponse.setMsg("Unable to update");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
+        }
+    }
+          @GetMapping("/resetPwd/{email}")
+    public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
+        User user = userService.getByEmail(email);
+        UserResponse userResponse = new UserResponse();
+
+        if (user != null) {
+            Random random= new Random();
+            int otp = random.nextInt(9999 + 999) + 999;
+            String message="This is your OTP: " + otp;
+            user.setOtp(otp);
+            //save otp in database
+            boolean res = userService.updateUser(user);
+
+            //send otp to user email
+            userService.sendSimpleEmail("tnarivu2000@gmail.com",message,"Password Reset OTP PIN");
+
+            if (res) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setEmail(user.getEmail());
+                user1.setOtp(user.getOtp());
+                userResponse.setUser(user1);
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }}
+
+    @PostMapping("/otp")
+    public ResponseEntity<UserResponse> checkOtp(
+            @RequestBody(required = true) User luser
+    ) {
+        String id=luser.getId();
+        int otp=luser.getOtp();
+
+        User user = userService.getUser(id);
+
+        UserResponse userResponse = new UserResponse();
+
+        if (user == null) {
+            userResponse.setMsg("User is Not found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getOtp()==otp) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                userResponse.setUser(user1);
+                userResponse.setMsg("Otp is matched");
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            } else {
+                userResponse.setMsg("Otp is not matched try again");
+                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+            }
+
+
+        }
+    }
+}
 
 

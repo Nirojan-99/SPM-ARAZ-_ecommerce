@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.management.Query;
 import java.util.ArrayList;
+
 import java.util.List;
+
+import java.util.Random;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -49,7 +52,8 @@ public class UserController {
 
     //remove from cart
     @PutMapping("/cart")
-    public ResponseEntity<UserResponse> removeFromCart(@RequestParam("userId") String userId, @RequestParam("productId") String productId) {
+    public ResponseEntity<UserResponse> removeFromCart(@RequestParam("userId") String userId,
+                                                       @RequestParam("productId") String productId) {
         Product product = productService.getProduct(productId);
 
         User user = userService.getUser(userId);
@@ -150,103 +154,6 @@ public class UserController {
 
     }
 
-    //new user
-    @PostMapping("")
-    public ResponseEntity<UserResponse> addUser(@RequestBody(required = true) User user) {
-        User res = userService.createUser(user);
-
-        UserResponse userResponse = new UserResponse();
-        if (res.getId() != null) {
-            User user1 = new User();
-            user1.setId(res.getId());
-            user1.setUserType(res.getUserType());
-            userResponse.setUser(user1);
-            userResponse.setMsg("User created");
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("Unable to create User");
-            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    //get user by email for login
-    @PostMapping("/login")
-    public ResponseEntity<UserResponse> getUserByEmail(@RequestBody(required = true) User luser) {
-        String email = luser.getEmail();
-        String password = luser.getPassword();
-
-        User user = userService.getByEmail(email);
-
-        UserResponse userResponse = new UserResponse();
-
-        if (user == null) {
-            userResponse.setMsg("Email Not found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        } else {
-            if (user.getPassword().equals(password)) {
-                User user1 = new User();
-                user1.setId(user.getId());
-                user1.setUserType(user.getUserType());
-                userResponse.setUser(user1);
-                userResponse.setMsg("Valid Email and Password");
-                return new ResponseEntity<>(userResponse, HttpStatus.OK);
-            } else {
-
-                userResponse.setMsg("Invalid Email and Password");
-                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-            }
-
-
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable(required = true) String id, @RequestBody(required = true) User user) {
-        UserResponse userResponse = new UserResponse();
-        User exisitngUser = userService.getUser(id);
-
-        if (exisitngUser == null) {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        } else {
-            if (user.getName() != null) {
-                exisitngUser.setName(user.getName());
-            }
-            if (user.getEmail() != null) {
-                exisitngUser.setEmail(user.getEmail());
-            }
-            if (user.getPassword() != null) {
-                exisitngUser.setPassword(user.getPassword());
-            }
-            if (user.getContactNo() != 0) {
-                exisitngUser.setContactNo(user.getContactNo());
-            }
-            if (user.getAddress() != null) {
-                exisitngUser.setAddress(user.getAddress());
-            }
-            if (user.getDob() != null) {
-                exisitngUser.setDob(user.getDob());
-            }
-            if (user.getGender() != null) {
-                exisitngUser.setGender(user.getGender());
-            }
-            if (user.getUserType() != null) {
-                exisitngUser.setUserType(user.getUserType());
-            }
-
-        }
-        //save
-        boolean res = userService.updateUser(exisitngUser);
-
-        if (res) {
-            userResponse.setMsg("Updated");
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-
-        } else {
-            userResponse.setMsg("Unable to update");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
@@ -270,7 +177,9 @@ public class UserController {
 
     // add favorite
     @PutMapping("/Favorite")
-    public ResponseEntity<UserResponse> addFavorite(@RequestParam("userId") String userId, @RequestParam("productId") String productId, @RequestParam(required = false) boolean val) {
+    public ResponseEntity<UserResponse> addFavorite(@RequestParam("userId") String userId,
+                                                    @RequestParam("productId") String productId,
+                                                    @RequestParam(required = false) boolean val) {
         User user = userService.getUser(userId);
         UserResponse userResponse = new UserResponse();
         if (user == null) {
@@ -306,7 +215,7 @@ public class UserController {
     public ResponseEntity<ProductResponse> getFavorite(@PathVariable("userId") String userId) {
         User user = userService.getUser(userId);
 
-//    UserResponse userResponse = new UserResponse();
+
         ProductResponse productResponse = new ProductResponse();
 
         if (user == null) {
@@ -315,7 +224,6 @@ public class UserController {
         } else {
             String[] id = user.getFavorites().toArray(new String[0]);
             System.out.println(id);
-
 
 
 //            String[] id = userService.getFavorite(user).toArray(new String[0]);
@@ -352,7 +260,6 @@ public class UserController {
                                                       @PathVariable("userId") String userId) {
         User user = userService.getUser(userId);
 
-
         AddressResponse addressResponse = new AddressResponse();
 
         if (user == null) {
@@ -360,7 +267,6 @@ public class UserController {
             return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
         } else {
             Address findaddress = (Address) userService.checkDefaultAddress(user, "default");
-
 
             if (findaddress == null) {
                 address.setDefaultStatus("default");
@@ -373,16 +279,69 @@ public class UserController {
                 addressResponse.setMsg("added not default data");
                 return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
             }
+        }
+    }
+
+
+    //new user
+    @PostMapping("")
+    public ResponseEntity<UserResponse> addUser(@RequestBody(required = true) User user) {
+        User res = userService.createUser(user);
+
+        UserResponse userResponse = new UserResponse();
+        if (res.getId() != null) {
+            User user1 = new User();
+            user1.setId(res.getId());
+            user1.setUserType(res.getUserType());
+            userResponse.setUser(user1);
+            userResponse.setMsg("User created");
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } else {
+            userResponse.setMsg("Unable to create User");
+            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    //get user by email for login
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> getUserByEmail(@RequestBody(required = true) User luser) {
+        String email = luser.getEmail();
+        String password = luser.getPassword();
+
+        User user = userService.getByEmail(email);
+
+        UserResponse userResponse = new UserResponse();
+
+        if (user == null) {
+            userResponse.setMsg("Email Not found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getPassword().equals(password)) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setUserType(user.getUserType());
+                userResponse.setUser(user1);
+                userResponse.setMsg("Valid Email and Password");
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            } else {
+
+                userResponse.setMsg("Invalid Email and Password");
+                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+
+            }
 
 
         }
+
 
     }
 
 
     // delete address user
     @DeleteMapping("/addresses/")
-    public ResponseEntity<AddressResponse> removeAddress(@RequestParam("userId") String userId, @RequestParam("indexNo") int indexNo) {
+    public ResponseEntity<AddressResponse> removeAddress(@RequestParam("userId") String userId,
+                                                         @RequestParam("indexNo") int indexNo) {
 
         System.out.println(userId);
         System.out.println(indexNo);
@@ -494,6 +453,129 @@ public class UserController {
         }
     }
 
+
+// arivu
+
+
+//    update the user deatils
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable(required = true) String id,
+                                                   @RequestBody(required = true) User user) {
+        UserResponse userResponse = new UserResponse();
+        User exisitngUser = userService.getUser(id);
+
+
+        if (exisitngUser == null) {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getName() != null) {
+                exisitngUser.setName(user.getName());
+            }
+            if (user.getEmail() != null) {
+                exisitngUser.setEmail(user.getEmail());
+            }
+            if (user.getPassword() != null) {
+                exisitngUser.setPassword(user.getPassword());
+            }
+            if (user.getContactNo() != 0) {
+                exisitngUser.setContactNo(user.getContactNo());
+            }
+            if (user.getAddress() != null) {
+                exisitngUser.setAddress(user.getAddress());
+            }
+            if (user.getDob() != null) {
+                exisitngUser.setDob(user.getDob());
+            }
+            if (user.getGender() != null) {
+                exisitngUser.setGender(user.getGender());
+            }
+            if (user.getUserType() != null) {
+                exisitngUser.setUserType(user.getUserType());
+            }
+
+
+        }
+        //save
+        User res = userService.updateUserRe(exisitngUser);
+
+
+        if (res != null) {
+            User user1 = new User();
+            user1.setId(res.getId());
+            user1.setUserType(res.getUserType());
+            userResponse.setUser(user1);
+            userResponse.setUser(user1);
+
+            userResponse.setMsg("Updated");
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+        } else {
+            userResponse.setMsg("Unable to update");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
+        }
+    }
+// arivu
+    @GetMapping("/resetPwd/{email}")
+    public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
+        User user = userService.getByEmail(email);
+        UserResponse userResponse = new UserResponse();
+
+        if (user != null) {
+            Random random = new Random();
+            int otp = random.nextInt(9999 + 999) + 999;
+            String message = "This is your OTP: " + otp;
+            user.setOtp(otp);
+            //save otp in database
+            boolean res = userService.updateUser(user);
+
+            //send otp to user email
+            userService.sendSimpleEmail("tnarivu2000@gmail.com", message, "Password Reset OTP PIN");
+
+            if (res) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setEmail(user.getEmail());
+                user1.setOtp(user.getOtp());
+                userResponse.setUser(user1);
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/otp")
+    public ResponseEntity<UserResponse> checkOtp(
+            @RequestBody(required = true) User luser
+    ) {
+        String id = luser.getId();
+        int otp = luser.getOtp();
+
+        User user = userService.getUser(id);
+
+        UserResponse userResponse = new UserResponse();
+
+        if (user == null) {
+            userResponse.setMsg("User is Not found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            if (user.getOtp() == otp) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                userResponse.setUser(user1);
+                userResponse.setMsg("Otp is matched");
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            } else {
+                userResponse.setMsg("Otp is not matched try again");
+                return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+            }
+
+
+        }
+    }
 
 }
 

@@ -35,7 +35,7 @@ function Login() {
       toast("Enter valid Email", { type: "error" });
       return setError(true);
     }
-    if (!password.trim() || password.length < 6) {
+    if (!password.trim() || password.length < 5) {
       toast("Enter valid Password", { type: "error" });
       return setError(true);
     }
@@ -55,11 +55,11 @@ function Login() {
         );
         setTimeout(() => {
           toast("Login Sucess", { type: "success" });
-        }, 1000);
+        }, 1500);
 
         setTimeout(() => {
-          navigate("/profile/details");
-        }, 1500);
+          navigate("/profile/details", { replace: true });
+        }, 2500);
       })
 
       .catch(() => {

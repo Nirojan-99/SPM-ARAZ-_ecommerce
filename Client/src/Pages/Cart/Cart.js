@@ -8,8 +8,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addProducts } from "../../Store/OrderStore";
 
 function Cart() {
+  const dispatch = useDispatch();
   const baseURL = "http://localhost:5000/";
 
   //state
@@ -24,7 +27,7 @@ function Cart() {
     getCart();
     getLoyalty();
   }, []);
-
+  // console.log(products);
   //get loyalty
   const getLoyalty = () => {
     axios
@@ -44,6 +47,7 @@ function Cart() {
       })
       .catch((er) => {});
   };
+  // const [check, setcheck] = useState([]);
 
   //cal sub total
   const calSUbTotal = (count, checked, price) => {
@@ -55,8 +59,21 @@ function Cart() {
         return pre - val;
       }
     });
-  };
 
+    // setcheck(() => {
+    //   console.log(checked);
+    //   let copyItems = [];
+    //   products.forEach((element, index) => {
+    //     console.log(element, index);
+    //     if (checked) {
+    //       return copyItems.push(element);
+    //     }
+    //     return copyItems.filter((checkstatus) => checkstatus.id != element.id);
+    //   });
+    //   return copyItems;
+    // });
+  };
+  // console.log(check);
   //cal sub total
   const increaseSUbTotal = (price, action) => {
     setSubtotal((pre) => {
@@ -67,6 +84,17 @@ function Cart() {
       }
     });
   };
+  console.log(products);
+  const handlecheckout = () => {
+    dispatch(
+      addProducts({
+        total: 100,
+        products: products,
+      })
+    );
+  };
+
+  // only check product
 
   return (
     <>
@@ -223,7 +251,8 @@ function Cart() {
               {/* btn */}
               <Box my={2}>
                 <Button
-                href="/checkout"
+                  onClick={handlecheckout}
+                  href="/checkout"
                   disableElevation
                   sx={{
                     width: { xs: "100%", sm: "auto" },

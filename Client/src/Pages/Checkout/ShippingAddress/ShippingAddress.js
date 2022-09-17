@@ -7,10 +7,14 @@ import Radio from "@mui/material/Radio";
 import { useEffect, useState } from "react";
 import ShippingAddress_Form from "./ShippingAddress_Form";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function ShippingAddress(props) {
   const [shipping, setshipping] = useState([]);
   const [empty, setempty] = useState("");
+  console.log("welcome");
+  const { products } = useSelector((state) => state.order);
+  console.log(products);
   useEffect(() => {
     axios
       .get("http://localhost:5000/address/shipping")
@@ -152,7 +156,6 @@ function ShippingAddress(props) {
                       </Grid>
                     );
                   })}
-                  
                 </Grid>
                 {/* pagination */}
                 {/* <Box

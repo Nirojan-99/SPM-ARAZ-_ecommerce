@@ -25,6 +25,8 @@ public class UserService {
     ProductRepository productRepository;
 
 
+
+    @Autowired
     private JavaMailSender javaMailSender;
 
 
@@ -104,7 +106,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
-    
+
     public boolean addAddress(User user, Address address) {
         user.addAddress(address);
         userRepository.save(user);

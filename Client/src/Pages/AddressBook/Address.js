@@ -6,10 +6,15 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function Address(props) {
+  const userId = "63187f8829fe6a6deecec97a";
+
   const OnClickDeleteHandler = () => {
     axios
-      .delete("http://localhost:5000/address/" + props.data.id)
+      .delete(
+        `http://localhost:5000/User/addresses/?indexNo=${props.index}&userId=${userId}`
+      )
       .then((res) => {
+        console.log(res.data.msg);
         if (res) {
           toast("Succesfully delete address", { type: "success" });
         }
@@ -63,9 +68,9 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
-            localStorage.removeItem("id");
+            localStorage.removeItem("indexNo");
             localStorage.clear();
-            localStorage.setItem("id", props.data.id);
+            localStorage.setItem("indexNo", props.index);
             navigator("/profile/editaddress");
           }}
         >
@@ -83,6 +88,7 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
+            console.log(props.index);
             OnClickDeleteHandler();
           }}
         >

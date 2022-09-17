@@ -1,4 +1,5 @@
 package com.spm.araz.controller;
 
-public class FavoriteController {
+public class OrderController {
+
 }

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -152,6 +153,7 @@ function SignUp() {
               value={password}
               set={setPassword}
             />
+            <PasswordStrengthBar password={password} />
             {/* Confirm Password */}
             <Label for="re_password" title="Confirm Password" />
             <Input

@@ -515,7 +515,8 @@ public class UserController {
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_MODIFIED);
         }
     }
-// arivu
+
+    //generate otp and send to email for password reset
     @GetMapping("/resetPwd/{email}")
     public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
         User user = userService.getByEmail(email);
@@ -530,7 +531,9 @@ public class UserController {
             boolean res = userService.updateUser(user);
 
             //send otp to user email
-            userService.sendSimpleEmail("tnarivu2000@gmail.com", message, "Password Reset OTP PIN");
+
+            userService.sendSimpleEmail(email,message,"Password Reset OTP PIN");
+
 
             if (res) {
                 User user1 = new User();
@@ -547,6 +550,7 @@ public class UserController {
         }
     }
 
+    //check that otp is correct
     @PostMapping("/otp")
     public ResponseEntity<UserResponse> checkOtp(
             @RequestBody(required = true) User luser
@@ -575,6 +579,59 @@ public class UserController {
 
 
         }
+    }
+
+    //get user details by their id
+    @GetMapping("/{userid}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String userid) {
+
+        User user = userService.getUser(userid);
+        UserResponse userResponse = new UserResponse();
+        
+
+        if (user != null) {
+                userResponse.setUser(user);
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } else {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }}
+
+    //generate otp and send to email for email updation
+    @PutMapping("/email/{id}")
+    public ResponseEntity<UserResponse> sendOtpE(
+            @PathVariable(required = true) String id,
+            @RequestBody(required = true) User user
+    ) {
+        System.out.println(id);
+        UserResponse userResponse = new UserResponse();
+        User exisitngUser = userService.getUser(id);
+
+        if (exisitngUser == null) {
+            userResponse.setMsg("No user found");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else {
+            Random random= new Random();
+            int otp = random.nextInt(9999 + 999) + 999;
+            String message="This is your OTP: " + otp;
+            exisitngUser.setOtp(otp);
+            //save otp in database
+            boolean res = userService.updateUser(exisitngUser);
+            //send otp to user email
+            userService.sendSimpleEmail(user.getEmail(),message,"Email update OTP PIN");
+
+            if (res) {
+                User user1 = new User();
+                user1.setId(id);
+                user1.setEmail(user.getEmail());
+                userResponse.setUser(user1);
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+
+
+        }
+
     }
 
 }

@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import PasswordStrengthBar from "react-password-strength-bar";
+
 function Security() {
   const { userID } = useSelector((state) => state.loging);
 
@@ -107,6 +109,8 @@ function Security() {
               value={password}
               set={setPassword}
             />
+            <PasswordStrengthBar password={password} />
+
             {/* Confirm Password */}
             <Label for="re_password" title="Confirm Password" />
             <Input

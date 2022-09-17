@@ -18,6 +18,7 @@ import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 function ResetPassword() {
   const { id } = useParams();
@@ -100,6 +101,7 @@ function ResetPassword() {
               value={password}
               set={setPassword}
             />
+            <PasswordStrengthBar password={password} />
             {/* Confirm Password */}
             <Label for="re_password" title="Confirm Password" />
             <Input

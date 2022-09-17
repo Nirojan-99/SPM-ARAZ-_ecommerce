@@ -8,9 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
-@Document("Address")
+//@Document("Address")
 public class Address {
-    @Id
+//    @Id
     private String id;
     private String name;
     private String province;
@@ -20,7 +20,7 @@ public class Address {
     private String defaultStatus;
 
 
-    public Address(String id, String name, String province, String district, String address, String contactNumber, String defaultStatus) {
+    public Address( String id,String name, String province, String district, String address, String contactNumber, String defaultStatus) {
         this.id = id;
         this.name = name;
         this.province = province;

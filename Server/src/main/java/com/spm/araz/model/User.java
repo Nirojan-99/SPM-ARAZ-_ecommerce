@@ -24,8 +24,17 @@ public class User {
     private String gender;
     private String dob;
 
+    private int otp;
+
 
     private ArrayList<String> favorites;
+
+    private ArrayList<Address> addresses;
+
+
+    public User(ArrayList<Address> addresses) {
+        this.addresses = addresses;
+    }
 
 
     public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
@@ -47,6 +56,8 @@ public class User {
     public User() {
         payments = new ArrayList<>();
         favorites = new ArrayList<>();
+        otp=0;
+        addresses = new ArrayList<>();
 
     }
 
@@ -173,11 +184,49 @@ public class User {
     public void removeFavorite(String id) {
         favorites.remove(id);
 
-//        for (String favorite : favorites) {
-//            if (favorite == id) {
-//                favorites.remove(favorite);
-//            }
-//        }
+    }
+
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
+    }
+    public ArrayList<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(ArrayList<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+    }
+
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+    }
+
+
+
+
+
+
+    public Address checkDefaultAddress(String defaultStatus) {
+        for (Address address : addresses) {
+
+
+            if (address.getDefaultStatus().equals(defaultStatus)) {
+
+
+                return address;
+            }
+
+        }
+        return null;
     }
 
 

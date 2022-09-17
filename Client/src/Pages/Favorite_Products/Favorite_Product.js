@@ -11,7 +11,8 @@ import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutl
 import axios from "axios";
 
 function Favorite_Product(props) {
-  const review = 4;
+  console.log(props.data.id);
+ const review = 3;
   // addshoppingcart fun
   const AddShoppingCart = () => {};
   // delete fun
@@ -63,7 +64,8 @@ function Favorite_Product(props) {
                 letterSpacing: -0.5,
               }}
             >
-              Computer with 2TB hard disk and 256 SSD, 11th generation..
+              Computer with 2TB hard disk and 256 SSD, 11th generation..{" "}
+             
             </Typography>
             {/* Rating */}
             <Box

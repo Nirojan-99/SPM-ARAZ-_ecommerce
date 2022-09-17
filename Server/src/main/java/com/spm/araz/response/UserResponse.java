@@ -1,6 +1,6 @@
 package com.spm.araz.response;
 
-import com.spm.araz.model.Product;
+
 import com.spm.araz.model.User;
 
 import java.util.List;

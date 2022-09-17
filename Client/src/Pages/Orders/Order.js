@@ -17,44 +17,19 @@ import TableRow from "@mui/material/TableRow";
 function Order() {
   const Orderdata = [
     {
-      product: "product1",
+      product: "Product1",
       qty: 3,
-      status: "penting",
+      status: "Processing",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "Product2",
+      qty: 4,
+      status: "Delivered",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "Product3",
+      qty: 1,
+      status: "Shipped",
     },
   ];
   return (
@@ -115,7 +90,7 @@ function Order() {
                       color: "#1A374D",
                     }}
                   >
-                    qyt
+                    Qyt
                   </TableCell>
 
                   <TableCell

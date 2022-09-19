@@ -158,7 +158,7 @@ function Stores() {
           {/* stores sec */}
           <Grid
             container
-            justifyContent={"space-evenly"}
+            justifyContent={"center"}
             alignItems="center"
             rowSpacing={3}
             columnSpacing={5}

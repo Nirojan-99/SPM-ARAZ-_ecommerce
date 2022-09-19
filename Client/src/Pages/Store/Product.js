@@ -8,14 +8,15 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 import calNewPrice from "../../Helper/calNewPrice";
 import calReview from "../../Helper/calReview";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Product(props) {
   const product = props.data;
+  const [review, setReview] = useState(0);
 
-  const review = calReview(product?.review);
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setReview(calReview(product?.reviews));
+  }, []);
 
   const baseURL = "http://localhost:5000/";
 
@@ -120,7 +121,7 @@ function Product(props) {
                   ml: 2,
                 }}
               >
-                {product?.review?.length ?? 0} Rating
+                {product?.reviews?.length ?? 0} Rating
               </Typography>
             </Box>
             {/* divider */}

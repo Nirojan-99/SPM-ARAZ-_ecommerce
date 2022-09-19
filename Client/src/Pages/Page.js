@@ -29,7 +29,7 @@ function Page() {
       <Route path="/stores/new" element={<RegisterStore />} />
       <Route path="/stores" element={<Stores />} />
       <Route path="/store" element={<Store />} />
-      {false && (
+      {true && (
         <Route path="/products/view/:id" element={<CustomerProduct />} />
       )}
       <Route path="/products/view/:id" element={<SellerProduct />} />

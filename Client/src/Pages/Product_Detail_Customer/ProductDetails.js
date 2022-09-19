@@ -41,8 +41,6 @@ const imageArray = [
 const review = 4;
 
 function ProductDetails(props) {
-
-
   // 63187f6429fe6a6deecec979
 
   //state
@@ -167,7 +165,7 @@ function ProductDetails(props) {
                       width: "100%",
                       minHeight: 250,
                       height: 300,
-                      overflow: "scroll",
+
                       borderRadius: "5px 0 0 0px",
                       objectFit: "cover",
                     }}

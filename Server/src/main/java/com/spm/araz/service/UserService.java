@@ -6,13 +6,11 @@ import com.spm.araz.model.Product;
 import com.spm.araz.model.User;
 import com.spm.araz.repository.ProductRepository;
 import com.spm.araz.repository.UserRepository;
-import com.spm.araz.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,7 +22,7 @@ public class UserService {
     @Autowired
     ProductRepository productRepository;
 
-
+    @Autowired
     private JavaMailSender javaMailSender;
 
 
@@ -104,7 +102,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
-    
+
     public boolean addAddress(User user, Address address) {
         user.addAddress(address);
         userRepository.save(user);

@@ -76,12 +76,13 @@ public class ProductController {
 
     //get all products
     @GetMapping("/")
-    public ResponseEntity<ProductResponse> getProducts(@RequestParam(required = false) String category,
-                                                       @RequestParam(required = false) String title,
+    public ResponseEntity<ProductResponse> getProducts(@RequestParam(required = false,name = "category") String category,
+                                                       @RequestParam(required = false,name = "title") String title,
                                                        @RequestParam(required = false, defaultValue = "1") int page) {
         List<Product> products;
         ProductResponse productResponse = new ProductResponse();
 
+        System.out.println(category);
         //get by category
         if (category != null) {
             products = productService.getProductsByCategory(category, page);
@@ -311,6 +312,20 @@ public class ProductController {
     public ResponseEntity<Integer> getProductCountForStore(@PathVariable("id") String id) {
         int count = productService.getStoreProductsCount(id);
 
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
+    //get total product count
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getProductCount(@RequestParam(required = false, name = "category") String category) {
+        int count;
+
+        if (category != null) {
+            count = productService.getProductCountByCategory(category);
+
+        } else {
+            count = productService.getProductsCount();
+        }
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
 

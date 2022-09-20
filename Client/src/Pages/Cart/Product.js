@@ -77,8 +77,8 @@ function Product(props) {
             alt="product image"
             sx={{
               width: "100%",
-              minHeight: 100,
-              height: "100%",
+              height: 200,
+              // height: "100%",
               borderRadius: { sm: "3px 0 0 3px", xs: "3px 3px 0 0 " },
             }}
             image={`${baseURL}products/images/${product?.images[0]}`}

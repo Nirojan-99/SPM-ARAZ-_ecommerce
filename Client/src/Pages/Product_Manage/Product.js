@@ -31,7 +31,13 @@ function Product() {
 
   //state
   const [isLoading, setIsloading] = useState(false);
-  const [categories, setCategories] = useState(["electronic", "kids"]);
+  const [categories, setCategories] = useState([
+    "Electronic",
+    "Kids",
+    "Mobile & Wireless",
+    "TV & Video Equipment",
+    "Food",
+  ]);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -142,7 +148,7 @@ function Product() {
           toast("Product updated successfully", { type: "info" });
           setIsloading(false);
           setTimeout(() => {
-            navigate("/");
+            navigate("/store");
           }, 2000);
         })
         .catch((er) => {
@@ -155,9 +161,9 @@ function Product() {
         .then((res) => {
           toast("Product added successfully", { type: "info" });
           setIsloading(false);
-          // setTimeout(() => {
-          //   navigate("/");
-          // }, 2000);
+          setTimeout(() => {
+            navigate("/store");
+          }, 2000);
         })
         .catch((er) => {
           console.log(er);
@@ -171,7 +177,7 @@ function Product() {
     axios
       .delete(`${baseURL}products/${id}`)
       .then((res) => {
-        navigate("/");
+        navigate("/store");
       })
       .catch((er) => {
         toast("Unable to delete", { type: "error" });
@@ -311,7 +317,10 @@ function Product() {
                               {imageArray[index] || product?.images[index] ? (
                                 <img
                                   style={{ width: 70, height: 70, margin: 1 }}
-                                  src={imageArray[index] || `${baseURL}products/images/${product?.images[index]}`}
+                                  src={
+                                    imageArray[index] ||
+                                    `${baseURL}products/images/${product?.images[index]}`
+                                  }
                                 />
                               ) : (
                                 <AddToPhotosIcon

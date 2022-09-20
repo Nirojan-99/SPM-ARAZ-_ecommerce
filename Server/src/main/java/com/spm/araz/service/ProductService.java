@@ -5,14 +5,9 @@ import com.spm.araz.model.Product;
 import com.spm.araz.model.Review;
 import com.spm.araz.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +16,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-    private int limit = 6;
+    private int limit = 4;
+    private int storeLimit = 6;
     private Path foundFile;
 
     //create product
@@ -32,21 +28,21 @@ public class ProductService {
 
     //get all products
     public List<Product> getAllProducts(int page) {
-        int skip = (page - 1) * 1;
+        int skip = (page - 1) * limit;
         List<Product> products = productRepository.findAllProducts(skip, limit);
         return products;
     }
 
     //get products by category
     public List<Product> getProductsByCategory(String category, int page) {
-        int skip = (page - 1) * 1;
+        int skip = (page - 1) * limit;
         List<Product> products = productRepository.findByCategory(category, skip, limit);
         return products;
     }
 
     //get products by title
     public List<Product> getProductsByTitle(String title, int page) {
-        int skip = (page - 1) * 1;
+        int skip = (page - 1) * limit;
         List<Product> products = productRepository.findByTitle(title, skip, limit);
         return products;
     }
@@ -93,8 +89,8 @@ public class ProductService {
 
     //find by store
     public List<Product> getStoreProducts(String id, int page) {
-        int skip = (page - 1) * 6;
-        List<Product> products = productRepository.findByStoreId(id, skip, limit);
+        int skip = (page - 1) * storeLimit;
+        List<Product> products = productRepository.findByStoreId(id, skip, storeLimit);
         return products;
     }
 
@@ -130,5 +126,15 @@ public class ProductService {
         return productRepository.searchWithStore(id, title);
     }
 
+    //get all products count
+    public int getProductsCount() {
+        List<Product> products = productRepository.findAll();
+        return products.size();
+    }
 
+    //find product count by category
+    public int getProductCountByCategory(String category) {
+        List<Product> products = productRepository.findByCategory(category);
+        return products.size();
+    }
 }

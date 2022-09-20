@@ -226,7 +226,7 @@ function Cart() {
                     <Typography
                       sx={{ fontWeight: 600, color: "#333", fontSize: 20 }}
                     >
-                      {subTotal + addloyalty + delivary}
+                      {subTotal - addloyalty + delivary}
                     </Typography>
                   </Grid>
                 </Grid>

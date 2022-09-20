@@ -6,7 +6,6 @@ import com.spm.araz.model.Product;
 import com.spm.araz.model.User;
 import com.spm.araz.repository.ProductRepository;
 import com.spm.araz.repository.UserRepository;
-import com.spm.araz.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,7 +22,6 @@ public class UserService {
 
     @Autowired
     ProductRepository productRepository;
-
 
 
     @Autowired

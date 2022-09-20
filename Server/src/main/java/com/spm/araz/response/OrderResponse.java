@@ -10,11 +10,7 @@ public class OrderResponse {
     private List<Order> orderList;
     private String msg;
 
-    public OrderResponse(Order order, List<Order> orderList, String msg) {
-        this.order = order;
-        this.orderList = orderList;
-        this.msg = msg;
-    }
+
 
     public Order getOrder() {
         return order;
@@ -24,11 +20,11 @@ public class OrderResponse {
         this.order = order;
     }
 
-    public List<Order> getOrderList() {
+    public java.util.List<Order> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(java.util.List<Order> orderList) {
         this.orderList = orderList;
     }
 

@@ -8,8 +8,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addProducts } from "../../Store/OrderStore";
 
 function Cart() {
+  const dispatch = useDispatch();
   const baseURL = "http://localhost:5000/";
 
   //state
@@ -57,7 +60,6 @@ function Cart() {
     });
   };
 
-  //cal sub total
   const increaseSUbTotal = (price, action) => {
     setSubtotal((pre) => {
       if (action === "inc") {
@@ -66,6 +68,15 @@ function Cart() {
         return pre - price;
       }
     });
+  };
+  console.log(products);
+  const handlecheckout = () => {
+    dispatch(
+      addProducts({
+        total: 100,
+        products: products,
+      })
+    );
   };
 
   return (
@@ -223,7 +234,8 @@ function Cart() {
               {/* btn */}
               <Box my={2}>
                 <Button
-                href="/checkout"
+                  onClick={handlecheckout}
+                  href="/checkout"
                   disableElevation
                   sx={{
                     width: { xs: "100%", sm: "auto" },

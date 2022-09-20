@@ -11,6 +11,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class UserService {
 
     @Autowired
     ProductRepository productRepository;
+
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -125,11 +127,6 @@ public class UserService {
     public Address checkDefaultAddress(User user, String defaultStatus) {
 
         return user.checkDefaultAddress(defaultStatus);
-    }
-
-    public List<Product> findFavoriteProducts(String[] id) {
-
-        return userRepository.findFavoriteProduct(id);
     }
 
     public void sendSimpleEmail(String toEmail,

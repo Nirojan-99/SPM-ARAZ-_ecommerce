@@ -4,8 +4,11 @@ function Category(props) {
   return (
     <>
       <Box
+        onClick={() => {
+          props.onSelect(props.id);
+        }}
         sx={{
-          bgcolor: "#FEC260",
+          bgcolor: props.id === props.clicked ? "#406882" : "#FEC260",
           cursor: "pointer",
           height: { xs: 45, md: 55 },
           width: { xs: 45, md: 55 },
@@ -16,7 +19,12 @@ function Category(props) {
         m={{ xs: 0.5, md: 1 }}
       >
         <Typography
-          sx={{ fontFamily: "open sans", fontSize: {xs:10,md:13}, fontWeight: 500 ,textAlign:"center"}}
+          sx={{
+            fontFamily: "open sans",
+            fontSize: { xs: 10, md: 13 },
+            fontWeight: 500,
+            textAlign: "center",
+          }}
         >
           Category & Category
         </Typography>

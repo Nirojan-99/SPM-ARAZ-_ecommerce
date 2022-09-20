@@ -6,7 +6,6 @@ import com.spm.araz.model.Product;
 import com.spm.araz.model.User;
 import com.spm.araz.repository.ProductRepository;
 import com.spm.araz.repository.UserRepository;
-import com.spm.araz.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -105,7 +104,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
-    
+
     public boolean addAddress(User user, Address address) {
         user.addAddress(address);
         userRepository.save(user);
@@ -128,11 +127,6 @@ public class UserService {
     public Address checkDefaultAddress(User user, String defaultStatus) {
 
         return user.checkDefaultAddress(defaultStatus);
-    }
-
-    public List<Product> findFavoriteProducts(String[] id) {
-
-        return userRepository.findFavoriteProduct(id);
     }
 
     public void sendSimpleEmail(String toEmail,

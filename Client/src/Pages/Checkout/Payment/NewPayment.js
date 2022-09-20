@@ -20,21 +20,21 @@ function NewPayment(props) {
 
   //add payment
   const addPayment = () => {
-    // if (!nameOncard.trim()) {
-    //   return toast("Fill all fields", { type: "error" });
-    // }
-    // if (cardNumber.trim().length !== 12) {
-    //   return toast("Required valid card number", { type: "error" });
-    // }
-    // if (expiryMonth.trim() > 12 || expiryMonth < 1) {
-    //   return toast("Required valid month", { type: "error" });
-    // }
-    // if (expiryYear.trim() < new Date().getFullYear()) {
-    //   return toast("Required valid year", { type: "error" });
-    // }
-    // if (cvc.trim() > 999 || cvc < 1) {
-    //   return toast("Required valid year", { type: "error" });
-    // }
+    if (!nameOncard.trim()) {
+      return toast("Fill all fields", { type: "error" });
+    }
+    if (cardNumber.trim().length !== 12) {
+      return toast("Required valid card number", { type: "error" });
+    }
+    if (expiryMonth.trim() > 12 || expiryMonth < 1) {
+      return toast("Required valid month", { type: "error" });
+    }
+    if (expiryYear.trim() < new Date().getFullYear()) {
+      return toast("Required valid year", { type: "error" });
+    }
+    if (cvc.trim() > 999 || cvc < 1) {
+      return toast("Required valid year", { type: "error" });
+    }
 
     const data = {
       nameOnCard: nameOncard,
@@ -48,6 +48,7 @@ function NewPayment(props) {
       .post(`${baseURL}User/payment/${"63187f8829fe6a6deecec97a"}`, data)
       .then((res) => {
         // props.handleNext();
+        toast("Payment successed", { type: "info" });
       })
       .catch((er) => {
         toast("Invalid data", { type: "error" });

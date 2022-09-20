@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Data
@@ -17,21 +18,19 @@ public class Order {
    private String id;
     private String userId;
     private String total;
-    private boolean orderStatus;
     private boolean payment;
     private Address address;
-    private Product product;
+    private ArrayList<OrderItem> products;
     private Date date;
     private Time time;
 
-    public Order(String id, String userId, String total, boolean orderStatus, boolean payment, Address address, Product product, Date date, Time time) {
+    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<OrderItem> products, Date date, Time time) {
         this.id = id;
         this.userId = userId;
         this.total = total;
-        this.orderStatus = orderStatus;
         this.payment = payment;
         this.address = address;
-        this.product = product;
+        this.products = products;
         this.date = date;
         this.time = time;
     }
@@ -60,14 +59,6 @@ public class Order {
         this.total = total;
     }
 
-    public boolean isOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(boolean orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
     public boolean isPayment() {
         return payment;
     }
@@ -84,12 +75,12 @@ public class Order {
         this.address = address;
     }
 
-    public Product getProduct() {
-        return product;
+    public ArrayList<OrderItem> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(ArrayList<OrderItem> products) {
+        this.products = products;
     }
 
     public Date getDate() {

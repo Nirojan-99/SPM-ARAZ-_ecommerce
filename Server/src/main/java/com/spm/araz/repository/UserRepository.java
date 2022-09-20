@@ -20,11 +20,5 @@ public interface UserRepository extends MongoRepository<User,Integer> {
     User findByEmail(String email);
 
 
-    @Aggregation(pipeline = {
-
-            " {'id':{'$in':id} }"
-
-    })
-    List<Product> findFavoriteProduct(String []id);
 
 }

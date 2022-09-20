@@ -521,6 +521,7 @@ public class UserController {
     public ResponseEntity<UserResponse> sendOtpP(@PathVariable String email) {
         User user = userService.getByEmail(email);
         UserResponse userResponse = new UserResponse();
+        System.out.println(email);
 
         if (user != null) {
             Random random = new Random();

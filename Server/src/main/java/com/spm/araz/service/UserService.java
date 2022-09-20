@@ -25,6 +25,7 @@ public class UserService {
     ProductRepository productRepository;
 
 
+    @Autowired
     private JavaMailSender javaMailSender;
 
 

@@ -11,7 +11,7 @@ import AddShoppingCartOutlined from "@mui/icons-material/AddShoppingCartOutlined
 function SingleShippingAddress(props) {
   return (
     <>
-      <Grid item p={5} >
+      <Grid item p={5}>
         <Box>
           <Typography
             style={{
@@ -60,7 +60,7 @@ function SingleShippingAddress(props) {
             }}
           >
             {props.data.contactNumber}
-          </Typography>{" "}
+          </Typography>
         </Box>
       </Grid>
     </>

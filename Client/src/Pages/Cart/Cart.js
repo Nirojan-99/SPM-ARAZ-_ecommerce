@@ -27,7 +27,7 @@ function Cart() {
     getCart();
     getLoyalty();
   }, []);
-  // console.log(products);
+
   //get loyalty
   const getLoyalty = () => {
     axios
@@ -47,7 +47,6 @@ function Cart() {
       })
       .catch((er) => {});
   };
-  // const [check, setcheck] = useState([]);
 
   //cal sub total
   const calSUbTotal = (count, checked, price) => {
@@ -59,22 +58,8 @@ function Cart() {
         return pre - val;
       }
     });
-
-    // setcheck(() => {
-    //   console.log(checked);
-    //   let copyItems = [];
-    //   products.forEach((element, index) => {
-    //     console.log(element, index);
-    //     if (checked) {
-    //       return copyItems.push(element);
-    //     }
-    //     return copyItems.filter((checkstatus) => checkstatus.id != element.id);
-    //   });
-    //   return copyItems;
-    // });
   };
-  // console.log(check);
-  //cal sub total
+
   const increaseSUbTotal = (price, action) => {
     setSubtotal((pre) => {
       if (action === "inc") {
@@ -93,8 +78,6 @@ function Cart() {
       })
     );
   };
-
-  // only check product
 
   return (
     <>

@@ -10,21 +10,23 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 function ShippingAddress(props) {
-  const [shipping, setshipping] = useState([]);
+  const [shipping, setshipping] = useState();
   const [empty, setempty] = useState("");
   console.log("welcome");
   const { products } = useSelector((state) => state.order);
   console.log(products);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/address/shipping")
+      .get(
+        "http://localhost:5000/User/shippingAddress/63187f6429fe6a6deecec979"
+      )
       .then((res) => {
-        if (res.data.msg == "get") {
-          console.log(res.data);
-          setshipping(res.data.addressList);
-        } else {
-          console.log("empty");
-        }
+        // if (res.data.msg == "get") {
+        console.log(res.data.address);
+        setshipping(res.data.address);
+        // } else {
+        //   console.log("empty");
+        // }
       })
       .catch(() => {});
   }, []);
@@ -149,30 +151,66 @@ function ShippingAddress(props) {
                         }}
                       >
                         <Radio
-                          {...controlProps(row.id)}
+                          {...controlProps(index)}
                           sx={{ marginTop: "8px", color: "#406882" }}
                         />
-                        <SingleShippingAddress data={row} />
+                        {/* <SingleShippingAddress data={row} /> */}
+                        <Grid item p={5}>
+                          <Box>
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.name}
+                            </Typography>{" "}
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.province}
+                            </Typography>
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.district}
+                            </Typography>
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.contactNumber}
+                            </Typography>
+                          </Box>
+                        </Grid>
                       </Grid>
                     );
                   })}
                 </Grid>
-                {/* pagination */}
-                {/* <Box
-                  my={6}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Pagination
-                    shape="rounded"
-                    count={5}
-                    color="primary"
-                    // onChange={handleChange}
-                  />
-                </Box> */}
               </Box>
             </Box>
           )}

@@ -131,11 +131,6 @@ public class UserService {
         return user.checkDefaultAddress(defaultStatus);
     }
 
-    public List<Product> findFavoriteProducts(String[] id) {
-
-        return userRepository.findFavoriteProduct(id);
-    }
-
     public void sendSimpleEmail(String toEmail,
                                 String body,
                                 String subject) {

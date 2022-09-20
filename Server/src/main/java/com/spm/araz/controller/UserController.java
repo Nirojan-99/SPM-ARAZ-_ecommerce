@@ -211,10 +211,9 @@ public class UserController {
 
 
     // get Favorite
-    @GetMapping("/Favorite/get/{userId}")
+    @GetMapping("/favorite/{userId}")
     public ResponseEntity<ProductResponse> getFavorite(@PathVariable("userId") String userId) {
         User user = userService.getUser(userId);
-
 
         ProductResponse productResponse = new ProductResponse();
 
@@ -222,31 +221,15 @@ public class UserController {
             productResponse.setMsg("Not found");
             return new ResponseEntity<>(productResponse, HttpStatus.NOT_FOUND);
         } else {
-            String[] id = user.getFavorites().toArray(new String[0]);
-            System.out.println(id);
+            ArrayList<String> favorites = user.getFavorites();
+            ArrayList<Product> products = new ArrayList<>();
 
+            for (String fav : favorites) {
+                Product product = productService.getProduct(fav);
+                products.add(product);
+            }
 
-//            String[] id = userService.getFavorite(user).toArray(new String[0]);
-//            System.out.println(userService.getFavorite(user));
-//            List<Product> products = userService.findFavoriteProducts(id);
-//            System.out.println(products);
-
-//        String id = String.valueOf(userService.getFavorite(user));
-//        System.out.println(Arrays.stream(id).toArray());
-//                List<Product>   products = null;
-
-//                  for (String var : id) {
-//                      System.out.println(var);
-//                      products = (List<Product>) productService.getProduct(var);
-//
-//                  }
-
-
-//                  productResponse.setProductList(products);
-//                  System.out.println(products);
-
-
-            productResponse.setMsg("get data");
+            productResponse.setProductList(products);
             return new ResponseEntity<>(productResponse, HttpStatus.OK);
         }
 
@@ -254,7 +237,7 @@ public class UserController {
     }
 
 
-    // add address
+    // add address user
     @PostMapping("addresses/{userId}")
     public ResponseEntity<AddressResponse> addAddress(@RequestBody Address address,
                                                       @PathVariable("userId") String userId) {
@@ -457,7 +440,7 @@ public class UserController {
 // arivu
 
 
-//    update the user deatils
+    //    update the user deatils
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable(required = true) String id,
                                                    @RequestBody(required = true) User user) {
@@ -532,7 +515,7 @@ public class UserController {
 
             //send otp to user email
 
-            userService.sendSimpleEmail(email,message,"Password Reset OTP PIN");
+            userService.sendSimpleEmail(email, message, "Password Reset OTP PIN");
 
 
             if (res) {
@@ -587,15 +570,16 @@ public class UserController {
 
         User user = userService.getUser(userid);
         UserResponse userResponse = new UserResponse();
-        
+
 
         if (user != null) {
-                userResponse.setUser(user);
-                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            userResponse.setUser(user);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else {
             userResponse.setMsg("No user found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        }}
+        }
+    }
 
     //generate otp and send to email for email updation
     @PutMapping("/email/{id}")
@@ -611,14 +595,14 @@ public class UserController {
             userResponse.setMsg("No user found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
-            Random random= new Random();
+            Random random = new Random();
             int otp = random.nextInt(9999 + 999) + 999;
-            String message="This is your OTP: " + otp;
+            String message = "This is your OTP: " + otp;
             exisitngUser.setOtp(otp);
             //save otp in database
             boolean res = userService.updateUser(exisitngUser);
             //send otp to user email
-            userService.sendSimpleEmail(user.getEmail(),message,"Email update OTP PIN");
+            userService.sendSimpleEmail(user.getEmail(), message, "Email update OTP PIN");
 
             if (res) {
                 User user1 = new User();
@@ -634,6 +618,26 @@ public class UserController {
 
     }
 
+    // get default shipping address
+
+    @GetMapping("shippingAddress/{userId}")
+    public ResponseEntity<AddressResponse> getDefaultAddress(@PathVariable("userId") String userId) {
+        User user = userService.getUser(userId);
+
+        AddressResponse addressResponse = new AddressResponse();
+
+        if (user == null) {
+            addressResponse.setMsg("Not found");
+            return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
+        } else {
+            Address getAddress = (Address) userService.checkDefaultAddress(user, "default");
+            addressResponse.setAddress(getAddress);
+            addressResponse.setMsg("get");
+            return new ResponseEntity<>(addressResponse, HttpStatus.OK);
+        }
+
+
+    }
 }
 
 

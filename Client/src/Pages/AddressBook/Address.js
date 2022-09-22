@@ -15,12 +15,11 @@ function Address(props) {
       )
       .then((res) => {
         console.log(res.data.msg);
-        if (res) {
-          toast("Succesfully delete address", { type: "success" });
-        }
+
+        toast("Succesfully delete address", { type: "success" });
       })
       .catch(() => {
-        toast("Unable to delete", { type: "success" });
+        toast("Unable to delete", { type: "error" });
       });
   };
 

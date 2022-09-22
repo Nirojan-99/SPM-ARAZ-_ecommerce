@@ -56,7 +56,7 @@ public class User {
     public User() {
         payments = new ArrayList<>();
         favorites = new ArrayList<>();
-        otp=0;
+        otp = 0;
         addresses = new ArrayList<>();
 
     }
@@ -193,6 +193,7 @@ public class User {
     public void setOtp(int otp) {
         this.otp = otp;
     }
+
     public ArrayList<Address> getAddresses() {
         return addresses;
     }
@@ -211,10 +212,6 @@ public class User {
     }
 
 
-
-
-
-
     public Address checkDefaultAddress(String defaultStatus) {
         for (Address address : addresses) {
 
@@ -227,6 +224,11 @@ public class User {
 
         }
         return null;
+    }
+
+
+    public void removeFavoriteList(String favorite) {
+        favorites.remove(favorite);
     }
 
 

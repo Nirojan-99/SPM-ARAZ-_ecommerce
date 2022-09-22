@@ -1,9 +1,6 @@
 package com.spm.araz.repository;
 
-import com.spm.araz.model.Address;
-import com.spm.araz.model.Product;
-import com.spm.araz.model.Store;
-import com.spm.araz.model.User;
+import com.spm.araz.model.*;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -18,6 +15,12 @@ public interface UserRepository extends MongoRepository<User,Integer> {
 
     })
     User findByEmail(String email);
+
+    @Aggregation(pipeline = {
+            "{ '$skip' : ?0 }",
+            "{ '$limit' : ?1 }"
+    })
+    List<Favorite> findAllFavorite(int skip, int limit);
 
 
 

@@ -72,14 +72,7 @@ function AddressBook() {
       toast("Invalid Address", { type: "error" });
       return setAddressesError(true);
     }
-    // if (!Pro.trim()) {
-    //   toast("Invalid province", { type: "error" });
-    // }
 
-    // if (!dis.trim()) {
-    //   toast("Invalid district", { type: "error" });
-    //   return setdisError(true);
-    // }
     const data = {
       name: Name,
       province: Pro,
@@ -113,7 +106,6 @@ function AddressBook() {
     axios
       .get("http://localhost:5000/User/addresses/" + userId)
       .then((res) => {
-    
         if (res.data.addressList.size === 0) {
         }
         setgetAlladdress(res.data.addressList);
@@ -146,8 +138,8 @@ function AddressBook() {
 
   return (
     <>
+      <ToastContainer />
       <Paper elevation={4}>
-        <ToastContainer />
         <Box
           p={3}
           sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }}

@@ -6,18 +6,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Favorite_Product from "./Favorite_Product";
 
-
-
-
 function Favorite_Products() {
-
-  const [favorite, setfavorite] = useState();
+  const [favorite, setfavorite] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/User/Favorite/get/63187f6429fe6a6deecec979")
+      .get("http://localhost:5000/User/favorite/63187f6429fe6a6deecec979")
       .then((res) => {
-        console.log(res.data.product);
-        setfavorite(res.data);
+        console.log(res.data.productList);
+        setfavorite(res.data.productList);
       })
       .catch();
   }, []);
@@ -59,7 +55,7 @@ function Favorite_Products() {
               alignItems: "center",
             }}
           >
-            {[1,2].map((row, index) => {
+            {favorite.map((row, index) => {
               return <Favorite_Product key={index} data={row} />;
             })}
           </Grid>
@@ -70,7 +66,7 @@ function Favorite_Products() {
         my={3}
         sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
       >
-        <Pagination shape="rounded" count={5} color="primary"   />
+        <Pagination shape="rounded" count={5} color="primary" />
       </Box>
     </>
   );

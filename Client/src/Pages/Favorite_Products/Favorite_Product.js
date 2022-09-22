@@ -7,19 +7,38 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import calReview from "../../Helper/calReview";
+import calNewPrice from "../../Helper/calNewPrice";
 // axios
 import axios from "axios";
+import { useState, useEffect } from "react";
 
 function Favorite_Product(props) {
-  console.log(props.data.id);
- const review = 3;
+  //url
+  const baseURL = "http://localhost:5000/";
+
+  // const [favoritedata, setFavoritedata] = useState([]);
+  console.log(props.data.reviews);
+  // setFavoritedata(props.data);
+  const Favorite = props.data;
+
+  const [star, setStar] = useState(0);
+  useEffect(() => {
+    setStar(calReview(Favorite?.reviews));
+  }, []);
   // addshoppingcart fun
   const AddShoppingCart = () => {};
   // delete fun
   const OnDelete = () => {
     axios
-      .delete(`http://localhost:5000/api/${props.data._id}`)
-      .then((res) => {})
+      .delete(
+        `http://localhost:5000/User/favorite?userId=63187f6429fe6a6deecec979&indexNo=${props.index}`
+      )
+      .then((res) => {
+        if (res) {
+          
+        }
+      })
       .catch((er) => {});
   };
   return (
@@ -44,12 +63,10 @@ function Favorite_Product(props) {
                 sx={{
                   width: 200,
                   height: { md: 200, sm: 240, xs: 265 },
-                  overflow: "scroll",
+
                   borderRadius: "5px 5px 2px 2px ",
                 }}
-                image={
-                  "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?cs=srgb&dl=pexels-designecologist-1779487.jpg&fm=jpg"
-                }
+                image={`${baseURL}products/images/${Favorite?.images[0]}`}
               />
             </Box>
           </Grid>
@@ -58,14 +75,24 @@ function Favorite_Product(props) {
             <Typography
               sx={{
                 fontFamily: "Open sans",
-                fontWeight: "800",
+                fontWeight: "900",
                 fontSize: 14,
                 color: "#2B4865",
                 letterSpacing: -0.5,
               }}
             >
-              Computer with 2TB hard disk and 256 SSD, 11th generation..{" "}
-             
+              {Favorite.title}
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: "Open sans",
+                fontWeight: "500",
+                fontSize: 14,
+                color: "#2B4865",
+                letterSpacing: -0.5,
+              }}
+            >
+              {Favorite?.description}
             </Typography>
             {/* Rating */}
             <Box
@@ -78,7 +105,7 @@ function Favorite_Product(props) {
             >
               {" "}
               {[1, 2, 3, 4, 5].map((row, index) => {
-                if (review >= row) {
+                if (star >= row) {
                   return (
                     <StarIcon
                       key={index}
@@ -103,11 +130,12 @@ function Favorite_Product(props) {
                   ml: 2,
                 }}
               >
-                102 Rating
+                {/* 102 Rating */}
+                {Favorite?.review?.length ?? 0} Rating
               </Typography>
             </Box>
             {/* price */}
-            <Box pt={3}>
+            <Box pt={1}>
               <Typography
                 sx={{
                   color: "red",
@@ -116,21 +144,37 @@ function Favorite_Product(props) {
                   fontWeight: "800",
                 }}
               >
-                Rs : 200,000.00
+                Rs : {calNewPrice(Favorite.price, Favorite?.offer)}
               </Typography>
             </Box>
             {/* discout price */}
             <Box>
-              <Typography
-                sx={{
-                  color: "silver",
-                  fontSize: 12,
-                  fontFamily: "open sans",
-                  fontWeight: "700",
-                }}
-              >
-                <s>Rs : 200,000.00 -15%</s>
-              </Typography>
+              {props.data?.offer !== null ? (
+                <Typography
+                  sx={{
+                    color: "silver",
+                    fontSize: 12,
+                    fontFamily: "open sans",
+                    fontWeight: "700",
+                  }}
+                >
+                  <s>
+                    Rs : {props.data?.price} -{props.data?.offer?.percentage}%
+                  </s>
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{
+                    color: "silver",
+                    fontSize: 12,
+                    fontFamily: "open sans",
+                    fontWeight: "700",
+                  }}
+                >
+                  {/* <s>Rs : 200,000.00 -15%</s> */}
+                  <s>offer</s>
+                </Typography>
+              )}
             </Box>
           </Box>
           <Box

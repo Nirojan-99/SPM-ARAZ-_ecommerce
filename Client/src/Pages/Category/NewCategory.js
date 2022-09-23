@@ -16,6 +16,7 @@ function NewCategory() {
   const [details, setDetails] = useState("");
   const [error, setError] = useState(false);
 
+  //Check that is it update or create
   if (id !== "createC") {
     useEffect(() => {
       axios
@@ -97,7 +98,7 @@ function NewCategory() {
                 my: 1.5,
               }}
             >
-              Add New Category
+              Add New +
             </Typography>
             <Box p={1} mt={2} sx={{ display: "flex", flexDirection: "column" }}>
               {" "}

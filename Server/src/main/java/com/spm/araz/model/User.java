@@ -14,7 +14,6 @@ public class User {
     private ArrayList<Payment> payments;
     private Cart cart;
     private int loyaltyPoint;
-
     private String name;
     private String email;
     private String password;
@@ -23,19 +22,14 @@ public class User {
     private String address;
     private String gender;
     private String dob;
-
     private int otp;
-
-
+    private ArrayList<Transaction> transactions;
     private ArrayList<String> favorites;
-
     private ArrayList<Address> addresses;
-
 
     public User(ArrayList<Address> addresses) {
         this.addresses = addresses;
     }
-
 
     public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
         this.id = id;
@@ -51,14 +45,29 @@ public class User {
         this.gender = gender;
         this.dob = dob;
         this.favorites = favorites;
+        this.transactions = new ArrayList<>();
     }
+
 
     public User() {
         payments = new ArrayList<>();
         favorites = new ArrayList<>();
         otp = 0;
         addresses = new ArrayList<>();
+        this.transactions = new ArrayList<>();
 
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
     }
 
     public ArrayList<Payment> getPayments() {

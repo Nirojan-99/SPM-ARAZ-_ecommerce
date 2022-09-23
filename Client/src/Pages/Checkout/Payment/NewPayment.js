@@ -5,11 +5,13 @@ import Label from "../../../Components/Label";
 
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function NewPayment(props) {
   // 63187f8829fe6a6deecec97a
 
   const baseURL = "http://localhost:5000/";
+  const total = useSelector((state) => state.order.total);
 
   //state
   const [nameOncard, setNameOnCard] = useState("");
@@ -48,6 +50,7 @@ function NewPayment(props) {
       .post(`${baseURL}User/payment/${"63187f8829fe6a6deecec97a"}`, data)
       .then((res) => {
         // props.handleNext();
+        //add transaction
         toast("Payment successed", { type: "info" });
       })
       .catch((er) => {

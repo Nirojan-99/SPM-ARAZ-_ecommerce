@@ -124,7 +124,8 @@ function Product(props) {
                   props.checked(
                     count,
                     event.target.checked,
-                    calNewPrice(product?.price, product?.offer)
+                    calNewPrice(product?.price, product?.offer),
+                    id
                   );
                 }}
                 color="secondary"
@@ -215,7 +216,8 @@ function Product(props) {
                   if (isChecked) {
                     props.click(
                       calNewPrice(product?.price, product?.offer),
-                      "inc"
+                      "inc",
+                      id
                     );
                   }
                   setCount((pre) => {
@@ -243,7 +245,8 @@ function Product(props) {
                       if (isChecked) {
                         props.click(
                           calNewPrice(product?.price, product?.offer),
-                          "dec"
+                          "dec",
+                          id
                         );
                       }
                       return --pre;

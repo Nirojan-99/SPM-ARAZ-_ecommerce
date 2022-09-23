@@ -23,6 +23,7 @@ import OTP from "./ForgotPassword/OTP";
 import ResetPassword from "./ForgotPassword/ResetPassword";
 import Report from "./Report/Report";
 import AboutUs from "./AboutUs/AboutUs";
+import Transaction from "./Transaction/Transaction";
 
 function Page() {
   return (
@@ -38,16 +39,15 @@ function Page() {
       <Route path="/products/new" element={<AdminProduct />} />
       <Route path="/products/:id/offers" element={<Offer />} />
       <Route path="/products/:id" element={<AdminProduct />} />
-      <Route path="/report" element={<Report />} />
-      <Route path="/about-us" element={<AboutUs />} />
 
       {/* lavaniyah */}
+      <Route path="/report" element={<Report />} />
+      <Route path="/about-us" element={<AboutUs />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/transaction" element={<Transaction />} />
 
       <Route path="/Favorites" element={<Favorite_Products />} />
-
       <Route path="/profile/:page" element={<Profile />} />
-
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />

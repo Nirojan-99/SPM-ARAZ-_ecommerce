@@ -3,15 +3,33 @@ import { Typography, Button } from "@mui/material";
 import Label from "../../../Components/Label";
 import NewPayment from "./NewPayment";
 import DefaultPayment from "./DefaultPayment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Payment(props) {
   const [val, setVal] = useState(true);
+  //state
+  const [payment, setpayment] = useState();
+  const [isLoaded, setLoaded] = useState(false);
 
   //handle click
   const handleNew = () => {
     setVal(false);
   };
+
+  const baseURL = "http://localhost:5000/";
+
+  useEffect(() => {
+    axios
+      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/payment`)
+      .then((res) => {
+        setLoaded(true);
+        setpayment(res.data[0]);
+      })
+      .catch((er) => {
+        setLoaded(true);
+      });
+  }, []);
 
   return (
     <>
@@ -38,9 +56,18 @@ function Payment(props) {
             Payment Details
           </Typography>
           {/* form */}
-          {val ? <DefaultPayment new={handleNew} /> : <NewPayment />}
-
-         
+          {!isLoaded && (
+            <Typography sx={{ textAlign: "center", mb: 4, color: "silver" }}>
+              Loading...
+            </Typography>
+          )}
+          {isLoaded ? (
+            payment?.length > 0 ? (
+              <DefaultPayment data={payment} new={handleNew} />
+            ) : (
+              <NewPayment />
+            )
+          ) : null}
         </Box>
       </Box>
     </>

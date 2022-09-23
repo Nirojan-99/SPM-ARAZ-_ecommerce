@@ -1,26 +1,16 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function DefaultPayment(props) {
-  //state
-  const [payment, setpayment] = useState();
-  const [isLoaded, setLoaded] = useState(false);
+  payment = props.data;
+  const total = useSelector((state) => state.order.total);
 
-  const baseURL = "http://localhost:5000/";
-
-  useEffect(() => {
-    axios
-      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/payment`)
-      .then((res) => {
-        setLoaded(true);
-        setpayment(res.data[0]);
-        console.log(res.data.length);
-      })
-      .catch((er) => {
-        setLoaded(true);
-      });
-  }, []);
+  const addPayment = () => {
+    // props.handleNext()
+     //add transaction
+  };
 
   return (
     <>
@@ -125,7 +115,7 @@ function DefaultPayment(props) {
                   fontFamily: "open sans",
                   textTransform: "none",
                 }}
-                onClick={props.handleNext}
+                onClick={addPayment}
               >
                 Next
               </Button>

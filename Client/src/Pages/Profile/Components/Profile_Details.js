@@ -276,7 +276,6 @@ function Profile_Details() {
             <Label title="OTP" for="otp" />
             <Input
               id="otp"
-              autoFocus={true}
               size="small"
               type="number"
               value={otpPin}

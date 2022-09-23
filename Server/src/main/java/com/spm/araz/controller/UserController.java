@@ -155,21 +155,21 @@ public class UserController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
-        User user = userService.getUser(id);
-        UserResponse userResponse = new UserResponse();
-
-        if (user != null) {
-
-            userResponse.setUser(user);
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        }
-
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
+//        User user = userService.getUser(id);
+//        UserResponse userResponse = new UserResponse();
+//
+//        if (user != null) {
+//
+//            userResponse.setUser(user);
+//            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+//        } else {
+//            userResponse.setMsg("No user found");
+//            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+//        }
+//
+//    }
 
 
     // sayanthan

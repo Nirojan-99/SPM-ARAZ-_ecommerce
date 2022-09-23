@@ -23,6 +23,8 @@ import OTP from "./ForgotPassword/OTP";
 import ResetPassword from "./ForgotPassword/ResetPassword";
 import Report from "./Report/Report";
 import AboutUs from "./AboutUs/AboutUs";
+import CategoryTable from "./Category/CategoryTable";
+import NewCategory from "./Category/NewCategory";
 
 function Page() {
   return (
@@ -54,6 +56,8 @@ function Page() {
       <Route path="/passworForgot" element={<ForgotPassword />} />
       <Route path="/otp/:id" element={<OTP />} />
       <Route path="/passwordReset/:id" element={<ResetPassword />} />
+      <Route path="/category" element={<CategoryTable />} />
+      <Route path="/newCategory/:id" element={<NewCategory />} />
     </Routes>
   );
 }

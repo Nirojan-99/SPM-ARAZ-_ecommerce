@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductRepository extends MongoRepository<Product, Integer> {
     //    @Query("{'title':{$regex:?0,$options:'i'}}")
     @Aggregation(pipeline = {
-            "{ '$match': {'title':{$regex:?0,$options:'i'}} }",
+            "{ '$match': {'category':{$regex:?0,$options:'i'}} }",
             "{ '$skip' : ?1 }",
             "{ '$limit' : ?2 }"
     })
@@ -50,4 +50,8 @@ public interface ProductRepository extends MongoRepository<Product, Integer> {
             "{ '$match': {'storeID':?0 ,'title' : {$regex:?1,$options:'i'} } }"
     })
     List<Product> searchWithStore(String id, String title);
+
+    List<Product> findByCategory(String category);
+
+
 }

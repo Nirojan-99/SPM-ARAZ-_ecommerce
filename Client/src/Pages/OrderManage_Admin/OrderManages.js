@@ -24,7 +24,7 @@ function OrderManages() {
                 my: 1.5,
               }}
             >
-              Your Orders
+              Manage Orders
             </Typography>
           </Box>
 

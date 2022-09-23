@@ -21,6 +21,8 @@ import Checkout from "./Checkout/Checkout";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import OTP from "./ForgotPassword/OTP";
 import ResetPassword from "./ForgotPassword/ResetPassword";
+import Report from "./Report/Report";
+import AboutUs from "./AboutUs/AboutUs";
 
 function Page() {
   return (
@@ -36,6 +38,8 @@ function Page() {
       <Route path="/products/new" element={<AdminProduct />} />
       <Route path="/products/:id/offers" element={<Offer />} />
       <Route path="/products/:id" element={<AdminProduct />} />
+      <Route path="/report" element={<Report />} />
+      <Route path="/about-us" element={<AboutUs />} />
 
       {/* lavaniyah */}
       <Route path="/cart" element={<Cart />} />
@@ -48,8 +52,8 @@ function Page() {
       <Route path="/login" element={<Login />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/passworForgot" element={<ForgotPassword />} />
-      <Route path="/otp" element={<OTP />} />
-      <Route path="/passwordReset" element={<ResetPassword />} />
+      <Route path="/otp/:id" element={<OTP />} />
+      <Route path="/passwordReset/:id" element={<ResetPassword />} />
     </Routes>
   );
 }

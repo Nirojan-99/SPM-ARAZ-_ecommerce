@@ -36,6 +36,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function AddressBook() {
+  const userId = "63187f8829fe6a6deecec97a";
   const navigate = useNavigate();
   const [Name, setName] = useState();
   const [Contactnumber, setContactnumber] = useState();
@@ -46,14 +47,14 @@ function AddressBook() {
   const [nameError, setNameError] = useState(false);
   const [ContactnumberError, setContactnumberError] = useState(false);
   const [AddressesError, setAddressesError] = useState(false);
-  const [ProError, setProError] = useState(false);
+
   // const [disError, setdisError] = useState(false);
 
   const onsubmitSave = () => {
     setNameError(false);
     setContactnumberError(false);
     setAddressesError(false);
-    setProError(false);
+
     // setdisError(false);
     if (!Name.trim()) {
       toast("Invalid Name", { type: "error" });
@@ -63,18 +64,15 @@ function AddressBook() {
       toast("Invalid Contactnumber ", { type: "error" });
       return setContactnumberError(true);
     }
+    if (!(Contactnumber.length == 10)) {
+      toast("Contactnumber should be 10 digit ", { type: "error" });
+      return setContactnumberError(true);
+    }
     if (!Addresses.trim()) {
       toast("Invalid Address", { type: "error" });
       return setAddressesError(true);
     }
-    if (!Pro.trim()) {
-      toast("Invalid province", { type: "error" });
-      return setProError(true);
-    }
-    // if (!dis.trim()) {
-    //   toast("Invalid district", { type: "error" });
-    //   return setdisError(true);
-    // }
+
     const data = {
       name: Name,
       province: Pro,
@@ -82,9 +80,9 @@ function AddressBook() {
       address: Addresses,
       contactNumber: Contactnumber,
     };
-    console.log(data);
+
     axios
-      .post("http://localhost:5000/address", data)
+      .post("http://localhost:5000/User/addresses/" + userId, data)
       .then((res) => {
         setTimeout(() => {
           toast("succesfully added new address", { type: "success" });
@@ -92,10 +90,10 @@ function AddressBook() {
 
         setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 1700);
       })
       .catch((er) => {
-        toast("succesfully added new address", { type: "error" });
+        toast("Unable to add address", { type: "error" });
       });
   };
   // take from fetching data
@@ -106,10 +104,9 @@ function AddressBook() {
     // fetching data
     // TODO
     axios
-      .get("http://localhost:5000/address/")
+      .get("http://localhost:5000/User/addresses/" + userId)
       .then((res) => {
         if (res.data.addressList.size === 0) {
-          // setdataempty("no any data");
         }
         setgetAlladdress(res.data.addressList);
       })
@@ -141,8 +138,8 @@ function AddressBook() {
 
   return (
     <>
+      <ToastContainer />
       <Paper elevation={4}>
-        <ToastContainer />
         <Box
           p={3}
           sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }}
@@ -247,14 +244,13 @@ function AddressBook() {
                       page * rowsPerPage + rowsPerPage
                     )
                   : getAlladdress
-                ).map((row, index) => (
+                ).map((row, index, array) => (
                   <TableRow
-                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <Address data={row} />
+                    <Address data={row} index={index} saya={array} />
                   </TableRow>
                 ))}
                 {emptyRows > 0 && (
@@ -344,10 +340,8 @@ function AddressBook() {
               {/* province */}
               <Label for="province" title="Province" />
               <Select
-                error={ProError}
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 onChange={(event) => {
-                  setProError(false);
                   // setdisError(false);
                   setPro(() => {
                     let data = DATA.filter((item, index) => {

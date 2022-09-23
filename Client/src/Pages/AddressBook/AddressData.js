@@ -1,10 +1,10 @@
 const Address_DATA = [
   {
-    _id: "1",
-    name: "sayanthan",
+    _id: "",
+    name: "sayanthanksd",
     Province: "Northern",
     districts: "jaffna",
-    contactnumber: "2372872832",
+    contactnumber: "0765423786",
     default: "default",
   },
 ];

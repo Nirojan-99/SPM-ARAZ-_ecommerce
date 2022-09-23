@@ -3,24 +3,31 @@ import { Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import TableCell from "@mui/material/TableCell";
 import axios from "axios";
-import Ack from "../../Components/Ack";
-import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 function Address(props) {
+  const userId = "63187f8829fe6a6deecec97a";
 
   const OnClickDeleteHandler = () => {
     axios
-      .delete("http://localhost:5000/address/" + props.data.id)
+      .delete(
+        `http://localhost:5000/User/addresses/?indexNo=${props.index}&userId=${userId}`
+      )
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.msg);
+
+        toast("Succesfully delete address", { type: "success" });
       })
-      .catch(() => {});
+      .catch(() => {
+        toast("Unable to delete", { type: "error" });
+      });
   };
 
   const navigator = useNavigate();
   return (
     <>
       <TableCell component="th" scope="row">
+        <ToastContainer />
         <Typography
           variant="body"
           sx={{ color: "#2B4865", fontSize: 15, fontFamily: "open sans" }}
@@ -34,8 +41,7 @@ function Address(props) {
       >
         {props.data.province}
         <br />
-        {props.data.district}{" "}
-        {/* <br /> */}
+        {props.data.district} {/* <br /> */}
         {/* {props.data.address} */}
       </TableCell>
       <TableCell
@@ -61,7 +67,10 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
-            navigator("/profile/editaddress/" + props.data.id);
+            localStorage.removeItem("indexNo");
+            localStorage.clear();
+            localStorage.setItem("indexNo", props.index);
+            navigator("/profile/editaddress");
           }}
         >
           Edit
@@ -78,6 +87,7 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
+            console.log(props.index);
             OnClickDeleteHandler();
           }}
         >

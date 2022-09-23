@@ -40,9 +40,9 @@ const imageArray = [
 
 const review = 4;
 
-// 63187f6429fe6a6deecec979
+function ProductDetails(props) {
+  // 63187f6429fe6a6deecec979
 
-function ProductDetails() {
   //state
   const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
@@ -70,13 +70,18 @@ function ProductDetails() {
   //handle favorite click
   const handlefavorite = (val) => {
     axios
-      .put(`http://localhost:5000/User/Favorite`, {
-        userId: userID,
-        productId: props.data._id,
-        val: val,
-      })
+      .put(
+        `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${product.id}&val=${val}`
+      )
       .then((res) => {
-        setFavorite((pre) => !pre);
+        console.log(res.data);
+
+        setFavorite((isFavorite) => !isFavorite);
+        if (!isFavorite) {
+          toast("Added to Favoritelist", { type: "info" });
+        } else {
+          toast("remove to Favoritelist", { type: "error" });
+        }
       })
       .catch(() => {});
   };
@@ -129,7 +134,7 @@ function ProductDetails() {
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
-        console.log(product)
+        console.log(product);
         setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
       })
       .catch((er) => {});
@@ -160,7 +165,7 @@ function ProductDetails() {
                       width: "100%",
                       minHeight: 250,
                       height: 300,
-                      overflow: "scroll",
+
                       borderRadius: "5px 0 0 0px",
                       objectFit: "cover",
                     }}
@@ -240,7 +245,7 @@ function ProductDetails() {
                     <Box sx={{ flexGrow: 1 }} />
                     <IconButton
                       onClick={() => {
-                        handlefavorite(!pre);
+                        handlefavorite(!isFavorite);
                       }}
                       disableRipple
                       size="small"
@@ -543,7 +548,9 @@ function ProductDetails() {
             {product?.reviews?.map((item, index) => {
               return <Review data={item} key={index} />;
             })}
-            {product?.reviews?.length === 0  && <Typography>No reviews</Typography>}
+            {product?.reviews?.length === 0 && (
+              <Typography>No reviews</Typography>
+            )}
           </Box>
         </Container>
       </Box>

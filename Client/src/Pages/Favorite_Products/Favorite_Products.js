@@ -2,9 +2,21 @@ import { Grid } from "@mui/material";
 import { Typography, Container, Pagination } from "@mui/material";
 // box in matrial ui
 import { Box } from "@mui/system";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Favorite_Product from "./Favorite_Product";
 
 function Favorite_Products() {
+  const [favorite, setfavorite] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/User/favorite/63187f6429fe6a6deecec979")
+      .then((res) => {
+        console.log(res.data.productList);
+        setfavorite(res.data.productList);
+      })
+      .catch();
+  }, []);
   return (
     <>
       <Box>
@@ -32,7 +44,7 @@ function Favorite_Products() {
             </Typography>
           </Box>
           <Grid
-           mt={2}
+            mt={2}
             mb={7}
             container
             spacing={2}
@@ -43,8 +55,8 @@ function Favorite_Products() {
               alignItems: "center",
             }}
           >
-            {[1, 2, 3, 4].map((row, index) => {
-              return <Favorite_Product key={index} />;
+            {favorite.map((row, index) => {
+              return <Favorite_Product key={index} data={row} />;
             })}
           </Grid>
         </Container>
@@ -54,12 +66,7 @@ function Favorite_Products() {
         my={3}
         sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
       >
-        <Pagination
-          shape="rounded"
-          count={5}
-          color="primary"
-          // onChange={handleChange}
-        />
+        <Pagination shape="rounded" count={5} color="primary" />
       </Box>
     </>
   );

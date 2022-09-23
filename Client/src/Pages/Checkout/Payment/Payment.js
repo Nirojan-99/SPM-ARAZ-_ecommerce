@@ -15,7 +15,34 @@ function Payment(props) {
 
   return (
     <>
-     
+      <Box
+        py={1}
+        my={2}
+        sx={{
+          borderRadius: "6px",
+          bgcolor: "#FFFFFF",
+        }}
+      >
+        <Box>
+          {/* heading */}
+          <Typography
+            p={2}
+            sx={{
+              fontSize: { md: 20, xs: 17 },
+              color: "#2B4865",
+              textAlign: { md: "left", xs: "center" },
+              fontWeight: "900",
+              fontFamily: "open sans",
+            }}
+          >
+            Payment Details
+          </Typography>
+          {/* form */}
+          {val ? <DefaultPayment new={handleNew} /> : <NewPayment />}
+
+         
+        </Box>
+      </Box>
     </>
   );
 }

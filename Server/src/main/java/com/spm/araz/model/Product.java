@@ -33,6 +33,8 @@ public class Product {
         this.storeID = storeId;
     }
 
+    public Product() {
+    }
 
     public String getStoreID() {
         return storeID;

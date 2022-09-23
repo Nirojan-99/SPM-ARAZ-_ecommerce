@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.Query;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -112,6 +111,8 @@ public class UserController {
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
     }
+
+
 
     //remove payment
     @DeleteMapping("/payment/{id}")
@@ -227,6 +228,10 @@ public class UserController {
             for (String fav : favorites) {
                 Product product = productService.getProduct(fav);
                 products.add(product);
+            }
+
+            for (int i = 0; i < favorites.size(); i++) {
+
             }
 
             productResponse.setProductList(products);
@@ -637,6 +642,32 @@ public class UserController {
 
 
     }
+
+
+    // remove Favorite
+    @DeleteMapping("/favorite")
+    public ResponseEntity<AddressResponse> deleteFavorite(@RequestParam("userId") String userId,
+                                                          @RequestParam("indexNo") int indexNo) {
+        User user = userService.getUser(userId);
+        AddressResponse addressResponse = new AddressResponse();
+
+        if (user == null) {
+            addressResponse.setMsg("Not found");
+            return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
+        } else {
+            String favorite = user.getFavorites().get(indexNo);
+
+            System.out.println(favorite);
+            userService.removeFavoriteList(user, favorite);
+            addressResponse.setMsg("remove data");
+            return new ResponseEntity<>(addressResponse, HttpStatus.OK);
+
+        }
+    }
+
+
+
+
 }
 
 

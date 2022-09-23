@@ -1,18 +1,12 @@
 package com.spm.araz.service;
 
-import com.spm.araz.model.Address;
-import com.spm.araz.model.Payment;
-import com.spm.araz.model.Product;
-import com.spm.araz.model.User;
+import com.spm.araz.model.*;
 import com.spm.araz.repository.ProductRepository;
 import com.spm.araz.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserService {
@@ -142,6 +136,14 @@ public class UserService {
 
         javaMailSender.send(message);
         System.out.println("Mail Send...");
+    }
+
+
+    // removefavoritelist
+    public boolean removeFavoriteList(User user, String favorite){
+        user.removeFavoriteList(favorite);
+        userRepository.save(user);
+        return true;
     }
 
 

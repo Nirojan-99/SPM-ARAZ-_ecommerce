@@ -11,14 +11,22 @@ const OrderStore = createSlice({
   initialState: initial,
   reducers: {
     addProducts(state, action) {
+      state.products = action.payload.products;
       localStorage.setItem("products", JSON.stringify(action.payload.products));
       localStorage.setItem("total", action.payload.total);
+      console.log(action.payload.products);
     },
     addAddress(state, action) {
+      state.address = action.payload.address;
       localStorage.setItem("address", JSON.stringify(action.payload.address));
+    },
+    addTotal(state, action) {
+      state.total = action.payload.total;
+
+      localStorage.setItem("total", action.payload.total);
     },
   },
 });
 
 export default OrderStore;
-export const { addProducts, addAddress } = OrderStore.actions;
+export const { addProducts, addAddress, addTotal } = OrderStore.actions;

@@ -9,14 +9,20 @@ import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { addProducts } from "../../Store/OrderStore";
+import { addProducts, addTotal } from "../../Store/OrderStore";
+
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const dispatch = useDispatch();
   const baseURL = "http://localhost:5000/";
 
+  //hook
+  const navigate = useNavigate();
+
   //state
   const [products, setProducts] = useState();
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [subTotal, setSubtotal] = useState(0);
   const [loyalty, setLoyalty] = useState(0);
@@ -49,7 +55,7 @@ function Cart() {
   };
 
   //cal sub total
-  const calSUbTotal = (count, checked, price) => {
+  const calSUbTotal = (count, checked, price, id) => {
     setSubtotal((pre) => {
       let val = price * count;
       if (checked) {
@@ -58,9 +64,23 @@ function Cart() {
         return pre - val;
       }
     });
+    //set selected products
+    setSelectedProducts((pre) => {
+      let array;
+      if (checked) {
+        array = [...pre, { productID: id, count: count }];
+      } else {
+        array = pre.filter((item) => {
+          if (item.productID !== id) {
+            return item;
+          }
+        });
+      }
+      return array;
+    });
   };
 
-  const increaseSUbTotal = (price, action) => {
+  const increaseSUbTotal = (price, action, id) => {
     setSubtotal((pre) => {
       if (action === "inc") {
         return pre + price;
@@ -68,15 +88,23 @@ function Cart() {
         return pre - price;
       }
     });
+    //
+    setSelectedProducts((pre) => {
+      let array = [...pre];
+      let index = pre.findIndex((item) => item.productID === id);
+      if (action === "inc") {
+        array[index] = { productID: id, count: pre[index].count + 1 };
+      } else {
+        array[index] = { productID: id, count: pre[index].count - 1 };
+      }
+      return array;
+    });
   };
-  console.log(products);
+
   const handlecheckout = () => {
-    dispatch(
-      addProducts({
-        total: 100,
-        products: products,
-      })
-    );
+    dispatch(addProducts({ products: selectedProducts }));
+    dispatch(addTotal({ total: subTotal - addloyalty + delivary }));
+    navigate("/checkout");
   };
 
   return (
@@ -235,7 +263,6 @@ function Cart() {
               <Box my={2}>
                 <Button
                   onClick={handlecheckout}
-                  href="/checkout"
                   disableElevation
                   sx={{
                     width: { xs: "100%", sm: "auto" },

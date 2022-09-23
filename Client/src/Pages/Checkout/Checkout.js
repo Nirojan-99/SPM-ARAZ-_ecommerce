@@ -100,8 +100,8 @@ function Checkout() {
         ) : (
           <>
             <Box mt={2} mb={1}>
-              {getStepContent(activeStep)}
-              {/* <Payment handleNext={handleNext} /> */}
+              {/* {getStepContent(activeStep)} */}
+              <Payment handleNext={handleNext} />
             </Box>
           </>
         )}

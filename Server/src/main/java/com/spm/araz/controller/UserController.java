@@ -107,7 +107,8 @@ public class UserController {
             userResponse.setMsg("Not found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
-            userService.addPayment(user, payment);
+            user.setPayment(payment);
+            userService.updateUser(user);
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
     }
@@ -115,7 +116,7 @@ public class UserController {
 
     //remove payment
     @DeleteMapping("/payment/{id}")
-    public ResponseEntity<UserResponse> deletePayment(@RequestParam int cardNumber, @PathVariable("id") String id) {
+    public ResponseEntity<UserResponse> deletePayment(@PathVariable("id") String id) {
         User user = userService.getUser(id);
 
         UserResponse userResponse = new UserResponse();
@@ -124,14 +125,15 @@ public class UserController {
             userResponse.setMsg("Not found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
-            userService.deletePayment(user, cardNumber);
+            user.setPayment(null);
+            userService.updateUser(user);
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
     }
 
     //getPayment
     @GetMapping("/{id}/payment")
-    public ResponseEntity<ArrayList<Payment>> getPayment(@PathVariable("id") String id) {
+    public ResponseEntity<Payment> getPayment(@PathVariable("id") String id) {
         User user = userService.getUser(id);
 
         if (user != null) {

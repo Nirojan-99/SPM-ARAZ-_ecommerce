@@ -31,13 +31,7 @@ function Product() {
 
   //state
   const [isLoading, setIsloading] = useState(false);
-  const [categories, setCategories] = useState([
-    "Electronic",
-    "Kids",
-    "Mobile & Wireless",
-    "TV & Video Equipment",
-    "Food",
-  ]);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -75,16 +69,21 @@ function Product() {
           setIsloading(false);
         });
     }
-    // axios
-    //   .get(baseURL)
-    //   .then((res) => {
-    //     setCategories(res.data.data);
-    //     setIsloading(false);
-    //   })
-    //   .catch((er) => {
-    //     setIsloading(false);
-    //   });
+    getAllCategories();
   }, []);
+
+  //get all categories
+  const getAllCategories = () => {
+    axios
+      .get(`${baseURL}category`)
+      .then((res) => {
+        let array = res.data?.categoryList?.map((item)=>item.name)
+        setCategories(array);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
 
   //drag image handler
   const imageHandler = (file, index) => {

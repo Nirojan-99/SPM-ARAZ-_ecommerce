@@ -15,6 +15,9 @@ function RegisterStore() {
   //state
   const [districts, setDistricts] = useState([]);
 
+  //submit
+  const
+
   return (
     <>
       <Box>

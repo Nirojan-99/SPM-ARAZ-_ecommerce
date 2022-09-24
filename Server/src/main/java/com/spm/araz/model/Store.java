@@ -16,6 +16,7 @@ public class Store {
     private String bankName;
     private int accountNumber;
     private boolean approval;
+    private String userID;
 
     public Store(String id, String storeName, int contactNo, Address address, String bankName, int accountNumber) {
         this.id = id;
@@ -26,7 +27,26 @@ public class Store {
         this.accountNumber = accountNumber;
     }
 
+    public Store(String id, String storeName, int contactNo, Address address, String bankName, int accountNumber, boolean approval, String userID) {
+        this.id = id;
+        this.storeName = storeName;
+        this.contactNo = contactNo;
+        this.address = address;
+        this.bankName = bankName;
+        this.accountNumber = accountNumber;
+        this.approval = approval;
+        this.userID = userID;
+    }
+
     public Store() {
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public boolean isApproval() {

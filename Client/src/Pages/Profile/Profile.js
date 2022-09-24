@@ -132,9 +132,7 @@ function Profile() {
                 {page === "details" && <Profile_Details />}
                 {page === "order" && <Orders />}
                 {page === "order-manage" && <OrderManages />}
-                {/* lavaniyah */}
                 {page === "loyalty" && <Loyalty />}
-
                 {page === "security" && <Security />}
               </Box>
             </Grid>

@@ -240,6 +240,7 @@ function Header() {
                   onClick={() => {
                     // setAuth(null);
                     dispatch(logout());
+                    window.location.reload();
                     navigate("/login", { replace: true });
                   }}
                 >

@@ -95,24 +95,26 @@ function Review(props) {
       </Box>
       {/* reply sec */}
       {review.sellerReply === null ? (
-        <Box my={1} mb={2} pl={{ xs: 0, sm: 8 }}>
-          <Input maxRows={4} minRows={3} value={reply} set={setReply} />
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button
-              onClick={replyHandler}
-              sx={{
-                width: { xs: "100%", sm: 10 },
-                my: 1,
-              }}
-              variant="contained"
-              disableElevation
-              color="info"
-            >
-              Reply
-            </Button>
+        props.storeID === props.product && (
+          <Box my={1} mb={2} pl={{ xs: 0, sm: 8 }}>
+            <Input maxRows={4} minRows={3} value={reply} set={setReply} />
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button
+                onClick={replyHandler}
+                sx={{
+                  width: { xs: "100%", sm: 10 },
+                  my: 1,
+                }}
+                variant="contained"
+                disableElevation
+                color="info"
+              >
+                Reply
+              </Button>
+            </Box>
           </Box>
-        </Box>
+        )
       ) : (
         // seller reply
         <Box my={1} mb={2} pl={{ xs: 0, sm: 8 }}>

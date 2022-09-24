@@ -67,4 +67,10 @@ public class StoreService {
         List<Store> stores = storeRepository.findAll();
         return stores.size();
     }
+
+    //getStore by user id
+    public Store getStoreByUserID(String id) {
+        Store store = storeRepository.getByUserID(id);
+        return store;
+    }
 }

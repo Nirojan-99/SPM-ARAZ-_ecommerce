@@ -14,6 +14,9 @@ function Category(props) {
           width: { xs: 45, md: 55 },
           overflow: "hidden",
           textOverflow: "ellipsis",
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
         }}
         p={{ xs: 0.5, md: 2 }}
         m={{ xs: 0.5, md: 1 }}
@@ -26,7 +29,7 @@ function Category(props) {
             textAlign: "center",
           }}
         >
-          Category & Category
+          {props?.data?.name}
         </Typography>
       </Box>
     </>

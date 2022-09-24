@@ -52,6 +52,7 @@ function Page() {
           )}
           {role === "seller" && (
             <>
+              <Route path="/stores" element={<RegisterStore />} />
               <Route path="/products/new" element={<AdminProduct />} />
               <Route path="/products/:id/offers" element={<Offer />} />
               <Route path="/products/:id" element={<AdminProduct />} />
@@ -64,13 +65,14 @@ function Page() {
       )}
       {!userID && (
         <>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/passworForgot" element={<ForgotPassword />} />
           <Route path="/otp/:id" element={<OTP />} />
           <Route path="/passwordReset/:id" element={<ResetPassword />} />
+          <Route path="*" element={<Navigate replace to="/login" />} />
         </>
       )}
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/report" element={<Report />} />
       <Route path="/about-us" element={<AboutUs />} />
     </Routes>

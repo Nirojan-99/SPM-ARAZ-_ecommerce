@@ -25,9 +25,13 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import ButtonA from "../../Components/ButtonA";
 import Ack from "../../Components/Ack";
 
+import { useSelector, useDispatch } from "react-redux";
+
 function Product() {
   //product id
   const { id } = useParams();
+
+  const { token, role, userID } = useSelector((state) => state.loging);
 
   //state
   const [isLoading, setIsloading] = useState(false);
@@ -43,6 +47,7 @@ function Product() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [storeID, setStoreID] = useState("");
 
   const [nameError, setNameError] = useState(false);
   const [categoryError, setCategoryError] = useState(false);
@@ -70,7 +75,18 @@ function Product() {
         });
     }
     getAllCategories();
+    getStoreID();
   }, []);
+
+  //get store id
+  const getStoreID = () => {
+    axios
+      .get(`${baseURL}stores/user/${userID}`)
+      .then((res) => {
+        setStoreID(res.data.id);
+      })
+      .catch((er) => {});
+  };
 
   //get all categories
   const getAllCategories = () => {
@@ -132,7 +148,7 @@ function Product() {
     images.forEach((element, index) => {
       product.append("images", images[index]);
     });
-    product.append("storeID", "63198fb108db9a05475a68c8");
+    product.append("storeID", storeID);
     product.append("title", name);
     product.append("description", description);
     product.append("price", price);
@@ -185,7 +201,6 @@ function Product() {
 
   return (
     <>
-     
       <Ack
         open={open}
         handleClose={() => setOpen(false)}

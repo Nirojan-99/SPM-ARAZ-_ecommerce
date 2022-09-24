@@ -1,11 +1,11 @@
 package com.spm.araz.controller;
 
 import com.spm.araz.helper.FilesStorageService;
-import com.spm.araz.model.Offer;
-import com.spm.araz.model.Product;
-import com.spm.araz.model.Review;
+import com.spm.araz.model.*;
 import com.spm.araz.response.ProductResponse;
 import com.spm.araz.service.ProductService;
+import com.spm.araz.service.StoreService;
+import com.spm.araz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +32,8 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+    @Autowired
+    StoreService storeService;
 
 
     //add new product
@@ -76,8 +78,8 @@ public class ProductController {
 
     //get all products
     @GetMapping("/")
-    public ResponseEntity<ProductResponse> getProducts(@RequestParam(required = false,name = "category") String category,
-                                                       @RequestParam(required = false,name = "title") String title,
+    public ResponseEntity<ProductResponse> getProducts(@RequestParam(required = false, name = "category") String category,
+                                                       @RequestParam(required = false, name = "title") String title,
                                                        @RequestParam(required = false, defaultValue = "1") int page) {
         List<Product> products;
         ProductResponse productResponse = new ProductResponse();
@@ -111,7 +113,9 @@ public class ProductController {
                                                               @RequestParam(required = false, defaultValue = "1") int page) {
         ProductResponse productResponse = new ProductResponse();
 
-        List<Product> products = productService.getStoreProducts(id, page);
+        Store store = storeService.getStoreByUserID(id);
+
+        List<Product> products = productService.getStoreProducts(store.getId(), page);
 
         if (count) {
             productResponse.setMsg(products.size() + "");
@@ -310,7 +314,9 @@ public class ProductController {
     //get store product count
     @GetMapping("/store/{id}/count")
     public ResponseEntity<Integer> getProductCountForStore(@PathVariable("id") String id) {
-        int count = productService.getStoreProductsCount(id);
+        Store store = storeService.getStoreByUserID(id);
+
+        int count = productService.getStoreProductsCount(store.getId());
 
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
@@ -333,7 +339,8 @@ public class ProductController {
     @GetMapping("/store/{id}/search/{title}")
     public ResponseEntity<List<Product>> searchWithinStore(@PathVariable("id") String id,
                                                            @PathVariable("title") String title) {
-        List<Product> products = productService.searchWithinStore(id, title);
+        Store store = storeService.getStoreByUserID(id);
+        List<Product> products = productService.searchWithinStore(store.getId(), title);
 
         return new ResponseEntity<>(products, HttpStatus.OK);
     }

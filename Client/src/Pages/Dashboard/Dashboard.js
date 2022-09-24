@@ -263,7 +263,7 @@ function Dashboard() {
           {isLoaded && products.length <= 0 && (
             <Box sx={{ flex: 1, justifyContent: "center" }}>
               <Typography sx={{ textAlign: "center", color: "#555" }}>
-                No producs
+                No products
               </Typography>
             </Box>
           )}

@@ -21,6 +21,8 @@ import OTP from "./ForgotPassword/OTP";
 import ResetPassword from "./ForgotPassword/ResetPassword";
 import Report from "./Report/Report";
 import AboutUs from "./AboutUs/AboutUs";
+import CategoryTable from "./Category/CategoryTable";
+import NewCategory from "./Category/NewCategory";
 import Transaction from "./Transaction/Transaction";
 
 function Page() {
@@ -34,6 +36,8 @@ function Page() {
           {role === "admin" && (
             <>
               <Route path="/stores" element={<Stores />} />
+              <Route path="/category" element={<CategoryTable />} />
+              <Route path="/newCategory/:id" element={<NewCategory />} />
             </>
           )}
           {role === "buyer" && (

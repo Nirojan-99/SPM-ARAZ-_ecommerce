@@ -28,6 +28,8 @@ import { useNavigate } from "react-router-dom";
 
 import Security from "./Components/Security";
 import OrderManages from "../OrderManage_Admin/OrderManages";
+import CategoryTable from "../Category/CategoryTable";
+import NewCategory from "../Category/NewCategory";
 
 function Profile() {
   const { page } = useParams();

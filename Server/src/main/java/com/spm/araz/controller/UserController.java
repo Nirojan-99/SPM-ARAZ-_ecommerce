@@ -156,21 +156,21 @@ public class UserController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
-        User user = userService.getUser(id);
-        UserResponse userResponse = new UserResponse();
-
-        if (user != null) {
-
-            userResponse.setUser(user);
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        }
-
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
+//        User user = userService.getUser(id);
+//        UserResponse userResponse = new UserResponse();
+//
+//        if (user != null) {
+//
+//            userResponse.setUser(user);
+//            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+//        } else {
+//            userResponse.setMsg("No user found");
+//            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+//        }
+//
+//    }
 
 
     // sayanthan
@@ -505,10 +505,11 @@ public class UserController {
     }
 
     //generate otp and send to email for password reset
-    @GetMapping("/resetPwd/{email}")
-    public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
+          @GetMapping("/resetPwd/{email}")
+    public ResponseEntity<UserResponse> sendOtpP(@PathVariable String email) {
         User user = userService.getByEmail(email);
         UserResponse userResponse = new UserResponse();
+        System.out.println(email);
 
         if (user != null) {
             Random random = new Random();
@@ -519,9 +520,7 @@ public class UserController {
             boolean res = userService.updateUser(user);
 
             //send otp to user email
-
-            userService.sendSimpleEmail(email, message, "Password Reset OTP PIN");
-
+            userService.sendSimpleEmail(email,message,"Password Reset OTP PIN");
 
             if (res) {
                 User user1 = new User();

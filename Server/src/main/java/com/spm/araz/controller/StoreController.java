@@ -90,6 +90,8 @@ public class StoreController {
             user.setUserType("buyer");
             userService.updateAddress(user);
 
+//            TODO delete products
+
             storeResponse.setMsg("Deleted");
             return new ResponseEntity<>(storeResponse, HttpStatus.OK);
         } else {

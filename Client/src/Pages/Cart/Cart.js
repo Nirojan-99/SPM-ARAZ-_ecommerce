@@ -8,14 +8,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
-import { useDispatch } from "react-redux";
 import { addProducts, addTotal } from "../../Store/OrderStore";
-
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 function Cart() {
   const dispatch = useDispatch();
   const baseURL = "http://localhost:5000/";
+
+  const { token, role, userID } = useSelector((state) => state.loging);
 
   //hook
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ function Cart() {
   //get loyalty
   const getLoyalty = () => {
     axios
-      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/loyalty`)
+      .get(`${baseURL}User/${userID}/loyalty`)
       .then((res) => {
         setLoyalty(res.data);
       })
@@ -47,7 +48,7 @@ function Cart() {
   //get cart
   const getCart = () => {
     axios
-      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/cart`)
+      .get(`${baseURL}User/${userID}/cart`)
       .then((res) => {
         setProducts(res.data);
       })

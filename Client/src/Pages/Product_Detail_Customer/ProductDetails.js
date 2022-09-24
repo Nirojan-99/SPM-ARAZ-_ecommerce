@@ -28,25 +28,17 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { useParams } from "react-router";
 import axios from "axios";
 import calNewPrice from "../../Helper/calNewPrice";
-
-const imageArray = [
-  "https://picsum.photos/id/237/200/300",
-  "https://picsum.photos/seed/picsum/200/300",
-  "https://picsum.photos/200/300?grayscale",
-  "https://picsum.photos/200/300/?blur=2",
-  "https://picsum.photos/200/300.jpg",
-  "https://picsum.photos/200/300.jpg",
-];
-
-const review = 4;
+import { useSelector, useDispatch } from "react-redux";
 
 function ProductDetails(props) {
-  // 63187f6429fe6a6deecec979
+  const { token, role, userID } = useSelector((state) => state.loging);
 
   //state
   const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
   const [count, setCount] = useState(1);
+  const [userName, setUserName] = useState("");
+  const [existInCart, setExistInCart] = useState(false);
 
   //review state
   const [review, setReview] = useState("");
@@ -59,6 +51,16 @@ function ProductDetails(props) {
 
   //id
   const { id } = useParams();
+
+  //get user data
+  const getUserData = () => {
+    axios
+      .get(`${baseURL}User/${userID}`)
+      .then((res) => {
+        setUserName(res.data.user.name);
+      })
+      .catch((er) => {});
+  };
 
   //url
   const baseURL = "http://localhost:5000/";
@@ -74,8 +76,6 @@ function ProductDetails(props) {
         `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${product.id}&val=${val}`
       )
       .then((res) => {
-        console.log(res.data);
-
         setFavorite((isFavorite) => !isFavorite);
         if (!isFavorite) {
           toast("Added to Favoritelist", { type: "info" });
@@ -97,7 +97,7 @@ function ProductDetails(props) {
     }
 
     //data
-    const data = { userName: "Nirojan", date: new Date(), star, review };
+    const data = { userName: userName, date: new Date(), star, review };
 
     axios
       .post(`${baseURL}products/${product.id}/reviews`, data)
@@ -115,7 +115,7 @@ function ProductDetails(props) {
 
     data.append("productId", id);
     data.append("count", count);
-    data.append("userId", "63187f8829fe6a6deecec97a");
+    data.append("userId", userID);
 
     axios
       .post(`${baseURL}User/cart`, data)
@@ -127,14 +127,25 @@ function ProductDetails(props) {
       });
   };
 
+  //check product alredy exist in cart
+  const checkcart = (id) => {
+    axios
+      .get(`${baseURL}User/${userID}/cart/${id}`)
+      .then((res) => {
+        setExistInCart(res.data);
+      })
+      .catch((er) => {});
+  };
+
   //get data
   useEffect(() => {
+    getUserData();
     axios
       .get(`${baseURL}products/${id}`)
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
-        console.log(product);
+        checkcart(res.data.product.id);
         setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
       })
       .catch((er) => {});
@@ -390,6 +401,7 @@ function ProductDetails(props) {
                     }}
                   >
                     <Button
+                      disabled={existInCart}
                       onClick={addToCart}
                       color="success"
                       variant="contained"

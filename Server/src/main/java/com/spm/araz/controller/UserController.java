@@ -113,7 +113,6 @@ public class UserController {
     }
 
 
-
     //remove payment
     @DeleteMapping("/payment/{id}")
     public ResponseEntity<UserResponse> deletePayment(@RequestParam int cardNumber, @PathVariable("id") String id) {
@@ -505,7 +504,7 @@ public class UserController {
     }
 
     //generate otp and send to email for password reset
-          @GetMapping("/resetPwd/{email}")
+    @GetMapping("/resetPwd/{email}")
     public ResponseEntity<UserResponse> sendOtpP(@PathVariable String email) {
         User user = userService.getByEmail(email);
         UserResponse userResponse = new UserResponse();
@@ -520,7 +519,7 @@ public class UserController {
             boolean res = userService.updateUser(user);
 
             //send otp to user email
-            userService.sendSimpleEmail(email,message,"Password Reset OTP PIN");
+            userService.sendSimpleEmail(email, message, "Password Reset OTP PIN");
 
             if (res) {
                 User user1 = new User();
@@ -665,7 +664,23 @@ public class UserController {
         }
     }
 
+    //check cart for product existence
+    @GetMapping("/{userID}/cart/{productID}")
+    public ResponseEntity<Boolean> checkCart(@PathVariable("productID") String productID,
+                                             @PathVariable("userID") String userID
+    ) {
+        User user = userService.getUser(userID);
+        Cart cart = user.getCart();
 
+
+        for (Item item : cart.getProducts()) {
+            if (item.getProductID().equals(productID)) {
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+
+    }
 
 
 }

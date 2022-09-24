@@ -349,7 +349,6 @@ public class ProductController {
     @PostMapping("/file")
     public void test(@RequestParam("file") MultipartFile[] item) {
         Path uploadDir = Paths.get("Product-images");
-//        System.out.println(product.getTitle());
         for (MultipartFile file : item) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             try (InputStream inputStream = file.getInputStream()) {

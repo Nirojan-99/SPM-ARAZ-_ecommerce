@@ -20,8 +20,10 @@ import calreview from "../../Helper/calReview";
 import calNewPrice from "../../Helper/calNewPrice";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
 function Product(props) {
+  const { token, role, userID } = useSelector((state) => state.loging);
   const id = props.data.productID;
 
   const [count, setCount] = useState(1);
@@ -50,7 +52,7 @@ function Product(props) {
   const removeFromCart = () => {
     const data = new FormData();
 
-    data.append("userId", "63187f8829fe6a6deecec97a");
+    data.append("userId", userID);
     data.append("productId", id);
 
     axios

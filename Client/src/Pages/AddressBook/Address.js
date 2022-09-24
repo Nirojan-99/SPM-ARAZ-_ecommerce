@@ -4,14 +4,16 @@ import { useNavigate } from "react-router";
 import TableCell from "@mui/material/TableCell";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 function Address(props) {
-  const userId = "63187f8829fe6a6deecec97a";
+    const { userID, role } = useSelector((state) => state.loging);
+  // const userId = "63187f8829fe6a6deecec97a";
 
   const OnClickDeleteHandler = () => {
     axios
       .delete(
-        `http://localhost:5000/User/addresses/?indexNo=${props.index}&userId=${userId}`
+        `http://localhost:5000/User/addresses/?indexNo=${props.index}&userId=${userID}`
       )
       .then((res) => {
         console.log(res.data.msg);

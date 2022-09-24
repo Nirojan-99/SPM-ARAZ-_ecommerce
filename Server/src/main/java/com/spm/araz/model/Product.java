@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 
 @Data
-@NoArgsConstructor
+//@NoArgsConstructor
 @Document("Product")
 public class Product {
     @Id

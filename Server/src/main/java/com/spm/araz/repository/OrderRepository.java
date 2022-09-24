@@ -13,4 +13,11 @@ public interface OrderRepository extends MongoRepository<Order, Integer> {
 
     })
     List<Order> findUserOder(String userId);
+
+    @Aggregation(pipeline = {
+            "{ '$match': {'products.productID':?0} }"
+
+    })
+
+    Order checkid(String productID);
 }

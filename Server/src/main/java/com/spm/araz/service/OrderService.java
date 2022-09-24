@@ -26,6 +26,11 @@ public class OrderService {
 
     }
 
+    public Order getOrderProduct(String productID) {
+        Order order = orderRepository.checkid(productID);
+        return order;
+
+    }
 
 
 }

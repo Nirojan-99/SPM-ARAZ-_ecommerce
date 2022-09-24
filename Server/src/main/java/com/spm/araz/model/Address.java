@@ -1,6 +1,8 @@
 package com.spm.araz.model;
 
 
+
+
 public class Address {
     private String name;
     private String province;
@@ -22,11 +24,11 @@ public class Address {
     public Address() {
     }
 
-    public Address(String province, String district, String address) {
-        this.province = province;
-        this.district = district;
-        this.address = address;
-    }
+//    public Address(String province, String district, String address) {
+//        this.province = province;
+//        this.district = district;
+//        this.address = address;
+//    }
 
     public String getName() {
         return name;

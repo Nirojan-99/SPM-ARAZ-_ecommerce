@@ -1,17 +1,9 @@
 package com.spm.araz.model;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@NoArgsConstructor
-//@Document("Address")
+
 public class Address {
-//    @Id
-    private String id;
     private String name;
     private String province;
     private String district;
@@ -20,8 +12,7 @@ public class Address {
     private String defaultStatus;
 
 
-    public Address( String id,String name, String province, String district, String address, String contactNumber, String defaultStatus) {
-        this.id = id;
+    public Address(String name, String province, String district, String address, String contactNumber, String defaultStatus) {
         this.name = name;
         this.province = province;
         this.district = district;
@@ -30,13 +21,14 @@ public class Address {
         this.defaultStatus = defaultStatus;
     }
 
-    public String getId() {
-        return id;
+    public Address() {
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+//    public Address(String province, String district, String address) {
+//        this.province = province;
+//        this.district = district;
+//        this.address = address;
+//    }
 
     public String getName() {
         return name;

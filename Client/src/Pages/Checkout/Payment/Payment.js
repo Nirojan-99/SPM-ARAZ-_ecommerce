@@ -3,15 +3,36 @@ import { Typography, Button } from "@mui/material";
 import Label from "../../../Components/Label";
 import NewPayment from "./NewPayment";
 import DefaultPayment from "./DefaultPayment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 function Payment(props) {
-  const [val, setVal] = useState(true);
+  const { token, role, userID } = useSelector((state) => state.loging);
+
+  const [val, setVal] = useState(false);
+  //state
+  const [payment, setpayment] = useState();
+  const [isLoaded, setLoaded] = useState(false);
 
   //handle click
   const handleNew = () => {
-    setVal(false);
+    setVal(true);
   };
+
+  const baseURL = "http://localhost:5000/";
+
+  useEffect(() => {
+    axios
+      .get(`${baseURL}User/${userID}/payment`)
+      .then((res) => {
+        setLoaded(true);
+        setpayment(res.data);
+      })
+      .catch((er) => {
+        setLoaded(true);
+      });
+  }, []);
 
   return (
     <>
@@ -38,9 +59,22 @@ function Payment(props) {
             Payment Details
           </Typography>
           {/* form */}
-          {val ? <DefaultPayment new={handleNew} /> : <NewPayment />}
-
-         
+          {!isLoaded && (
+            <Typography sx={{ textAlign: "center", mb: 4, color: "silver" }}>
+              Loading...
+            </Typography>
+          )}
+          {isLoaded ? (
+            payment?.nameOnCard !== undefined ? (
+              val ? (
+                <NewPayment />
+              ) : (
+                <DefaultPayment data={payment} new={handleNew} />
+              )
+            ) : (
+              <NewPayment />
+            )
+          ) : null}
         </Box>
       </Box>
     </>

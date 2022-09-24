@@ -22,8 +22,9 @@ import axios from "axios";
 function Dashboard() {
   //state
   const [products, setproducts] = useState([]);
-  const [count, setCount] = useState(false);
+  const [count, setCount] = useState(0);
   const [category, setCategory] = useState(null);
+  const [categoryList, setCategoryList] = useState([]);
   const [selectcategory, setSelectedCategory] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoaded, setLoded] = useState(false);
@@ -46,7 +47,7 @@ function Dashboard() {
     setLoded(false);
     let url =
       category !== null
-        ? `${baseURL}products/?page=${page}&category=${"mob"}`
+        ? `${baseURL}products/?page=${page}&category=${category}`
         : `${baseURL}products/?page=${page}`;
     axios
       .get(url)
@@ -78,7 +79,16 @@ function Dashboard() {
   };
 
   //get all categories
-  const getAllCategories = () => {};
+  const getAllCategories = () => {
+    axios
+      .get(`${baseURL}category`)
+      .then((res) => {
+        setCategoryList(res.data?.categoryList);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
 
   //taken from net
   function sideScroll(direction, speed, distance, step) {
@@ -95,8 +105,6 @@ function Dashboard() {
       }
     }, speed);
   }
-  //category array
-  const array = [1, 2, 3, 4, 5];
 
   //pagination handler
   const handleChange = (event, value) => {
@@ -138,7 +146,7 @@ function Dashboard() {
           >
             <IconButton
               onClick={() => {
-                sideScroll("right", 25, array.length, 8);
+                sideScroll("right", 25, categoryList.length, 8);
               }}
             >
               <ArrowBackIosIcon />
@@ -154,11 +162,12 @@ function Dashboard() {
               }}
             >
               <Box id="some" sx={{ display: "flex", flexDirection: "row" }}>
-                {array.map((item, index) => {
+                {categoryList.map((item, index) => {
                   return (
                     <Category
                       key={index}
                       id={index}
+                      data={item}
                       clicked={selectcategory}
                       onSelect={(index) => {
                         setSelectedCategory((pre) => {
@@ -167,7 +176,7 @@ function Dashboard() {
                           return val;
                         });
                         setCategory((pre) => {
-                          let val = pre === array[index] ? null : array[index];
+                          let val = pre === categoryList[index]?.name ? null : categoryList[index]?.name;
                           return val;
                         });
                       }}
@@ -178,7 +187,7 @@ function Dashboard() {
             </Box>
             <IconButton
               onClick={() => {
-                sideScroll("left", 25, array.length, 8);
+                sideScroll("left", 25, categoryList.length, 8);
               }}
             >
               <ArrowForwardIosIcon />
@@ -254,7 +263,7 @@ function Dashboard() {
           {isLoaded && products.length <= 0 && (
             <Box sx={{ flex: 1, justifyContent: "center" }}>
               <Typography sx={{ textAlign: "center", color: "#555" }}>
-                No producs
+                No products
               </Typography>
             </Box>
           )}

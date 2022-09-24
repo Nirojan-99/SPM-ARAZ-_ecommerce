@@ -19,8 +19,10 @@ import calNewPrice from "../../Helper/calNewPrice";
 import calReview from "../../Helper/calReview";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
 function Product() {
+  const { token, role, userID } = useSelector((state) => state.loging);
   //state
   const [previewImage, setPreviewImage] = useState();
 
@@ -39,9 +41,21 @@ function Product() {
   const [imageArray, setImageArray] = useState([]);
   const [product, setProduct] = useState({});
   const [review, setReview] = useState(0);
+  const [storeID, setStoreID] = useState("");
+
+  //get store id
+  const getStoreID = () => {
+    axios
+      .get(`${baseURL}stores/user/${userID}`)
+      .then((res) => {
+        setStoreID(res.data.id);
+      })
+      .catch((er) => {});
+  };
 
   //get data
   useEffect(() => {
+    getStoreID();
     axios
       .get(`${baseURL}products/${id}`)
       .then((res) => {
@@ -245,7 +259,15 @@ function Product() {
             <hr style={{ borderTop: "2px dashed #1597BB", bgcolor: "none" }} />
             {/* reviews */}
             {product?.reviews?.map((item, index) => {
-              return <Review data={item} id={product.id} key={index} />;
+              return (
+                <Review
+                  storeID={storeID}
+                  product={product.storeID}
+                  data={item}
+                  id={product.id}
+                  key={index}
+                />
+              );
             })}
             {product?.reviews?.length === 0 && (
               <Typography>No review</Typography>

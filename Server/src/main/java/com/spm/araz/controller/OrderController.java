@@ -76,14 +76,14 @@ public class OrderController {
             ArrayList<Order> orders = new ArrayList<>();
 
 
-
-            for (String pro :products) {
-                  Order order = orderService.getOrderProduct(pro);
-                  orders.add(order);
-            }
-
-            System.out.println(orders);
-            orderResponse.setOrderList(orders);
+//
+//            for (String pro :products) {
+//                  Order order = orderService.getOrderProduct(pro);
+//                  orders.add(order);
+//            }
+//
+//            System.out.println(orders);
+//            orderResponse.setOrderList(orders);
 
 
 //            ArrayList<Order> ordersid =

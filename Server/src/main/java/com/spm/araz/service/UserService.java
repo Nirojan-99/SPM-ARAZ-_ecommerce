@@ -45,14 +45,14 @@ public class UserService {
 
     //add payment
     public boolean addPayment(User user, Payment payment) {
-        user.addPayment(payment);
+        user.setPayment(payment);
         userRepository.save(user);
         return true;
     }
 
     //delete payment
     public boolean deletePayment(User user, int cardNumber) {
-        user.removePayment(cardNumber);
+        user.setPayment(null);
         userRepository.save(user);
         return true;
     }
@@ -139,7 +139,7 @@ public class UserService {
     }
 
 
-    // removefavoritelist
+    // remove favorite list
     public boolean removeFavoriteList(User user, String favorite){
         user.removeFavoriteList(favorite);
         userRepository.save(user);

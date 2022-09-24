@@ -24,9 +24,13 @@ const authStore = createSlice({
       localStorage.removeItem("role");
       localStorage.removeItem("userID");
     },
+    setRole(state, action) {
+      state.role = action.payload.role;
+      localStorage.setItem("role", state.role);
+    },
   },
 });
 
 export default authStore;
 
-export const { login, logout } = authStore.actions;
+export const { login, logout, setRole } = authStore.actions;

@@ -107,14 +107,16 @@ public class UserController {
             userResponse.setMsg("Not found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
-            userService.addPayment(user, payment);
+            user.setPayment(payment);
+            userService.updateUser(user);
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
     }
 
+
     //remove payment
     @DeleteMapping("/payment/{id}")
-    public ResponseEntity<UserResponse> deletePayment(@RequestParam int cardNumber, @PathVariable("id") String id) {
+    public ResponseEntity<UserResponse> deletePayment(@PathVariable("id") String id) {
         User user = userService.getUser(id);
 
         UserResponse userResponse = new UserResponse();
@@ -123,14 +125,15 @@ public class UserController {
             userResponse.setMsg("Not found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
-            userService.deletePayment(user, cardNumber);
+            user.setPayment(null);
+            userService.updateUser(user);
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
     }
 
     //getPayment
     @GetMapping("/{id}/payment")
-    public ResponseEntity<ArrayList<Payment>> getPayment(@PathVariable("id") String id) {
+    public ResponseEntity<Payment> getPayment(@PathVariable("id") String id) {
         User user = userService.getUser(id);
 
         if (user != null) {
@@ -154,21 +157,21 @@ public class UserController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
-        User user = userService.getUser(id);
-        UserResponse userResponse = new UserResponse();
-
-        if (user != null) {
-
-            userResponse.setUser(user);
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("No user found");
-            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-        }
-
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
+//        User user = userService.getUser(id);
+//        UserResponse userResponse = new UserResponse();
+//
+//        if (user != null) {
+//
+//            userResponse.setUser(user);
+//            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+//        } else {
+//            userResponse.setMsg("No user found");
+//            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+//        }
+//
+//    }
 
 
     // sayanthan
@@ -331,9 +334,6 @@ public class UserController {
     @DeleteMapping("/addresses/")
     public ResponseEntity<AddressResponse> removeAddress(@RequestParam("userId") String userId,
                                                          @RequestParam("indexNo") int indexNo) {
-
-        System.out.println(userId);
-        System.out.println(indexNo);
 
         User user = userService.getUser(userId);
 
@@ -507,7 +507,7 @@ public class UserController {
 
     //generate otp and send to email for password reset
     @GetMapping("/resetPwd/{email}")
-    public ResponseEntity<UserResponse> sendOtp(@PathVariable String email) {
+    public ResponseEntity<UserResponse> sendOtpP(@PathVariable String email) {
         User user = userService.getByEmail(email);
         UserResponse userResponse = new UserResponse();
 
@@ -520,9 +520,7 @@ public class UserController {
             boolean res = userService.updateUser(user);
 
             //send otp to user email
-
             userService.sendSimpleEmail(email, message, "Password Reset OTP PIN");
-
 
             if (res) {
                 User user1 = new User();
@@ -593,7 +591,6 @@ public class UserController {
             @PathVariable(required = true) String id,
             @RequestBody(required = true) User user
     ) {
-        System.out.println(id);
         UserResponse userResponse = new UserResponse();
         User exisitngUser = userService.getUser(id);
 
@@ -659,7 +656,6 @@ public class UserController {
         } else {
             String favorite = user.getFavorites().get(indexNo);
 
-            System.out.println(favorite);
             userService.removeFavoriteList(user, favorite);
             addressResponse.setMsg("remove data");
             return new ResponseEntity<>(addressResponse, HttpStatus.OK);
@@ -667,9 +663,56 @@ public class UserController {
         }
     }
 
+    //check cart for product existence
+    @GetMapping("/{userID}/cart/{productID}")
+    public ResponseEntity<Boolean> checkCart(@PathVariable("productID") String productID,
+                                             @PathVariable("userID") String userID
+    ) {
+        User user = userService.getUser(userID);
+        Cart cart = user.getCart();
 
 
+        for (Item item : cart.getProducts()) {
+            if (item.getProductID().equals(productID)) {
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
 
+    }
+
+    //add transaction
+    @PostMapping("/{userID}/transactions")
+    public ResponseEntity<Boolean> addTransaction(@PathVariable("userID") String userID,
+                                                  @RequestBody(required = true) Transaction transaction) {
+        User user = userService.getUser(userID);
+
+        if (user != null) {
+
+            user.addTransaction(transaction);
+            userService.updateUser(user);
+
+            return new ResponseEntity<>(true, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //get transaction data
+    @GetMapping("/{userID}/transactions")
+    public ResponseEntity<ArrayList<Transaction>> getTransactions(@PathVariable("userID") String userID) {
+        User user = userService.getUser(userID);
+
+        if (user != null) {
+
+            ArrayList<Transaction> transactions = user.getTransactions();
+            return new ResponseEntity<>(transactions, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 }
 
 

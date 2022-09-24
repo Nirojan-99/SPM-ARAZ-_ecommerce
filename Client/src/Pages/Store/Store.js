@@ -16,8 +16,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import Product from "./Product";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 function Store() {
+  const { token, role, userID } = useSelector((state) => state.loging);
+
   // delet
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -27,6 +30,7 @@ function Store() {
   const [count, setCount] = useState(1);
   const [products, setProducts] = useState([]);
   const [title, setTitle] = useState("");
+  const [storeID, setStoreID] = useState("");
 
   //pagination handler
   const handleChange = (event, value) => {
@@ -39,7 +43,7 @@ function Store() {
     getProducts();
 
     axios
-      .get(`${baseURL}products/store/${"63198fb108db9a05475a68c8"}/count`)
+      .get(`${baseURL}products/store/${userID}/count`)
       .then((res) => {
         setCount(Math.ceil(res.data / 6));
       })
@@ -49,7 +53,7 @@ function Store() {
   //get product
   const getProducts = () => {
     axios
-      .get(`${baseURL}products/stores/63198fb108db9a05475a68c8?page=${page}`)
+      .get(`${baseURL}products/stores/${userID}?page=${page}`)
       .then((res) => {
         setProducts(res.data?.productList);
       })
@@ -59,12 +63,10 @@ function Store() {
   //search
   const search = (title) => {
     if (!title.trim()) {
-      getProducts();
+      return getProducts();
     }
     axios
-      .get(
-        `${baseURL}products/store/${"63198fb108db9a05475a68c8"}/search/${title.trim()}`
-      )
+      .get(`${baseURL}products/store/${userID}/search/${title.trim()}`)
       .then((res) => {
         setProducts(res.data);
       })

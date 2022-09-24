@@ -28,6 +28,9 @@ import { useNavigate } from "react-router-dom";
 
 import Security from "./Components/Security";
 import OrderManages from "../OrderManage_Admin/OrderManages";
+import CategoryTable from "../Category/CategoryTable";
+import NewCategory from "../Category/NewCategory";
+import PaymentManage from "../Payment_Manage/PaymentManage";
 
 function Profile() {
   const { page } = useParams();
@@ -130,10 +133,9 @@ function Profile() {
                 {page === "details" && <Profile_Details />}
                 {page === "order" && <Orders />}
                 {page === "order-manage" && <OrderManages />}
-                {/* lavaniyah */}
                 {page === "loyalty" && <Loyalty />}
-
                 {page === "security" && <Security />}
+                {page === "payment" && <PaymentManage />}
               </Box>
             </Grid>
           </Grid>

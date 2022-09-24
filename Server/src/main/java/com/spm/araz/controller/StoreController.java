@@ -1,8 +1,10 @@
 package com.spm.araz.controller;
 
 import com.spm.araz.model.Store;
+import com.spm.araz.model.User;
 import com.spm.araz.response.StoreResponse;
 import com.spm.araz.service.StoreService;
+import com.spm.araz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ public class StoreController {
 
     @Autowired
     StoreService storeService;
+    @Autowired
+    UserService userService;
 
     //new store
     @PostMapping("")
@@ -28,6 +32,10 @@ public class StoreController {
         StoreResponse storeResponse = new StoreResponse();
 
         if (res) {
+            User user = userService.getUser(store.getUserID());
+            user.setUserType("Seller");
+            userService.updateUser(user);
+
             storeResponse.setMsg("Store Created");
             return new ResponseEntity<>(storeResponse, HttpStatus.OK);
         } else {
@@ -71,9 +79,19 @@ public class StoreController {
     //delete store
     @DeleteMapping("/{id}")
     public ResponseEntity<StoreResponse> deleteStore(@PathVariable(required = true, name = "id") String id) {
+        Store store = storeService.getById(id);
+
+        User user = userService.getUser(store.getUserID());
+
         boolean res = storeService.deleteById(id);
         StoreResponse storeResponse = new StoreResponse();
         if (res) {
+
+            user.setUserType("buyer");
+            userService.updateAddress(user);
+
+//            TODO delete products
+
             storeResponse.setMsg("Deleted");
             return new ResponseEntity<>(storeResponse, HttpStatus.OK);
         } else {
@@ -114,6 +132,18 @@ public class StoreController {
     @GetMapping("/count")
     public ResponseEntity<Integer> getStoreTotalCount() {
         int count = storeService.getCount();
-        return new ResponseEntity<>(count,HttpStatus.OK);
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
+    //get store by user id
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Store> getStoreByUserId(@PathVariable("id") String id) {
+        Store store = storeService.getStoreByUserID(id);
+
+        if (store != null) {
+            return new ResponseEntity<>(store, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -58,7 +58,7 @@ function Login() {
         }, 1500);
 
         setTimeout(() => {
-          navigate("/profile/details", { replace: true });
+          navigate("/", { replace: true });
         }, 2500);
       })
 

@@ -2,14 +2,17 @@ import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
+import { useSelector } from "react-redux";
 
 function Options() {
+  const { token, role, userID } = useSelector((state) => state.loging);
+
   return (
     <Box
       p={1}
       sx={{ bgcolor: "#FFFFFF", borderRadius: "6px", textAlign: "center" }}
       pb={10}
-      height="67vh"
+      // height="67vh"
       component={Paper}
       elevation={2}
     >
@@ -32,11 +35,33 @@ function Options() {
         >
           <ButtonMenu title="My profile" link={"/profile/details"} />
           <ButtonMenu title="Security" link={"/profile/security"} />
-          <ButtonMenu title="Address Book" link={"/profile/addressbook"} />
-          <ButtonMenu title="Your Orders" link={"/profile/order"} />
-          <ButtonMenu title="Manage Orders" link={"/profile/order-manage"} />
-          <ButtonMenu title="Payments Options" link={"/profile/payment"} />
-          <ButtonMenu title="Points" link={"/profile/loyalty"} />
+          {role === "buyer" && (
+            <>
+              <ButtonMenu title="Address Book" link={"/profile/addressbook"} />
+              <ButtonMenu title="Your Orders" link={"/profile/order"} />
+              <ButtonMenu title="Payments Options" link={"/profile/payment"} />
+              <ButtonMenu title="Points" link={"/profile/loyalty"} />
+              <ButtonMenu title="Transactions" link={"/transaction"} />
+              <ButtonMenu title="Sell on Araz" link={"/stores/new"} />
+            </>
+          )}
+          {role === "admin" && (
+            <>
+              <ButtonMenu title="Category" link={"/category"} />
+            </>
+          )}
+          {role === "seller" && (
+            <>
+              <ButtonMenu
+                title="Manage Orders"
+                link={"/profile/order-manage"}
+              />
+              <ButtonMenu
+                title="Manage Store"
+                link={"/stores"}
+              />
+            </>
+          )}
         </Box>
       </Grid>
     </Box>
@@ -51,6 +76,8 @@ const ButtonMenu = (props) => {
         fullWidth
         variant="contained"
         size="large"
+        disableElevation
+        
         sx={{
           textTransform: "none",
           fontFamily: "Arial",

@@ -8,12 +8,16 @@ import Favorite_Product from "./Favorite_Product";
 import { useSelector } from "react-redux";
 
 function Favorite_Products() {
+  const [dataempty, setdataempty] = useState(false);
   const { userID, role } = useSelector((state) => state.loging);
   const [favorite, setfavorite] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/User/favorite/" + userID)
       .then((res) => {
+        if (res.data.productList.length === 0) {
+          setdataempty(true);
+        }
         setfavorite(res.data.productList);
       })
       .catch();
@@ -59,6 +63,7 @@ function Favorite_Products() {
             {favorite.map((row, index) => {
               return <Favorite_Product index={index} data={row} />;
             })}
+            {dataempty && <Typography>no Favorite found </Typography>}
           </Grid>
         </Container>
       </Box>

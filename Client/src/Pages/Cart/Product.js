@@ -20,8 +20,10 @@ import calreview from "../../Helper/calReview";
 import calNewPrice from "../../Helper/calNewPrice";
 
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
 function Product(props) {
+  const { token, role, userID } = useSelector((state) => state.loging);
   const id = props.data.productID;
 
   const [count, setCount] = useState(1);
@@ -50,7 +52,7 @@ function Product(props) {
   const removeFromCart = () => {
     const data = new FormData();
 
-    data.append("userId", "63187f8829fe6a6deecec97a");
+    data.append("userId", userID);
     data.append("productId", id);
 
     axios
@@ -124,7 +126,8 @@ function Product(props) {
                   props.checked(
                     count,
                     event.target.checked,
-                    calNewPrice(product?.price, product?.offer)
+                    calNewPrice(product?.price, product?.offer),
+                    id
                   );
                 }}
                 color="secondary"
@@ -215,7 +218,8 @@ function Product(props) {
                   if (isChecked) {
                     props.click(
                       calNewPrice(product?.price, product?.offer),
-                      "inc"
+                      "inc",
+                      id
                     );
                   }
                   setCount((pre) => {
@@ -243,7 +247,8 @@ function Product(props) {
                       if (isChecked) {
                         props.click(
                           calNewPrice(product?.price, product?.offer),
-                          "dec"
+                          "dec",
+                          id
                         );
                       }
                       return --pre;

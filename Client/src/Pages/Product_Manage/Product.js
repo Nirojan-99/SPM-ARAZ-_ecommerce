@@ -25,19 +25,17 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import ButtonA from "../../Components/ButtonA";
 import Ack from "../../Components/Ack";
 
+import { useSelector, useDispatch } from "react-redux";
+
 function Product() {
   //product id
   const { id } = useParams();
 
+  const { token, role, userID } = useSelector((state) => state.loging);
+
   //state
   const [isLoading, setIsloading] = useState(false);
-  const [categories, setCategories] = useState([
-    "Electronic",
-    "Kids",
-    "Mobile & Wireless",
-    "TV & Video Equipment",
-    "Food",
-  ]);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -49,6 +47,7 @@ function Product() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [storeID, setStoreID] = useState("");
 
   const [nameError, setNameError] = useState(false);
   const [categoryError, setCategoryError] = useState(false);
@@ -75,16 +74,32 @@ function Product() {
           setIsloading(false);
         });
     }
-    // axios
-    //   .get(baseURL)
-    //   .then((res) => {
-    //     setCategories(res.data.data);
-    //     setIsloading(false);
-    //   })
-    //   .catch((er) => {
-    //     setIsloading(false);
-    //   });
+    getAllCategories();
+    getStoreID();
   }, []);
+
+  //get store id
+  const getStoreID = () => {
+    axios
+      .get(`${baseURL}stores/user/${userID}`)
+      .then((res) => {
+        setStoreID(res.data.id);
+      })
+      .catch((er) => {});
+  };
+
+  //get all categories
+  const getAllCategories = () => {
+    axios
+      .get(`${baseURL}category`)
+      .then((res) => {
+        let array = res.data?.categoryList?.map((item) => item.name);
+        setCategories(array);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
 
   //drag image handler
   const imageHandler = (file, index) => {
@@ -133,7 +148,7 @@ function Product() {
     images.forEach((element, index) => {
       product.append("images", images[index]);
     });
-    product.append("storeID", "63198fb108db9a05475a68c8");
+    product.append("storeID", storeID);
     product.append("title", name);
     product.append("description", description);
     product.append("price", price);

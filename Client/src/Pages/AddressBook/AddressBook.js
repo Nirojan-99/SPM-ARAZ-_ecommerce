@@ -100,7 +100,7 @@ function AddressBook() {
   };
   // take from fetching data
   const [getAlladdress, setgetAlladdress] = useState([]);
-  // const [dataempty, setdataempty] = useState("");
+  const [dataempty, setdataempty] = useState(false);
 
   useEffect(() => {
     // fetching data
@@ -108,8 +108,10 @@ function AddressBook() {
     axios
       .get("http://localhost:5000/User/addresses/" + userID)
       .then((res) => {
-        if (res.data.addressList.size === 0) {
+        if (res.data.addressList.length === 0) {
+          setdataempty(true);
         }
+        // setdataempty(false);
         setgetAlladdress(res.data.addressList);
       })
       .catch(() => {});
@@ -259,6 +261,19 @@ function AddressBook() {
                   <TableRow style={{ height: 53 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
+                )}
+                {dataempty && (
+                  <Typography
+                    style={{
+                      textAlign: "center",
+
+                      fontFamily: "open sans",
+                      fontWeight: "500",
+                      color: "#2B4865",
+                    }}
+                  >
+                    no Address found
+                  </Typography>
                 )}
               </TableBody>
               <TableFooter>

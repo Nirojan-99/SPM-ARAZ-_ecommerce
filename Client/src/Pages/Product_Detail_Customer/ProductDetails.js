@@ -120,6 +120,7 @@ function ProductDetails(props) {
     axios
       .post(`${baseURL}User/cart`, data)
       .then((res) => {
+        setExistInCart(true);
         toast("Added to cart", { type: "info" });
       })
       .catch((er) => {

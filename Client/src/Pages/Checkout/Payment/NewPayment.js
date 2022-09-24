@@ -6,9 +6,10 @@ import Label from "../../../Components/Label";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import FormatDate from "../../../Helper/formatDate";
 
 function NewPayment(props) {
-  // 63187f8829fe6a6deecec97a
+  const { token, role, userID } = useSelector((state) => state.loging);
 
   const baseURL = "http://localhost:5000/";
   const total = useSelector((state) => state.order.total);
@@ -46,16 +47,32 @@ function NewPayment(props) {
       cvc: cvc,
     };
 
+    const transactionData = {
+      id: new Date().toISOString(),
+      date: FormatDate(new Date()),
+      amount: total,
+    };
+
     axios
-      .post(`${baseURL}User/payment/${"63187f8829fe6a6deecec97a"}`, data)
+      .post(`${baseURL}User/payment/${userID}`, data)
       .then((res) => {
-        // props.handleNext();
         //add transaction
-        toast("Payment successed", { type: "info" });
+        addTransaction(transactionData);
       })
       .catch((er) => {
         toast("Invalid data", { type: "error" });
       });
+  };
+
+  //add transaction
+  const addTransaction = (data) => {
+    axios
+      .post(`${baseURL}User/${userID}/transactions`, data)
+      .then((res) => {
+        toast("Payment successed", { type: "info" });
+        // props.handleNext();
+      })
+      .catch((er) => {});
   };
 
   return (

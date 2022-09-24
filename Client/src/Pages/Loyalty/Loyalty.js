@@ -1,8 +1,10 @@
 import { Box, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 function Loyalty() {
+  const { token, role, userID } = useSelector((state) => state.loging);
   const baseURL = "http://localhost:5000/";
 
   const [loyalty, setLoyalty] = useState(0);
@@ -14,7 +16,7 @@ function Loyalty() {
   //get loyalty
   const getLoyalty = () => {
     axios
-      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/loyalty`)
+      .get(`${baseURL}User/${userID}/loyalty`)
       .then((res) => {
         setLoyalty(res.data);
       })

@@ -5,8 +5,11 @@ import NewPayment from "./NewPayment";
 import DefaultPayment from "./DefaultPayment";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 function Payment(props) {
+  const { token, role, userID } = useSelector((state) => state.loging);
+
   const [val, setVal] = useState(true);
   //state
   const [payment, setpayment] = useState();
@@ -21,7 +24,7 @@ function Payment(props) {
 
   useEffect(() => {
     axios
-      .get(`${baseURL}User/${"63187f8829fe6a6deecec97a"}/payment`)
+      .get(`${baseURL}User/${userID}/payment`)
       .then((res) => {
         setLoaded(true);
         setpayment(res.data[0]);
@@ -62,7 +65,7 @@ function Payment(props) {
             </Typography>
           )}
           {isLoaded ? (
-            payment?.length > 0 ? (
+            payment?.nameOnCard !== undefined ? (
               <DefaultPayment data={payment} new={handleNew} />
             ) : (
               <NewPayment />

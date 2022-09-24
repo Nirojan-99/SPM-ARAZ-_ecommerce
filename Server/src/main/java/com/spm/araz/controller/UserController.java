@@ -330,9 +330,6 @@ public class UserController {
     public ResponseEntity<AddressResponse> removeAddress(@RequestParam("userId") String userId,
                                                          @RequestParam("indexNo") int indexNo) {
 
-        System.out.println(userId);
-        System.out.println(indexNo);
-
         User user = userService.getUser(userId);
 
 
@@ -508,7 +505,6 @@ public class UserController {
     public ResponseEntity<UserResponse> sendOtpP(@PathVariable String email) {
         User user = userService.getByEmail(email);
         UserResponse userResponse = new UserResponse();
-        System.out.println(email);
 
         if (user != null) {
             Random random = new Random();
@@ -590,7 +586,6 @@ public class UserController {
             @PathVariable(required = true) String id,
             @RequestBody(required = true) User user
     ) {
-        System.out.println(id);
         UserResponse userResponse = new UserResponse();
         User exisitngUser = userService.getUser(id);
 
@@ -656,7 +651,6 @@ public class UserController {
         } else {
             String favorite = user.getFavorites().get(indexNo);
 
-            System.out.println(favorite);
             userService.removeFavoriteList(user, favorite);
             addressResponse.setMsg("remove data");
             return new ResponseEntity<>(addressResponse, HttpStatus.OK);
@@ -682,6 +676,23 @@ public class UserController {
 
     }
 
+    //add transaction
+    @PostMapping("/{userID}/transactions")
+    public ResponseEntity<Boolean> addTransaction(@PathVariable("userID") String userID,
+                                                  @RequestBody(required = true) Transaction transaction) {
+        User user = userService.getUser(userID);
+
+        if (user != null) {
+
+            user.addTransaction(transaction);
+            userService.updateUser(user);
+
+            return new ResponseEntity<>(true, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
 

@@ -694,6 +694,20 @@ public class UserController {
         }
     }
 
+    //get transaction data
+    @GetMapping("/{userID}/transactions")
+    public ResponseEntity<ArrayList<Transaction>> getTransactions(@PathVariable("userID") String userID) {
+        User user = userService.getUser(userID);
+
+        if (user != null) {
+
+            ArrayList<Transaction> transactions = user.getTransactions();
+            return new ResponseEntity<>(transactions, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 }
 
 

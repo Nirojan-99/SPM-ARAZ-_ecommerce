@@ -37,6 +37,7 @@ function Options() {
           <ButtonMenu title="Manage Orders" link={"/profile/order-manage"} />
           <ButtonMenu title="Payments Options" link={"/profile/payment"} />
           <ButtonMenu title="Points" link={"/profile/loyalty"} />
+          <ButtonMenu title="Category" link={"/category"} />
         </Box>
       </Grid>
     </Box>

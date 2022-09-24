@@ -77,7 +77,7 @@ function Product() {
     axios
       .get(`${baseURL}category`)
       .then((res) => {
-        let array = res.data?.categoryList?.map((item)=>item.name)
+        let array = res.data?.categoryList?.map((item) => item.name);
         setCategories(array);
       })
       .catch((er) => {
@@ -185,6 +185,7 @@ function Product() {
 
   return (
     <>
+     
       <Ack
         open={open}
         handleClose={() => setOpen(false)}

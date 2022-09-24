@@ -52,6 +52,7 @@ function Page() {
           )}
           {role === "seller" && (
             <>
+              <Route path="/stores" element={<RegisterStore />} />
               <Route path="/products/new" element={<AdminProduct />} />
               <Route path="/products/:id/offers" element={<Offer />} />
               <Route path="/products/:id" element={<AdminProduct />} />

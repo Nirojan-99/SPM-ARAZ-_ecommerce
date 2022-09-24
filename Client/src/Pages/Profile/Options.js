@@ -55,6 +55,10 @@ function Options() {
                 title="Manage Orders"
                 link={"/profile/order-manage"}
               />
+              <ButtonMenu
+                title="Manage Store"
+                link={"/stores"}
+              />
             </>
           )}
         </Box>

@@ -30,4 +30,6 @@ public interface StoreRepository extends MongoRepository<Store, Integer> {
             "{ '$match': {'storeName':{$regex:?0,$options:'i'}} }",
     })
     List<Store> search(String title);
+
+    public Store getByUserID(String id);
 }

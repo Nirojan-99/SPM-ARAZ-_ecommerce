@@ -10,14 +10,14 @@ import { useSelector, useDispatch } from "react-redux";
 function Payment(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
 
-  const [val, setVal] = useState(true);
+  const [val, setVal] = useState(false);
   //state
   const [payment, setpayment] = useState();
   const [isLoaded, setLoaded] = useState(false);
 
   //handle click
   const handleNew = () => {
-    setVal(false);
+    setVal(true);
   };
 
   const baseURL = "http://localhost:5000/";
@@ -27,7 +27,7 @@ function Payment(props) {
       .get(`${baseURL}User/${userID}/payment`)
       .then((res) => {
         setLoaded(true);
-        setpayment(res.data[0]);
+        setpayment(res.data);
       })
       .catch((er) => {
         setLoaded(true);
@@ -66,7 +66,11 @@ function Payment(props) {
           )}
           {isLoaded ? (
             payment?.nameOnCard !== undefined ? (
-              <DefaultPayment data={payment} new={handleNew} />
+              val ? (
+                <NewPayment />
+              ) : (
+                <DefaultPayment data={payment} new={handleNew} />
+              )
             ) : (
               <NewPayment />
             )

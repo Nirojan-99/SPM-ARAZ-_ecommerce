@@ -102,7 +102,7 @@ function DefaultPayment(props) {
             sx={{ textTransform: "none" }}
             color="info"
           >
-            + add New Card
+            + pay with new card
           </Button>
         </Box>
         {/* button */}

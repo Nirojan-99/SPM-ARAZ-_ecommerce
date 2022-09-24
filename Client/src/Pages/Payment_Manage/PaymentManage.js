@@ -3,6 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import Modify from "./Modify";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function PaymentManage() {
   const [payment, setpayment] = useState();
@@ -20,7 +21,7 @@ export default function PaymentManage() {
       .get(`${baseURL}User/${userID}/payment`)
       .then((res) => {
         setLoaded(true);
-        setpayment(res.data[0]);
+        setpayment(res.data);
       })
       .catch((er) => {
         setLoaded(true);
@@ -28,17 +29,48 @@ export default function PaymentManage() {
   }, []);
 
   return (
-    <Box p={3} sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }} pt={5} pb={10}>
-      {edit ? (
-        <Modify payment={payment} />
-      ) : (
-        Display(payment, isLoaded, setEdit)
-      )}
+    <Box
+      p={{ sm: 3, xs: 1 }}
+      sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }}
+      pt={5}
+      pb={10}
+    >
+      <ToastContainer />
+      {isLoaded ? (
+        payment?.nameOnCard !== null ? (
+          edit ? (
+            <Modify payment={payment} />
+          ) : (
+            <Display payment={payment} isLoaded={isLoaded} setEdit={setEdit} />
+          )
+        ) : (
+          <Modify />
+        )
+      ) : null}
     </Box>
   );
 }
 
-const Display = (payment, isLoaded, setEdit) => {
+const Display = (props) => {
+  const { payment, isLoaded, setEdit } = props;
+  const baseURL = "http://localhost:5000/";
+  const { token, role, userID } = useSelector((state) => state.loging);
+
+  //delete payment
+  const deletePayment = () => {
+    axios
+      .delete(`${baseURL}User/payment/${userID}`)
+      .then((res) => {
+        toast("Payment details removed", { type: "info" });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((er) => {
+        toast("Unable to remove details", { type: "error" });
+      });
+  };
+
   return (
     <>
       {isLoaded && payment && (
@@ -133,7 +165,7 @@ const Display = (payment, isLoaded, setEdit) => {
                   Edit
                 </Button>
                 <Button
-                  //   onClick={() => props.new()}
+                  onClick={deletePayment}
                   disableTouchRipple
                   disableRipple
                   disableFocusRipple

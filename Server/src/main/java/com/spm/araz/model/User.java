@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class User {
     @Id
     private String id;
-    private ArrayList<Payment> payments;
+    private Payment payments;
     private Cart cart;
     private int loyaltyPoint;
     private String name;
@@ -31,7 +31,7 @@ public class User {
         this.addresses = addresses;
     }
 
-    public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
+    public User(String id, Payment payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
         this.id = id;
         this.payments = payments;
         this.cart = cart;
@@ -50,7 +50,7 @@ public class User {
 
 
     public User() {
-        payments = new ArrayList<>();
+        payments = new Payment();
         favorites = new ArrayList<>();
         otp = 0;
         addresses = new ArrayList<>();
@@ -70,20 +70,12 @@ public class User {
         this.transactions.add(transaction);
     }
 
-    public ArrayList<Payment> getPayments() {
+    public Payment getPayments() {
         return payments;
     }
 
-    public void addPayment(Payment payment) {
-        payments.add(payment);
-    }
-
-    public void removePayment(int cardNumber) {
-        for (Payment payment : payments) {
-            if (payment.getCardNumber().equals(cardNumber)) {
-                payments.remove(payment);
-            }
-        }
+    public void setPayment(Payment payment) {
+        this.payments = payment;
     }
 
     public Cart getCart() {

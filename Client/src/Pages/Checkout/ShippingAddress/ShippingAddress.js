@@ -1,6 +1,6 @@
 import { Button, Grid, Paper, Typography, Pagination } from "@mui/material";
 import { Box } from "@mui/system";
-import { Address_DATA } from "../../AddressBook/AddressData";
+// import { Address_DATA } from "../../AddressBook/AddressData";
 import SingleShippingAddress from "./Single_Shipping_address";
 
 import Radio from "@mui/material/Radio";
@@ -154,8 +154,8 @@ function ShippingAddress(props) {
                           {...controlProps(index)}
                           sx={{ marginTop: "8px", color: "#406882" }}
                         />
-                        {/* <SingleShippingAddress data={row} /> */}
-                        <Grid item p={5}>
+                        <SingleShippingAddress data={row} />
+                        {/* <Grid item p={5}>
                           <Box>
                             <Typography
                               style={{
@@ -206,7 +206,7 @@ function ShippingAddress(props) {
                               {row.contactNumber}
                             </Typography>
                           </Box>
-                        </Grid>
+                        </Grid> */}
                       </Grid>
                     );
                   })}

@@ -30,13 +30,15 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { useNavigate } from "react-router";
 //province data
 import { DATA } from "../../Store/Province";
+import { useSelector } from "react-redux";
 // import { Address_DATA } from "./AddressData";
 // import axios
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function AddressBook() {
-  const userId = "63187f8829fe6a6deecec97a";
+  const { userID, role } = useSelector((state) => state.loging);
+  // const userId = "63187f8829fe6a6deecec97a";
   const navigate = useNavigate();
   const [Name, setName] = useState();
   const [Contactnumber, setContactnumber] = useState();
@@ -82,7 +84,7 @@ function AddressBook() {
     };
 
     axios
-      .post("http://localhost:5000/User/addresses/" + userId, data)
+      .post("http://localhost:5000/User/addresses/" + userID, data)
       .then((res) => {
         setTimeout(() => {
           toast("succesfully added new address", { type: "success" });
@@ -104,7 +106,7 @@ function AddressBook() {
     // fetching data
     // TODO
     axios
-      .get("http://localhost:5000/User/addresses/" + userId)
+      .get("http://localhost:5000/User/addresses/" + userID)
       .then((res) => {
         if (res.data.addressList.size === 0) {
         }

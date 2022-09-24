@@ -5,14 +5,15 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Favorite_Product from "./Favorite_Product";
+import { useSelector } from "react-redux";
 
 function Favorite_Products() {
+  const { userID, role } = useSelector((state) => state.loging);
   const [favorite, setfavorite] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/User/favorite/63187f6429fe6a6deecec979")
+      .get("http://localhost:5000/User/favorite/" + userID)
       .then((res) => {
-        console.log(res.data.productList);
         setfavorite(res.data.productList);
       })
       .catch();
@@ -56,7 +57,7 @@ function Favorite_Products() {
             }}
           >
             {favorite.map((row, index) => {
-              return <Favorite_Product key={index} data={row} />;
+              return <Favorite_Product index={index} data={row} />;
             })}
           </Grid>
         </Container>

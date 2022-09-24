@@ -6,10 +6,12 @@ import Input from "../../Components/Input";
 import { DATA } from "../../Store/Province";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 import axios from "axios";
 function EditAddresss(props) {
-  const userId = "63187f8829fe6a6deecec97a";
+   const { userID, role } = useSelector((state) => state.loging);
+  // const userId = "63187f8829fe6a6deecec97a";
   const idd = localStorage.getItem("indexNo");
   console.log("local storage");
   console.log(idd);
@@ -32,7 +34,7 @@ function EditAddresss(props) {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/User/addresses/?UserId=${userId}&indexNo=${idd}`
+        `http://localhost:5000/User/addresses/?UserId=${userID}&indexNo=${idd}`
       )
       .then((res) => {
         console.log(res.data.address);
@@ -85,7 +87,7 @@ function EditAddresss(props) {
     axios
       // .put("http://localhost:5000/address/" + idd, data)
       .put(
-        `http://localhost:5000/User/addresses/?UserId=${userId}&indexNo=${idd}`,
+        `http://localhost:5000/User/addresses/?UserId=${userID}&indexNo=${idd}`,
         data
       )
       .then((res) => {

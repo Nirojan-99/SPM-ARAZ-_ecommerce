@@ -212,6 +212,8 @@ public class UserController {
     // get Favorite
     @GetMapping("/favorite/{userId}")
     public ResponseEntity<ProductResponse> getFavorite(@PathVariable("userId") String userId) {
+
+//        @RequestParam(required = false, defaultValue = "1") int page
         User user = userService.getUser(userId);
 
         ProductResponse productResponse = new ProductResponse();
@@ -222,15 +224,16 @@ public class UserController {
         } else {
             ArrayList<String> favorites = user.getFavorites();
             ArrayList<Product> products = new ArrayList<>();
-
+//            int limit = 2;
+//            int skip = (page - 1) * limit;
             for (String fav : favorites) {
                 Product product = productService.getProduct(fav);
                 products.add(product);
             }
 
-            for (int i = 0; i < favorites.size(); i++) {
-
-            }
+//            for (int i = 0; i < favorites.size(); i++) {
+//
+//            }
 
             productResponse.setProductList(products);
             return new ResponseEntity<>(productResponse, HttpStatus.OK);

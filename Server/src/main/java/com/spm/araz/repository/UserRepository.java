@@ -22,6 +22,8 @@ public interface UserRepository extends MongoRepository<User,Integer> {
     })
     List<Favorite> findAllFavorite(int skip, int limit);
 
+    public Long deleteById(String id);
+
 
 
 }

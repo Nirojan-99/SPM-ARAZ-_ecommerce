@@ -4,28 +4,24 @@ import { useNavigate } from "react-router";
 import TableCell from "@mui/material/TableCell";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
-function Address(props) {
-    const { userID, role } = useSelector((state) => state.loging);
-  // const userId = "63187f8829fe6a6deecec97a";
-
+function User(props) {
   const OnClickDeleteHandler = () => {
     axios
-      .delete(
-        `http://localhost:5000/User/addresses/?indexNo=${props.index}&userId=${userID}`
-      )
+      .delete(`http://localhost:5000/User/` + props.data.id)
       .then((res) => {
-        console.log(res.data.msg);
-
-        toast("Succesfully delete address", { type: "success" });
+        if (res) {
+          setTimeout(() => {
+            toast("Succesfully delete user", { type: "success" });
+          }, 1500);
+          window.location.reload();
+        }
       })
       .catch(() => {
-        toast("Unable to delete", { type: "error" });
+        toast("Unable to delete", { type: "success" });
       });
   };
 
-  const navigator = useNavigate();
   return (
     <>
       <TableCell component="th" scope="row">
@@ -34,30 +30,29 @@ function Address(props) {
           variant="body"
           sx={{ color: "#2B4865", fontSize: 15, fontFamily: "open sans" }}
         >
-          {props.data.name}
+          {props.data.id}
         </Typography>
       </TableCell>
+
       <TableCell
         align="justify"
         sx={{ color: "#2B4865", fontSize: 15, fontFamily: "open sans" }}
       >
-        {props.data.province}
-        <br />
-        {props.data.district} {/* <br /> */}
-        {/* {props.data.address} */}
+        {props.data.name}
       </TableCell>
       <TableCell
         align="justify"
         sx={{ color: "#2B4865", fontSize: 15, fontFamily: "open sans" }}
       >
-        {props.data.contactNumber}
+        {props.data.email}
       </TableCell>
       <TableCell
         align="justify"
         sx={{ color: "#2B4865", fontSize: 15, fontFamily: "open sans" }}
       >
-        {props.data.defaultStatus}
+        {props.data.userType}
       </TableCell>
+
       <TableCell align="justify">
         {" "}
         <Button
@@ -69,27 +64,6 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
-            localStorage.removeItem("indexNo");
-            localStorage.clear();
-            localStorage.setItem("indexNo", props.index);
-            navigator("/profile/editaddress");
-          }}
-        >
-          Edit
-        </Button>
-      </TableCell>
-      <TableCell align="justify">
-        {" "}
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            fontFamily: "open sans",
-            fontWeight: "700",
-            textTransform: "none",
-          }}
-          onClick={() => {
-            console.log(props.index);
             OnClickDeleteHandler();
           }}
         >
@@ -100,4 +74,4 @@ function Address(props) {
   );
 }
 
-export default Address;
+export default User;

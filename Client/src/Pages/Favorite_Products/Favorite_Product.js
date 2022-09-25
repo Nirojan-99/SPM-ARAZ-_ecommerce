@@ -12,14 +12,15 @@ import calNewPrice from "../../Helper/calNewPrice";
 // axios
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 function Favorite_Product(props) {
+
+  const { userID, role } = useSelector((state) => state.loging);
   //url
   const baseURL = "http://localhost:5000/";
 
-  // const [favoritedata, setFavoritedata] = useState([]);
-  console.log(props.data.reviews);
-  // setFavoritedata(props.data);
   const Favorite = props.data;
 
   const [star, setStar] = useState(0);
@@ -32,17 +33,23 @@ function Favorite_Product(props) {
   const OnDelete = () => {
     axios
       .delete(
-        `http://localhost:5000/User/favorite?userId=63187f6429fe6a6deecec979&indexNo=${props.index}`
+        `http://localhost:5000/User/favorite?userId=${userID}&indexNo=${props.index}`
       )
       .then((res) => {
-        if (res) {
-          
-        }
+        setTimeout(() => {
+          toast("succesfully remove from Favorite", { type: "success" });
+        }, 1000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1300);
+
+        setTimeout(() => {}, 1000);
       })
       .catch((er) => {});
   };
   return (
     <>
+      <ToastContainer />
       <Grid item sx={{ width: { md: 850, xs: 440, sm: 700 } }}>
         <Box
           component={Paper}
@@ -51,25 +58,25 @@ function Favorite_Product(props) {
             borderRadius: 2,
             bgcolor: "#fff",
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             "&:hover": { transform: "scale(1.01)" },
             transitionDuration: ".2s",
             transitionProperty: "all",
           }}
         >
-          <Grid item>
-            <Box>
-              <CardMedia
-                component="img"
-                sx={{
-                  width: 200,
-                  height: { md: 200, sm: 240, xs: 265 },
+          <Box>
+            <CardMedia
+              component="img"
+              sx={{
+                width: { md: 200, sm: 240, xs: 425 },
+                height: { md: 200, sm: 240, xs: 265 },
 
-                  borderRadius: "5px 5px 2px 2px ",
-                }}
-                image={`${baseURL}products/images/${Favorite?.images[0]}`}
-              />
-            </Box>
-          </Grid>
+                borderRadius: "5px 5px 2px 2px ",
+              }}
+              image={`${baseURL}products/images/${Favorite?.images[0]}`}
+            />
+          </Box>
+
           {/* title */}
           <Box p={2}>
             <Typography
@@ -92,7 +99,8 @@ function Favorite_Product(props) {
                 letterSpacing: -0.5,
               }}
             >
-              {Favorite?.description}
+              {Favorite?.description.substring(0, 70)}...
+              {/* {desc} */}
             </Typography>
             {/* Rating */}
             <Box
@@ -158,9 +166,8 @@ function Favorite_Product(props) {
                     fontWeight: "700",
                   }}
                 >
-                  <s>
-                    Rs : {props.data?.price} -{props.data?.offer?.percentage}%
-                  </s>
+                  <s>Rs : {props.data?.price} </s>-
+                  {props.data?.offer?.percentage}%
                 </Typography>
               ) : (
                 <Typography
@@ -171,18 +178,19 @@ function Favorite_Product(props) {
                     fontWeight: "700",
                   }}
                 >
-                  {/* <s>Rs : 200,000.00 -15%</s> */}
                   <s>offer</s>
                 </Typography>
               )}
             </Box>
           </Box>
           <Box
-            my={5}
+            my={1}
             sx={{
-              p: 2,
+              p: 1,
+              display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              justifycontent: "space-between",
             }}
           >
             {/* add to cart button */}
@@ -192,6 +200,7 @@ function Favorite_Product(props) {
               size="large"
               onClick={AddShoppingCart}
               sx={{
+                justifycontent: "flex-start",
                 m: 1,
                 size: 30,
                 color: "#fff",
@@ -208,7 +217,9 @@ function Favorite_Product(props) {
               size="large"
               onClick={OnDelete}
               sx={{
-                m: 1,
+                justifycontent: "flex-end",
+
+                // m: 1,
                 size: 30,
                 color: "#fff",
                 bgcolor: "#FF0000",

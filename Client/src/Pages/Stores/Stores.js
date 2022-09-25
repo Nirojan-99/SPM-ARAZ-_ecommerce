@@ -168,7 +168,7 @@ function Stores() {
               return <Store data={row} key={index} />;
             })}
             {stores?.length <= 0 && (
-              <Typography sx={{ color: "#333" }}>No store</Typography>
+              <Typography sx={{ color: "#333", ml: 5 }}>No store</Typography>
             )}
           </Grid>
           <Box

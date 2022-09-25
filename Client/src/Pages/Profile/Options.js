@@ -48,6 +48,7 @@ function Options() {
           {role === "admin" && (
             <>
               <ButtonMenu title="Category" link={"/category"} />
+              <ButtonMenu title="Stores" link={"/stores"} />
               <ButtonMenu title="Users" link={"/users"} />
             </>
           )}

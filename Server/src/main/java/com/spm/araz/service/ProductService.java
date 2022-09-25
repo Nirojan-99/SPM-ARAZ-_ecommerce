@@ -137,4 +137,10 @@ public class ProductService {
         List<Product> products = productRepository.findByCategory(category);
         return products.size();
     }
+
+    //delete products of store
+    public boolean deleteProductsOfStore(String id) {
+        productRepository.deleteByStoreID(id);
+        return true;
+    }
 }

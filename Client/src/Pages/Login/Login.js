@@ -53,10 +53,8 @@ function Login() {
             /*token: res.data.token*/
           })
         );
-        setTimeout(() => {
-          toast("Login Sucess", { type: "success" });
-        }, 1500);
-
+        toast("Login Sucess", { type: "success" });
+        
         setTimeout(() => {
           navigate("/", { replace: true });
         }, 2500);

@@ -112,15 +112,23 @@ function Login() {
               value={password}
               set={setPassword}
             />
+
             <Link
               href="/passworForgot"
               underline="none"
               color="red"
-              sx={{ mr: "260px" }}
+              sx={{ mr: "210px", fontFamily: "open sans" }}
             >
               Forgot Password?
             </Link>
-            <Link href="/signup" underline="none" fontSize={15}>
+            {/* </Typography> */}
+
+            <Link
+              href="/signup"
+              underline="none"
+              fontSize={15}
+              sx={{ mr: "20px", fontFamily: "open sans" }}
+            >
               Don't have Account?
             </Link>
             {/* login button */}

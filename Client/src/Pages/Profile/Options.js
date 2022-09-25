@@ -48,6 +48,7 @@ function Options() {
           {role === "admin" && (
             <>
               <ButtonMenu title="Category" link={"/category"} />
+              <ButtonMenu title="Users" link={"/users"} />
             </>
           )}
           {role === "seller" && (
@@ -56,10 +57,7 @@ function Options() {
                 title="Manage Orders"
                 link={"/profile/order-manage"}
               />
-              <ButtonMenu
-                title="Manage Store"
-                link={"/stores"}
-              />
+              <ButtonMenu title="Manage Store" link={"/stores"} />
             </>
           )}
         </Box>
@@ -77,7 +75,6 @@ const ButtonMenu = (props) => {
         variant="contained"
         size="large"
         disableElevation
-        
         sx={{
           textTransform: "none",
           fontFamily: "Arial",

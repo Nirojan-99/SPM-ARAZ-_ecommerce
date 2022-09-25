@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -144,6 +146,19 @@ public class UserService {
         user.removeFavoriteList(favorite);
         userRepository.save(user);
         return true;
+    }
+
+
+    //get all the users
+    public List<User> getAllUsers(){
+        List<User> users=userRepository.findAll();
+        return users;
+    }
+
+    //delete user
+    public boolean deleteById(String id){
+        Long count=userRepository.deleteById(id);
+        return count>0;
     }
 
 

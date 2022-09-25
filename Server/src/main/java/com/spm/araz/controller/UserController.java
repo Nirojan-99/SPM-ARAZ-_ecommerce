@@ -2,6 +2,7 @@ package com.spm.araz.controller;
 
 import com.spm.araz.model.*;
 import com.spm.araz.response.AddressResponse;
+import com.spm.araz.response.CategoryResponse;
 import com.spm.araz.response.ProductResponse;
 import com.spm.araz.response.UserResponse;
 import com.spm.araz.service.ProductService;
@@ -301,6 +302,7 @@ public class UserController {
         String email = luser.getEmail();
         String password = luser.getPassword();
 
+        System.out.println(email+" : "+password);
         User user = userService.getByEmail(email);
 
         UserResponse userResponse = new UserResponse();
@@ -713,6 +715,37 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+
+    //get all the users
+    @GetMapping("")
+    public ResponseEntity<UserResponse> getUsers(){
+        List<User> users;
+        users=userService.getAllUsers();
+
+
+        UserResponse userResponse=new UserResponse();
+        userResponse.setUserList(users);
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+    }
+
+    //delete user
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable(required = true, name = "id") String id){
+        boolean res=userService.deleteById(id);
+        UserResponse userResponse=new UserResponse();
+
+        if(res){
+            userResponse.setMsg("User Deleted");
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        }
+        else {
+            userResponse.setMsg("Unable to delete");
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
 
 

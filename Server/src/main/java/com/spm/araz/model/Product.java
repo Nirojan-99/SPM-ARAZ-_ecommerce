@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 
 @Data
-@NoArgsConstructor
+//@NoArgsConstructor
 @Document("Product")
 public class Product {
     @Id
@@ -31,6 +31,9 @@ public class Product {
         this.images = images;
         this.reviews = new ArrayList<>();
         this.storeID = storeId;
+    }
+
+    public Product() {
     }
 
     public String getStoreID() {
@@ -94,6 +97,9 @@ public class Product {
     }
 
     public void setReviews(Review review) {
+        if(this.reviews == null){
+            this.reviews = new ArrayList<>();
+        }
         this.reviews.add(review);
     }
 

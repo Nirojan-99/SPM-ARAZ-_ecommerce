@@ -6,6 +6,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ToastContainer, toast } from "react-toastify";
+import Ack from "../../Components/Ack";
 
 //icon
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -13,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 //react
 import { useEffect, useState } from "react";
 import ButtonA from "../../Components/ButtonA";
-import { useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import axios from "axios";
 
 function Offer() {
@@ -21,9 +22,12 @@ function Offer() {
   const [product, setProduct] = useState("");
   const [percentage, setpercentage] = useState("");
   const [date, setDate] = useState(null);
+  const [open, setOpen] = useState(false);
 
   //id
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   //cal new price
   const calNewPrice = (price, percentage) => {
@@ -44,6 +48,9 @@ function Offer() {
       .post(`${baseURL}products/offer/${id}`, data)
       .then((res) => {
         toast("offer added", { type: "info" });
+        setTimeout(() => {
+          navigate("/store");
+        }, 1000);
       })
       .catch((er) => {
         toast("unable to add offer", { type: "error" });
@@ -56,7 +63,7 @@ function Offer() {
       .get(`${baseURL}products/${id}`)
       .then((res) => {
         setProduct(res.data.product);
-        setpercentage(res.data.product?.offer.percentage);
+        setpercentage(res.data.product?.offer?.percentage);
         setDate(res.data.product?.offer?.validUntil);
       })
       .catch((er) => {
@@ -66,10 +73,28 @@ function Offer() {
 
   //delete offer
   const deleteOffer = () => {
-    //TODO
+    setOpen(false);
+    axios
+      .delete(`${baseURL}products/offer/${id}`)
+      .then((res) => {
+        toast("Offer deleted", { type: "info" });
+        setTimeout(() => {
+          navigate("/store");
+        }, 1000);
+      })
+      .catch((er) => {
+        toast("Unable to delete", { type: "error" });
+      });
   };
   return (
     <>
+      <Ack
+        handleYes={deleteOffer}
+        open={open}
+        handleClose={() => setOpen(false)}
+        title="Delete?"
+        msg="Do you want to delete?"
+      />
       <ToastContainer />
       <Box>
         <Container maxWidth="sm">
@@ -156,6 +181,7 @@ function Offer() {
               <Box sx={{ flexGrow: 1 }} />
               {product?.offer && (
                 <Button
+                  onClick={() => setOpen(true)}
                   variant="outlined"
                   sx={{
                     fontFamily: "open sans",

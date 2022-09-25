@@ -1,8 +1,45 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import FormatDate from "../../../Helper/formatDate";
+import { ToastContainer, toast } from "react-toastify";
 
-function DefaultPayment() {
+function DefaultPayment(props) {
+  const { token, role, userID } = useSelector((state) => state.loging);
+
+  const payment = props.data;
+  console.log(payment);
+  const total = useSelector((state) => state.order.total);
+
+  const baseURL = "http://localhost:5000/";
+
+  const addPayment = () => {
+    const transactionData = {
+      id: new Date().toISOString(),
+      date: FormatDate(new Date()),
+      amount: total,
+    };
+    //add transaction
+    addTransaction(transactionData);
+  };
+
+  //add transaction
+  const addTransaction = (data) => {
+    axios
+      .post(`${baseURL}User/${userID}/transactions`, data)
+      .then((res) => {
+        toast("Payment successed", { type: "info" });
+        // props.handleNext();
+      })
+      .catch((er) => {
+        toast("Payment failed", { type: "error" });
+      });
+  };
+
   return (
     <>
+      <ToastContainer />
       <Box sx={{ px: { sm: 5, xs: 2 }, pt: 2 }}>
         <Box
           sx={{ bgcolor: "silver", borderRadius: 4 }}
@@ -29,7 +66,7 @@ function DefaultPayment() {
               mt: 3,
             }}
           >
-            **** 1234
+            **** {payment?.cardNumber.substring(payment?.cardNumber.length, -2)}
           </Typography>
           <Typography
             sx={{
@@ -40,7 +77,7 @@ function DefaultPayment() {
               mt: 1,
             }}
           >
-            08/23
+            {payment.expiryMonth}/{payment.expiryYear}
           </Typography>
           <Typography
             sx={{
@@ -52,20 +89,61 @@ function DefaultPayment() {
               textAlign: "right",
             }}
           >
-            User Name
+            {payment.nameOnCard}
           </Typography>
         </Box>
         {/* btn */}
         <Box mx={{ sm: 5, xs: 0 }}>
           <Button
+            onClick={() => props.new()}
             disableTouchRipple
             disableRipple
             disableFocusRipple
             sx={{ textTransform: "none" }}
             color="info"
           >
-            + add New Card
+            + pay with new card
           </Button>
+        </Box>
+        {/* button */}
+        <Box
+          py={3}
+          sx={{
+            display: "flex",
+            flexDirection: { md: "row", sm: "row", xs: "row" },
+            justifyContent: "space-between",
+            px: { sm: 5, xs: 2 },
+          }}
+        >
+          {/* button sec */}
+          <Box>
+            <Button
+              disableElevation
+              variant="contained"
+              sx={{
+                fontWeight: "700",
+                fontFamily: "open sans",
+                textTransform: "none",
+              }}
+              onClick={props.handleBack}
+            >
+              Back
+            </Button>
+          </Box>
+          <Box ml={1}>
+            <Button
+              disableElevation
+              variant="contained"
+              sx={{
+                fontWeight: "700",
+                fontFamily: "open sans",
+                textTransform: "none",
+              }}
+              onClick={addPayment}
+            >
+              Next
+            </Button>
+          </Box>
         </Box>
       </Box>
     </>

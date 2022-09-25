@@ -11,12 +11,9 @@ import java.util.ArrayList;
 public class User {
     @Id
     private String id;
-    private ArrayList<Payment> payments;
-
-
+    private Payment payments;
     private Cart cart;
     private int loyaltyPoint;
-
     private String name;
     private String email;
     private String password;
@@ -25,14 +22,15 @@ public class User {
     private String address;
     private String gender;
     private String dob;
-
-
-
+    private int otp;
+    private ArrayList<Transaction> transactions;
     private ArrayList<String> favorites;
+    private ArrayList<Address> addresses;
+    private ArrayList<String> products;
 
 
+    public User(String id, Payment payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob,  ArrayList<String> favorites, ArrayList<Address> addresses, ArrayList<String> products) {
 
-    public User(String id, ArrayList<Payment> payments, Cart cart, int loyaltyPoint, String name, String email, String password, String userType, int contactNo, String address, String gender, String dob, ArrayList<String> favorites) {
         this.id = id;
         this.payments = payments;
         this.cart = cart;
@@ -46,32 +44,51 @@ public class User {
         this.gender = gender;
         this.dob = dob;
         this.favorites = favorites;
+        this.addresses = addresses;
+        this.products = products;
+        this.transactions = new ArrayList<>();
+
     }
+
 
     public User() {
-        payments = new ArrayList<>();
+        payments = new Payment();
         favorites = new ArrayList<>();
+        otp = 0;
+        addresses = new ArrayList<>();
+
+        products = new ArrayList<>();
+
+        this.transactions = new ArrayList<>();
+
 
     }
 
-    public ArrayList<Payment> getPayments() {
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
+    }
+
+    public Payment getPayments() {
         return payments;
     }
 
-    public void addPayment(Payment payment) {
-        payments.add(payment);
-    }
-
-    public void removePayment(int cardNumber) {
-        for (Payment payment : payments) {
-            if (payment.getCardNumber() == cardNumber) {
-                payments.remove(payment);
-            }
-        }
+    public void setPayment(Payment payment) {
+        this.payments = payment;
     }
 
     public Cart getCart() {
-        return cart;
+        if (this.cart == null) {
+            cart = new Cart();
+        }
+        return this.cart;
     }
 
     public void setCart(Cart cart) {
@@ -167,22 +184,66 @@ public class User {
     }
 
 
-    public void addFavorite(String id){
+    public void addFavorite(String id) {
         favorites.add(id);
     }
 
-    public void removeFavorite(String id){
+    public void removeFavorite(String id) {
         favorites.remove(id);
 
-//        for (String favorite : favorites) {
-//            if (favorite == id) {
-//                favorites.remove(favorite);
-//            }
-//        }
+    }
+
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
+    }
+
+    public ArrayList<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(ArrayList<Address> addresses) {
+        this.addresses = addresses;
     }
 
 
+    public void addAddress(Address address) {
+        addresses.add(address);
+    }
 
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+    }
+
+
+    public Address checkDefaultAddress(String defaultStatus) {
+        for (Address address : addresses) {
+
+
+            if (address.getDefaultStatus().equals(defaultStatus)) {
+
+
+                return address;
+            }
+
+        }
+        return null;
+    }
+
+
+    public void removeFavoriteList(String favorite) {
+        favorites.remove(favorite);
+    }
+    public ArrayList<String> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<String> products) {
+        this.products = products;
+    }
 
 
 }

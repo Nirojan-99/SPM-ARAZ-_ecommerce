@@ -25,13 +25,17 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import ButtonA from "../../Components/ButtonA";
 import Ack from "../../Components/Ack";
 
+import { useSelector, useDispatch } from "react-redux";
+
 function Product() {
   //product id
   const { id } = useParams();
 
+  const { token, role, userID } = useSelector((state) => state.loging);
+
   //state
   const [isLoading, setIsloading] = useState(false);
-  const [categories, setCategories] = useState(["electronic", "kids"]);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -43,6 +47,7 @@ function Product() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [storeID, setStoreID] = useState("");
 
   const [nameError, setNameError] = useState(false);
   const [categoryError, setCategoryError] = useState(false);
@@ -69,16 +74,32 @@ function Product() {
           setIsloading(false);
         });
     }
-    // axios
-    //   .get(baseURL)
-    //   .then((res) => {
-    //     setCategories(res.data.data);
-    //     setIsloading(false);
-    //   })
-    //   .catch((er) => {
-    //     setIsloading(false);
-    //   });
+    getAllCategories();
+    getStoreID();
   }, []);
+
+  //get store id
+  const getStoreID = () => {
+    axios
+      .get(`${baseURL}stores/user/${userID}`)
+      .then((res) => {
+        setStoreID(res.data.id);
+      })
+      .catch((er) => {});
+  };
+
+  //get all categories
+  const getAllCategories = () => {
+    axios
+      .get(`${baseURL}category`)
+      .then((res) => {
+        let array = res.data?.categoryList?.map((item) => item.name);
+        setCategories(array);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
 
   //drag image handler
   const imageHandler = (file, index) => {
@@ -127,7 +148,7 @@ function Product() {
     images.forEach((element, index) => {
       product.append("images", images[index]);
     });
-    product.append("storeID", "630a093393cb77158863980b");
+    product.append("storeID", storeID);
     product.append("title", name);
     product.append("description", description);
     product.append("price", price);
@@ -142,7 +163,7 @@ function Product() {
           toast("Product updated successfully", { type: "info" });
           setIsloading(false);
           setTimeout(() => {
-            navigate("/");
+            navigate("/store");
           }, 2000);
         })
         .catch((er) => {
@@ -156,7 +177,7 @@ function Product() {
           toast("Product added successfully", { type: "info" });
           setIsloading(false);
           setTimeout(() => {
-            navigate("/");
+            navigate("/store");
           }, 2000);
         })
         .catch((er) => {
@@ -171,7 +192,7 @@ function Product() {
     axios
       .delete(`${baseURL}products/${id}`)
       .then((res) => {
-        navigate("/");
+        navigate("/store");
       })
       .catch((er) => {
         toast("Unable to delete", { type: "error" });
@@ -311,7 +332,10 @@ function Product() {
                               {imageArray[index] || product?.images[index] ? (
                                 <img
                                   style={{ width: 70, height: 70, margin: 1 }}
-                                  src={imageArray[index] || `${baseURL}products/images/${product?.images[index]}`}
+                                  src={
+                                    imageArray[index] ||
+                                    `${baseURL}products/images/${product?.images[index]}`
+                                  }
                                 />
                               ) : (
                                 <AddToPhotosIcon

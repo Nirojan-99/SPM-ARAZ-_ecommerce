@@ -1,17 +1,39 @@
 import { Button, Grid, Paper, Typography, Pagination } from "@mui/material";
 import { Box } from "@mui/system";
-import { Address_DATA } from "../../AddressBook/AddressData";
+// import { Address_DATA } from "../../AddressBook/AddressData";
 import SingleShippingAddress from "./Single_Shipping_address";
 
 import Radio from "@mui/material/Radio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShippingAddress_Form from "./ShippingAddress_Form";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function ShippingAddress(props) {
+  const [shipping, setshipping] = useState();
+  const [empty, setempty] = useState("");
+  console.log("welcome");
+  const { products } = useSelector((state) => state.order);
+  console.log(products);
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost:5000/User/shippingAddress/63187f6429fe6a6deecec979"
+      )
+      .then((res) => {
+        // if (res.data.msg == "get") {
+        console.log(res.data.address);
+        setshipping(res.data.address);
+        // } else {
+        //   console.log("empty");
+        // }
+      })
+      .catch(() => {});
+  }, []);
   const [hideshippingaddress, sethideshippingaddress] = useState(false);
   const [show, setshow] = useState(true);
   const [selectedValue, setSelectedValue] = useState("1");
-  console.log(selectedValue);
+
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -73,7 +95,7 @@ function ShippingAddress(props) {
                     setshow(false);
                   }}
                 >
-                  add new Shipping Address
+                  Add New Shipping Address
                 </Button>
               </Box>
             </Box>
@@ -107,49 +129,88 @@ function ShippingAddress(props) {
                     justifyContent: "center",
                   }}
                 >
-                  {Address_DATA.map((row, index) => (
-                    <Grid
-                      item
-                      my={2}
-                      key={index}
-                      sx={{
-                        // width: { xs: "100%",md:"50%" },
-                        justifyContent: "center",
-                        // width: "100%",
-                        borderRadius: "10px",
-                        border: "3px solid #406882",
-                        "&:hover": {
-                          transform: "scale(1.01)",
-                          bgcolor: "#D8D874",
-                          transitionDuration: ".2s",
-                          transitionProperty: "all",
-                        },
-                      }}
-                    >
-                      <Radio
-                        {...controlProps(row._id)}
-                        sx={{ marginTop: "8px", color: "#406882" }}
-                      />
-                      <SingleShippingAddress data={row} />
-                    </Grid>
-                  ))}
+                  {/* {Address_DATA.map((row, index) => ( */}
+                  {shipping.map((row, index) => {
+                    return (
+                      <Grid
+                        item
+                        my={2}
+                        key={index}
+                        sx={{
+                          // width: { xs: "100%",md:"50%" },
+                          justifyContent: "center",
+                          // width: "100%",
+                          borderRadius: "10px",
+                          border: "3px solid #406882",
+                          "&:hover": {
+                            transform: "scale(1.01)",
+                            bgcolor: "#D8D874",
+                            transitionDuration: ".2s",
+                            transitionProperty: "all",
+                          },
+                        }}
+                      >
+                        <Radio
+                          {...controlProps(index)}
+                          sx={{ marginTop: "8px", color: "#406882" }}
+                        />
+                        <SingleShippingAddress data={row} />
+                        {/* <Grid item p={5}>
+                          <Box>
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.name}
+                            </Typography>{" "}
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.province}
+                            </Typography>
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.district}
+                            </Typography>
+                            <Typography
+                              style={{
+                                justifyContent: "center",
+                                fontsize: 30,
+                                color: "#2B4865",
+                                textAlign: "left",
+                                fontWeight: 600,
+                                fontFamily: "open sans",
+                              }}
+                            >
+                              {row.contactNumber}
+                            </Typography>
+                          </Box>
+                        </Grid> */}
+                      </Grid>
+                    );
+                  })}
                 </Grid>
-                {/* pagination */}
-                {/* <Box
-                  my={6}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Pagination
-                    shape="rounded"
-                    count={5}
-                    color="primary"
-                    // onChange={handleChange}
-                  />
-                </Box> */}
               </Box>
             </Box>
           )}

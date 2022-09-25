@@ -30,12 +30,15 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { useNavigate } from "react-router";
 //province data
 import { DATA } from "../../Store/Province";
+import { useSelector } from "react-redux";
 // import { Address_DATA } from "./AddressData";
 // import axios
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function AddressBook() {
+  const { userID, role } = useSelector((state) => state.loging);
+  // const userId = "63187f8829fe6a6deecec97a";
   const navigate = useNavigate();
   const [Name, setName] = useState();
   const [Contactnumber, setContactnumber] = useState();
@@ -46,14 +49,14 @@ function AddressBook() {
   const [nameError, setNameError] = useState(false);
   const [ContactnumberError, setContactnumberError] = useState(false);
   const [AddressesError, setAddressesError] = useState(false);
-  const [ProError, setProError] = useState(false);
+
   // const [disError, setdisError] = useState(false);
 
   const onsubmitSave = () => {
     setNameError(false);
     setContactnumberError(false);
     setAddressesError(false);
-    setProError(false);
+
     // setdisError(false);
     if (!Name.trim()) {
       toast("Invalid Name", { type: "error" });
@@ -63,18 +66,15 @@ function AddressBook() {
       toast("Invalid Contactnumber ", { type: "error" });
       return setContactnumberError(true);
     }
+    if (!(Contactnumber.length == 10)) {
+      toast("Contactnumber should be 10 digit ", { type: "error" });
+      return setContactnumberError(true);
+    }
     if (!Addresses.trim()) {
       toast("Invalid Address", { type: "error" });
       return setAddressesError(true);
     }
-    if (!Pro.trim()) {
-      toast("Invalid province", { type: "error" });
-      return setProError(true);
-    }
-    // if (!dis.trim()) {
-    //   toast("Invalid district", { type: "error" });
-    //   return setdisError(true);
-    // }
+
     const data = {
       name: Name,
       province: Pro,
@@ -82,9 +82,9 @@ function AddressBook() {
       address: Addresses,
       contactNumber: Contactnumber,
     };
-    console.log(data);
+
     axios
-      .post("http://localhost:5000/address", data)
+      .post("http://localhost:5000/User/addresses/" + userID, data)
       .then((res) => {
         setTimeout(() => {
           toast("succesfully added new address", { type: "success" });
@@ -92,25 +92,26 @@ function AddressBook() {
 
         setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 1700);
       })
       .catch((er) => {
-        toast("succesfully added new address", { type: "error" });
+        toast("Unable to add address", { type: "error" });
       });
   };
   // take from fetching data
   const [getAlladdress, setgetAlladdress] = useState([]);
-  // const [dataempty, setdataempty] = useState("");
+  const [dataempty, setdataempty] = useState(false);
 
   useEffect(() => {
     // fetching data
     // TODO
     axios
-      .get("http://localhost:5000/address/")
+      .get("http://localhost:5000/User/addresses/" + userID)
       .then((res) => {
-        if (res.data.addressList.size === 0) {
-          // setdataempty("no any data");
+        if (res.data.addressList.length === 0) {
+          setdataempty(true);
         }
+        // setdataempty(false);
         setgetAlladdress(res.data.addressList);
       })
       .catch(() => {});
@@ -141,8 +142,8 @@ function AddressBook() {
 
   return (
     <>
+      <ToastContainer />
       <Paper elevation={4}>
-        <ToastContainer />
         <Box
           p={3}
           sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }}
@@ -247,20 +248,32 @@ function AddressBook() {
                       page * rowsPerPage + rowsPerPage
                     )
                   : getAlladdress
-                ).map((row, index) => (
+                ).map((row, index, array) => (
                   <TableRow
-                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <Address data={row} />
+                    <Address data={row} index={index} saya={array} />
                   </TableRow>
                 ))}
                 {emptyRows > 0 && (
                   <TableRow style={{ height: 53 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
+                )}
+                {dataempty && (
+                  <Typography
+                    style={{
+                      textAlign: "center",
+
+                      fontFamily: "open sans",
+                      fontWeight: "500",
+                      color: "#2B4865",
+                    }}
+                  >
+                    no Address found
+                  </Typography>
                 )}
               </TableBody>
               <TableFooter>
@@ -344,10 +357,8 @@ function AddressBook() {
               {/* province */}
               <Label for="province" title="Province" />
               <Select
-                error={ProError}
                 sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
                 onChange={(event) => {
-                  setProError(false);
                   // setdisError(false);
                   setPro(() => {
                     let data = DATA.filter((item, index) => {

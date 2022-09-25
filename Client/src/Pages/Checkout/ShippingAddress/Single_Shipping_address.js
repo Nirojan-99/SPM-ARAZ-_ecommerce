@@ -11,7 +11,7 @@ import AddShoppingCartOutlined from "@mui/icons-material/AddShoppingCartOutlined
 function SingleShippingAddress(props) {
   return (
     <>
-      <Grid item p={5} >
+      <Grid item p={5}>
         <Box>
           <Typography
             style={{
@@ -35,7 +35,7 @@ function SingleShippingAddress(props) {
               fontFamily: "open sans",
             }}
           >
-            {props.data.Province}
+            {props.data.province}
           </Typography>
           <Typography
             style={{
@@ -47,7 +47,7 @@ function SingleShippingAddress(props) {
               fontFamily: "open sans",
             }}
           >
-            {props.data.districts}
+            {props.data.district}
           </Typography>
           <Typography
             style={{
@@ -59,8 +59,8 @@ function SingleShippingAddress(props) {
               fontFamily: "open sans",
             }}
           >
-            {props.data.contactnumber}
-          </Typography>{" "}
+            {props.data.contactNumber}
+          </Typography>
         </Box>
       </Grid>
     </>

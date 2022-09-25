@@ -28,23 +28,21 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { useParams } from "react-router";
 import axios from "axios";
 import calNewPrice from "../../Helper/calNewPrice";
+import { useSelector, useDispatch } from "react-redux";
 
-const imageArray = [
-  "https://picsum.photos/id/237/200/300",
-  "https://picsum.photos/seed/picsum/200/300",
-  "https://picsum.photos/200/300?grayscale",
-  "https://picsum.photos/200/300/?blur=2",
-  "https://picsum.photos/200/300.jpg",
-  "https://picsum.photos/200/300.jpg",
-];
+function ProductDetails(props) {
+  const { token, role, userID } = useSelector((state) => state.loging);
 
-const review = 4;
-
-function ProductDetails() {
   //state
   const [previewImage, setPreviewImage] = useState("");
   const [isFavorite, setFavorite] = useState(false);
   const [count, setCount] = useState(1);
+  const [userName, setUserName] = useState("");
+  const [existInCart, setExistInCart] = useState(false);
+
+  //review state
+  const [review, setReview] = useState("");
+  const [star, setStar] = useState(0);
 
   //image handler
   const setImage = (index) => {
@@ -53,6 +51,16 @@ function ProductDetails() {
 
   //id
   const { id } = useParams();
+
+  //get user data
+  const getUserData = () => {
+    axios
+      .get(`${baseURL}User/${userID}`)
+      .then((res) => {
+        setUserName(res.data.user.name);
+      })
+      .catch((er) => {});
+  };
 
   //url
   const baseURL = "http://localhost:5000/";
@@ -64,24 +72,55 @@ function ProductDetails() {
   //handle favorite click
   const handlefavorite = (val) => {
     axios
-      .put(`http://localhost:5000/User/Favorite`, {
-        userId: userID,
-        productId: props.data._id,
-        val: val,
-      })
+      .put(
+        `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${product.id}&val=${val}`
+      )
       .then((res) => {
-        setFavorite((pre) => !pre);
+        setFavorite((isFavorite) => !isFavorite);
+        if (!isFavorite) {
+          toast("Added to Favoritelist", { type: "info" });
+        } else {
+          toast("remove to Favoritelist", { type: "error" });
+        }
       })
       .catch(() => {});
   };
 
-  //add to cart
-  const addToCart = () => {
-    const data = { productId: id, count, userId: "" };
+  //add review
+  const addReview = () => {
+    //validate
+    if (star == 0) {
+      return;
+    }
+    if (!review.trim()) {
+      return;
+    }
+
+    //data
+    const data = { userName: userName, date: new Date(), star, review };
 
     axios
-      .post(`${baseURL}users/cart`, data)
+      .post(`${baseURL}products/${product.id}/reviews`, data)
       .then((res) => {
+        toast("Review added", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to add review", { type: "error" });
+      });
+  };
+
+  //add to cart
+  const addToCart = () => {
+    const data = new FormData();
+
+    data.append("productId", id);
+    data.append("count", count);
+    data.append("userId", userID);
+
+    axios
+      .post(`${baseURL}User/cart`, data)
+      .then((res) => {
+        setExistInCart(true);
         toast("Added to cart", { type: "info" });
       })
       .catch((er) => {
@@ -89,13 +128,25 @@ function ProductDetails() {
       });
   };
 
+  //check product alredy exist in cart
+  const checkcart = (id) => {
+    axios
+      .get(`${baseURL}User/${userID}/cart/${id}`)
+      .then((res) => {
+        setExistInCart(res.data);
+      })
+      .catch((er) => {});
+  };
+
   //get data
   useEffect(() => {
+    getUserData();
     axios
       .get(`${baseURL}products/${id}`)
       .then((res) => {
         const product = res.data.product;
         setProduct(product);
+        checkcart(res.data.product.id);
         setPreviewImage(`${baseURL}products/images/${product?.images[0]}`);
       })
       .catch((er) => {});
@@ -126,7 +177,7 @@ function ProductDetails() {
                       width: "100%",
                       minHeight: 250,
                       height: 300,
-                      overflow: "scroll",
+
                       borderRadius: "5px 0 0 0px",
                       objectFit: "cover",
                     }}
@@ -206,7 +257,7 @@ function ProductDetails() {
                     <Box sx={{ flexGrow: 1 }} />
                     <IconButton
                       onClick={() => {
-                        handlefavorite(!pre);
+                        handlefavorite(!isFavorite);
                       }}
                       disableRipple
                       size="small"
@@ -351,6 +402,7 @@ function ProductDetails() {
                     }}
                   >
                     <Button
+                      disabled={existInCart}
                       onClick={addToCart}
                       color="success"
                       variant="contained"
@@ -446,7 +498,7 @@ function ProductDetails() {
                 <Typography>Bad</Typography>
                 <RadioGroup
                   onChange={(event) => {
-                    console.log(event.target.value);
+                    setStar(event.target.value);
                   }}
                   defaultValue="1"
                   name="radio-buttons-group"
@@ -481,6 +533,8 @@ function ProductDetails() {
                   size="small"
                   minRows={3}
                   maxRows={5}
+                  value={review}
+                  set={setReview}
                 />
               </Box>
             </Box>
@@ -488,6 +542,7 @@ function ProductDetails() {
             <Box mb={2} sx={{ display: "flex", flexDirection: "row" }}>
               <Box sx={{ flexGrow: { xs: 0, sm: 1 } }} />
               <Button
+                onClick={addReview}
                 sx={{ width: { xs: "100%", sm: 100 } }}
                 color="info"
                 variant="contained"
@@ -503,10 +558,12 @@ function ProductDetails() {
               }}
             />
             {/* review */}
-            {product?.review?.map((item, index) => {
-              return <Review key={index} />;
+            {product?.reviews?.map((item, index) => {
+              return <Review data={item} key={index} />;
             })}
-            {product?.review ?? <Typography>No reviews</Typography>}
+            {product?.reviews?.length === 0 && (
+              <Typography>No reviews</Typography>
+            )}
           </Box>
         </Container>
       </Box>

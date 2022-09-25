@@ -18,44 +18,24 @@ import Manage_Products from "./Manage_Products";
 function OrderManage() {
   const Orderdata = [
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "Product1",
+      qty: 5,
+      status: "Processing",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "Product4",
+      qty: 4,
+      status: "Shipped",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "Product3",
+      qty: 2,
+      status: "Processing",
     },
     {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
-    },
-    {
-      product: "product1",
-      qty: 3,
-      status: "penting",
+      product: "Product2",
+      qty: 1,
+      status: "Delivered",
     },
   ];
   return (

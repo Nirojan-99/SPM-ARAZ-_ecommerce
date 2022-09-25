@@ -1,5 +1,6 @@
 package com.spm.araz.repository;
 
+import com.spm.araz.model.Product;
 import com.spm.araz.model.Store;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -23,5 +24,12 @@ public interface StoreRepository extends MongoRepository<Store, Integer> {
 
     Store getById(String id);
 
-    public Long deleteById (String id);
+    public Long deleteById(String id);
+
+    @Aggregation(pipeline = {
+            "{ '$match': {'storeName':{$regex:?0,$options:'i'}} }",
+    })
+    List<Store> search(String title);
+
+    public Store getByUserID(String id);
 }

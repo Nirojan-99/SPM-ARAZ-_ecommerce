@@ -3,9 +3,9 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import { Grid, Paper, Container, Typography, Button } from "@mui/material";
+import { Grid, Container, Typography, Button } from "@mui/material";
 import ShippingAddress from "./ShippingAddress/ShippingAddress";
-import ShippingAddress_Form from "./ShippingAddress/ShippingAddress_Form";
+
 import { useState } from "react";
 import Payment from "./Payment/Payment";
 
@@ -70,7 +70,7 @@ function Checkout() {
               </Typography>
               <Typography variant="subtitle1">
                 Your order number is{" "}
-                <span style={{ color: "green" }}>#{"63263262362"}</span>. We
+                <span style={{ color: "green" }}>#{"63263262362744"}</span>. We
                 have emailed your order confirmation, and will send you an
                 update when your order has shipped.
               </Typography>
@@ -91,7 +91,7 @@ function Checkout() {
                     textTransform: "none",
                   }}
                 >
-                  Printe Invoice
+                  Print Invoice
                 </Button>
                 {/* </Box> */}
               </Box>
@@ -101,7 +101,7 @@ function Checkout() {
           <>
             <Box mt={2} mb={1}>
               {/* {getStepContent(activeStep)} */}
-              <Payment />
+              <Payment handleNext={handleNext} />
             </Box>
           </>
         )}

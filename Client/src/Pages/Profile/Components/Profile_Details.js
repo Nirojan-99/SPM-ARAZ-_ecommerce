@@ -28,7 +28,9 @@ function Profile_Details() {
   const [dob, setDob] = useState("");
   const [otpPin, setOtpPin] = useState("");
   const [error, setError] = useState(false);
+  const [visibility, setVisibility] = useState(false);
 
+  //get user details by id and fetch data
   useEffect(() => {
     axios
       .get("http://localhost:5000/User/" + userID)
@@ -50,6 +52,7 @@ function Profile_Details() {
       });
   }, []);
 
+  //update user details
   const updateHandler = () => {
     setError(false);
     //validation
@@ -65,10 +68,6 @@ function Profile_Details() {
       toast("Enter valid Address", { type: "error" });
       return setError(true);
     }
-    // if (!gender == "") {
-    //   toast("Select a Gender", { type: "error" });
-    //   return setError(true);
-    // }
     if (!dob.trim()) {
       toast("Enter valid Date of birth", { type: "error" });
       return setError(true);
@@ -97,6 +96,7 @@ function Profile_Details() {
       });
   };
 
+  //check new email and send otp
   const emailUpdateHandler = () => {
     setError(false);
     if (!email.trim() || !email.includes("@") || !email.includes(".")) {
@@ -111,6 +111,7 @@ function Profile_Details() {
       .then((res) => {
         setNewemail(res.data.user.email);
         setTimeout(() => {
+          setVisibility(true);
           toast("OTP Send to your new " + res.data.user.email + " Email", {
             type: "success",
           });
@@ -122,6 +123,7 @@ function Profile_Details() {
       });
   };
 
+  //check whether otp is correct and update email
   const otpSubmitHandler = () => {
     setError(false);
     //validation
@@ -133,7 +135,7 @@ function Profile_Details() {
       id: userID,
       otp: otpPin,
     };
-    console.log(data);
+    //check otp
     axios
       .post(`http://localhost:5000/User/otp`, data)
       .then((res) => {
@@ -141,10 +143,12 @@ function Profile_Details() {
           const data = {
             email: newemail,
           };
+          //update email
           axios
             .put("http://localhost:5000/User/" + userID, data)
             .then((res) => {
               if (res) {
+                setVisibility(false);
                 setTimeout(() => {
                   toast("Sucessfully Update your Email", { type: "success" });
                 }, 1500);
@@ -171,6 +175,8 @@ function Profile_Details() {
         }, 1500);
       });
   };
+
+  console.log(otpPin);
 
   return (
     <>
@@ -230,23 +236,6 @@ function Profile_Details() {
               value={address}
               set={setAddress}
             />
-
-            {/* gender 
-            <Label title="Gender" for="gender" />
-            <Select
-              sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
-              fullWidth
-              required
-              size="small"
-              color="info"
-              id="gender"
-              set={setGender}
-              value={gender}
-            >
-              <MenuItem value={"male"}>Male</MenuItem>
-              <MenuItem value={"female"}>Female</MenuItem>
-            </Select>*/}
-
             {/* dob */}
             <Label title="Date of Birth" for="dob" />
             <Input id="dob" size="small" type="date" value={dob} set={setDob} />
@@ -272,23 +261,27 @@ function Profile_Details() {
               handler={emailUpdateHandler}
             />
             <Box mt={2} />
-            {/* OTP Pin */}
-            <Label title="OTP" for="otp" />
-            <Input
-              id="otp"
-              size="small"
-              type="number"
-              value={otpPin}
-              set={setOtpPin}
-            />
-            {/* submit button */}
-            <Box mt={2} />
-            <ButtonA
-              fullWidth={true}
-              title="SUBMIT"
-              handler={otpSubmitHandler}
-            />
-            <Box mt={2} />
+            {visibility && (
+              <>
+                {/* OTP Pin */}
+                <Label title="OTP" for="otp" />
+                <Input
+                  id="otp"
+                  size="small"
+                  type="number"
+                  value={otpPin}
+                  set={setOtpPin}
+                />
+                {/* submit button */}
+                <Box mt={2} />
+                <ButtonA
+                  fullWidth={true}
+                  title="SUBMIT"
+                  handler={otpSubmitHandler}
+                />
+                <Box mt={2} />
+              </>
+            )}
           </Container>
         </Box>
       </Paper>

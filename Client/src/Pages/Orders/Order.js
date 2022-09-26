@@ -16,8 +16,7 @@ import TableRow from "@mui/material/TableRow";
 
 function Order(props) {
   const Orderdata = props.data;
-  // const productsdata = props.data?.products;
-  console.log(Orderdata.products);
+
   const Orderdata1 = [
     {
       product: "Product1",

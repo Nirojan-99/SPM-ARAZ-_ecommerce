@@ -87,6 +87,9 @@ public class OrderController {
             for (OrderItem item : orderItems) {
                 for (String pid : productID) {
                     if (item.getProductID().equals(pid)) {
+
+                        Product product = productService.getProduct(item.getProductID());
+                        item.setProductID(product.getTitle());
                         order.addProduct(item);
                     }
                 }
@@ -96,7 +99,7 @@ public class OrderController {
 
         }
 
-        return  new ResponseEntity<>(resOrders,HttpStatus.OK);
+        return new ResponseEntity<>(resOrders, HttpStatus.OK);
 
     }
 

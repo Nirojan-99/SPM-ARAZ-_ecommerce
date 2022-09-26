@@ -5,11 +5,6 @@ import TableCell from "@mui/material/TableCell";
 function Order_Product(Props) {
   const [Status, setStatus] = useState("processing");
 
-  const SatatusDATA = [
-    { status: "processing" },
-    { status: "shipped" },
-    { status: "delivered" },
-  ];
   return (
     <>
       <TableCell

@@ -123,6 +123,7 @@ public class UserService {
     public Address checkDefaultAddress(User user, String defaultStatus) {
 
         return user.checkDefaultAddress(defaultStatus);
+
     }
 
     public void sendSimpleEmail(String toEmail,
@@ -142,7 +143,7 @@ public class UserService {
 
 
     // remove favorite list
-    public boolean removeFavoriteList(User user, String favorite){
+    public boolean removeFavoriteList(User user, String favorite) {
         user.removeFavoriteList(favorite);
         userRepository.save(user);
         return true;
@@ -150,22 +151,16 @@ public class UserService {
 
 
     //get all the users
-    public List<User> getAllUsers(){
-        List<User> users=userRepository.findAll();
+    public List<User> getAllUsers() {
+        List<User> users = userRepository.findAll();
         return users;
     }
 
     //delete user
-    public boolean deleteById(String id){
-        Long count=userRepository.deleteById(id);
-        return count>0;
+    public boolean deleteById(String id) {
+        Long count = userRepository.deleteById(id);
+        return count > 0;
     }
-
-
-
-
-
-
 
 
 }

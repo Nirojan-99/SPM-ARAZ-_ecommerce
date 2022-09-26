@@ -635,7 +635,8 @@ public class UserController {
             addressResponse.setMsg("Not found");
             return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
         } else {
-            Address getAddress = (Address) userService.checkDefaultAddress(user, "default");
+            Address getAddress = userService.checkDefaultAddress(user, "default");
+
             addressResponse.setAddress(getAddress);
             addressResponse.setMsg("get");
             return new ResponseEntity<>(addressResponse, HttpStatus.OK);

@@ -20,11 +20,12 @@ public class Order {
     private String total;
     private boolean payment;
     private Address address;
-    private ArrayList<OrderItem> products;
-    private Date date;
-    private Time time;
+    private ArrayList<Order> products;
+    private String date;
+    private String time;
+    private String orderStatus;
 
-    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<OrderItem> products, Date date, Time time) {
+    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<Order> products, String date, String time, String orderStatus) {
         this.id = id;
         this.userId = userId;
         this.total = total;
@@ -33,6 +34,7 @@ public class Order {
         this.products = products;
         this.date = date;
         this.time = time;
+        this.orderStatus = orderStatus;
     }
 
     public String getId() {
@@ -75,27 +77,35 @@ public class Order {
         this.address = address;
     }
 
-    public ArrayList<OrderItem> getProducts() {
+    public ArrayList<Order> getProducts() {
         return products;
     }
 
-    public void setProducts(ArrayList<OrderItem> products) {
+    public void setProducts(ArrayList<Order> products) {
         this.products = products;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

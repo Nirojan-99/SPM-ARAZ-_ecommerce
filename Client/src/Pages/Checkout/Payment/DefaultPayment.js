@@ -7,6 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 function DefaultPayment(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
+  const { products, address } = useSelector((state) => state.order);
+  console.log(address);
 
   const payment = props.data;
   console.log(payment);
@@ -14,14 +16,40 @@ function DefaultPayment(props) {
 
   const baseURL = "http://localhost:5000/";
 
+  // time
+  const locale = "en";
+  const today = new Date();
+
+  const time = today.toLocaleTimeString(locale, {
+    hour: "numeric",
+    hour12: true,
+    minute: "numeric",
+  });
+
   const addPayment = () => {
     const transactionData = {
       id: new Date().toISOString(),
       date: FormatDate(new Date()),
       amount: total,
     };
-    //add transaction
+    // add transaction
     addTransaction(transactionData);
+    // order data
+    const Orderdata = {
+      userId: userID,
+      total: total,
+      payment: true,
+      address: address,
+      products: products,
+      date: FormatDate(new Date()),
+      time: time,
+      orderStatus: "Processing",
+    };
+    console.log(Orderdata);
+
+    // addorder
+    addOrder(Orderdata);
+    props.next();
   };
 
   //add transaction
@@ -35,6 +63,14 @@ function DefaultPayment(props) {
       .catch((er) => {
         toast("Payment failed", { type: "error" });
       });
+  };
+
+  // add Order
+  const addOrder = (data1) => {
+    axios
+      .post(`http://localhost:5000/Order`, data1)
+      .then((res) => {})
+      .catch((er) => {});
   };
 
   return (
@@ -66,7 +102,8 @@ function DefaultPayment(props) {
               mt: 3,
             }}
           >
-            **** {payment?.cardNumber.substring(payment?.cardNumber.length, -2)}
+            ****{" "}
+            {payment?.cardNumber?.substring(payment?.cardNumber.length, -2)}
           </Typography>
           <Typography
             sx={{

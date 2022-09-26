@@ -1,8 +1,21 @@
 import Order from "./Order";
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function Orders() {
+  const { userID, role } = useSelector((state) => state.loging);
+  const [orderdata, setorderdata] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/Order/user?userId=${userID}`)
+      .then((res) => {
+        setorderdata(res.data.orderList);
+      })
+      .catch(() => {});
+  }, []);
   return (
     <>
       <Paper elevation={4}>
@@ -29,8 +42,11 @@ function Orders() {
           </Box>
 
           <br />
-          <Order />
-          <Order />
+          {orderdata.map((row) => {
+            return <Order data={row} />;
+          })}
+          {/* <Order />
+          <Order /> */}
         </Box>
       </Paper>
     </>

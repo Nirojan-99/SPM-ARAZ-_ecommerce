@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 function Orders() {
   const { userID, role } = useSelector((state) => state.loging);
   const [orderdata, setorderdata] = useState([]);
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/Order/user?userId=${userID}`)
@@ -16,6 +17,7 @@ function Orders() {
       })
       .catch(() => {});
   }, []);
+
   return (
     <>
       <Paper elevation={4}>
@@ -28,12 +30,11 @@ function Orders() {
           <Box>
             <Typography
               sx={{
-                textAlign: "center",
                 fontFamily: "open sans",
                 fontWeight: "1000",
                 color: "#2B4865",
                 letterSpacing: -0.9,
-                fontSize: 20,
+                fontSize: 22,
                 my: 1.5,
               }}
             >
@@ -45,8 +46,6 @@ function Orders() {
           {orderdata.map((row) => {
             return <Order data={row} />;
           })}
-          {/* <Order />
-          <Order /> */}
         </Box>
       </Paper>
     </>

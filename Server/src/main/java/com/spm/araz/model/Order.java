@@ -37,6 +37,10 @@ public class Order {
     public Order() {
     }
 
+    public void addProduct(OrderItem item) {
+        this.products.add(item);
+    }
+
     public String getId() {
         return id;
     }

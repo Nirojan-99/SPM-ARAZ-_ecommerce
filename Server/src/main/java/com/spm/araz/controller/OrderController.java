@@ -1,14 +1,13 @@
 package com.spm.araz.controller;
 
 
-import com.spm.araz.model.Order;
+import com.spm.araz.model.*;
 
-import com.spm.araz.model.Product;
-import com.spm.araz.model.User;
 import com.spm.araz.response.OrderResponse;
 import com.spm.araz.service.OrderService;
 
 import com.spm.araz.service.ProductService;
+import com.spm.araz.service.StoreService;
 import com.spm.araz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,8 @@ public class OrderController {
     UserService userService;
     @Autowired
     ProductService productService;
+    @Autowired
+    StoreService storeService;
 
     // add order
     @PostMapping("")
@@ -38,9 +39,7 @@ public class OrderController {
         String id = orderService.addOrder(order);
         return new ResponseEntity<>(id, HttpStatus.OK);
 
-
     }
-
 
     // customer get order
     @GetMapping("/user")
@@ -54,6 +53,50 @@ public class OrderController {
 
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 
+
+    }
+
+    //get seller orders
+    @GetMapping("/seller/{id}")
+    public ResponseEntity<ArrayList<Order>> getSellerOrders(@PathVariable(name = "id") String id) {
+        Store store = storeService.getStoreByUserID(id);
+
+        String storeID = store.getId();
+
+        List<Product> products = productService.getStoreAllProducts(storeID);
+
+        String[] productID = new String[products.size()];
+
+        int index = 0;
+        for (Product product : products) {
+            productID[index] = product.getId();
+            index++;
+        }
+
+        List<Order> orders = orderService.getSellerOrders(productID);
+
+
+        ArrayList<Order> resOrders = new ArrayList<>();
+
+        for (Order order : orders) {
+
+            ArrayList<OrderItem> orderItems = order.getProducts();
+            order.setProducts(new ArrayList<>());
+
+
+            for (OrderItem item : orderItems) {
+                for (String pid : productID) {
+                    if (item.getProductID().equals(pid)) {
+                        order.addProduct(item);
+                    }
+                }
+            }
+
+            resOrders.add(order);
+
+        }
+
+        return  new ResponseEntity<>(resOrders,HttpStatus.OK);
 
     }
 

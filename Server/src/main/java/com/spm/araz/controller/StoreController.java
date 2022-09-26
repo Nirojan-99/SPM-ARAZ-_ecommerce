@@ -3,6 +3,7 @@ package com.spm.araz.controller;
 import com.spm.araz.model.Store;
 import com.spm.araz.model.User;
 import com.spm.araz.response.StoreResponse;
+import com.spm.araz.service.ProductService;
 import com.spm.araz.service.StoreService;
 import com.spm.araz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class StoreController {
     StoreService storeService;
     @Autowired
     UserService userService;
+    @Autowired
+    ProductService productService;
 
     //new store
     @PostMapping("")
@@ -84,13 +87,15 @@ public class StoreController {
         User user = userService.getUser(store.getUserID());
 
         boolean res = storeService.deleteById(id);
+
+
         StoreResponse storeResponse = new StoreResponse();
         if (res) {
 
             user.setUserType("buyer");
             userService.updateAddress(user);
 
-//            TODO delete products
+            productService.deleteProductsOfStore(id);
 
             storeResponse.setMsg("Deleted");
             return new ResponseEntity<>(storeResponse, HttpStatus.OK);

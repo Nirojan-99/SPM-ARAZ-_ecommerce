@@ -24,6 +24,7 @@ import AboutUs from "./AboutUs/AboutUs";
 import CategoryTable from "./Category/CategoryTable";
 import NewCategory from "./Category/NewCategory";
 import Transaction from "./Transaction/Transaction";
+import UserTable from "./Users/UserTable";
 
 function Page() {
   const { token, role, userID } = useSelector((state) => state.loging);
@@ -38,6 +39,7 @@ function Page() {
               <Route path="/stores" element={<Stores />} />
               <Route path="/category" element={<CategoryTable />} />
               <Route path="/newCategory/:id" element={<NewCategory />} />
+              <Route path="/users" element={<UserTable />} />
             </>
           )}
           {role === "buyer" && (

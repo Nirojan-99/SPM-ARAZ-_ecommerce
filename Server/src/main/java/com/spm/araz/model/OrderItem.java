@@ -3,17 +3,26 @@ package com.spm.araz.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 public class OrderItem {
     private String productID;
     private int count;
-    private String OrderStatus;
+    private String orderStatus;
 
     public OrderItem(String productID, int count, String orderStatus) {
         this.productID = productID;
         this.count = count;
-        this.OrderStatus = orderStatus;
+        this.orderStatus = orderStatus;
+    }
+
+    public OrderItem() {
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getProductID() {
@@ -32,11 +41,5 @@ public class OrderItem {
         this.count = count;
     }
 
-    public String getOrderStatus() {
-        return OrderStatus;
-    }
 
-    public void setOrderStatus(String orderStatus) {
-        OrderStatus = orderStatus;
-    }
 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import TableCell from "@mui/material/TableCell";
 
 function Manage_Products(Props) {
-  const [Status, setStatus] = useState("Processing");
+  const [Status, setStatus] = useState(Props.data.orderStatus);
 
   const SatatusDATA = [
     { status: "Processing" },
@@ -23,7 +23,7 @@ function Manage_Products(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.product}
+        {Props.data.productID}
       </TableCell>
       <TableCell
         align="left"
@@ -34,7 +34,7 @@ function Manage_Products(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.qty}
+        {Props?.data?.count ?? "fdgg"}
       </TableCell>
 
       <TableCell

@@ -12,6 +12,13 @@ function NewPayment(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
   const { products, address } = useSelector((state) => state.order);
 
+  //state
+  var orderID = "";
+
+  let OderProducts = products?.map((item) => {
+    return { ...item, orderStatus: "Processing" };
+  });
+
   const baseURL = "http://localhost:5000/";
   const total = useSelector((state) => state.order.total);
 
@@ -68,26 +75,12 @@ function NewPayment(props) {
       .then((res) => {
         //add transaction
         addTransaction(transactionData);
+        addOrder();
       })
       .catch((er) => {
         toast("Invalid data", { type: "error" });
       });
-    // order data
-    const Orderdata = {
-      userId: userID,
-      total: total,
-      payment: true,
-      address: address,
-      products: products,
-      date: FormatDate(new Date()),
-      time: time,
-      orderStatus: "Processing",
-    };
-    console.log(Orderdata);
-    // addorder
-    addOrder(Orderdata);
 
-    props.next();
   };
 
   //add transaction
@@ -100,11 +93,36 @@ function NewPayment(props) {
       })
       .catch((er) => {});
   };
+
   // add Order
-  const addOrder = (data1) => {
+  const addOrder = () => {
+    const Orderdata = {
+      userId: userID,
+      total: total,
+      payment: true,
+      address: address,
+      products: OderProducts,
+      date: FormatDate(new Date()),
+      time: time,
+    };
+
     axios
-      .post(`http://localhost:5000/Order`, data1)
-      .then((res) => {})
+      .post(`http://localhost:5000/Order`, Orderdata)
+      .then((res) => {
+        orderID = res.data;
+        emptyCart();
+        //TODO empty store as well
+      })
+      .catch((er) => {});
+  };
+
+  //empty cart
+  const emptyCart = () => {
+    axios
+      .delete(`${baseURL}User/${userID}/cart`)
+      .then((res) => {
+        props.next(orderID);
+      })
       .catch((er) => {});
   };
 

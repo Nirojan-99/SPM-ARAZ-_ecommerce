@@ -5,6 +5,7 @@ import com.spm.araz.model.Order;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface OrderRepository extends MongoRepository<Order, Integer> {
@@ -18,6 +19,11 @@ public interface OrderRepository extends MongoRepository<Order, Integer> {
             "{ '$match': {'products.productID':?0} }"
 
     })
-
     Order checkid(String productID);
+
+    @Aggregation(pipeline = {
+            "{ '$match': {'products.productID':{$in :?0}} }"
+    })
+    List<Order> getOrderByProductID(String[] productID);
+
 }

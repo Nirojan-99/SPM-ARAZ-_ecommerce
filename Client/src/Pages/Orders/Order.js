@@ -16,8 +16,7 @@ import TableRow from "@mui/material/TableRow";
 
 function Order(props) {
   const Orderdata = props.data;
-  // const productsdata = props.data?.products;
-  console.log(Orderdata.products);
+
   const Orderdata1 = [
     {
       product: "Product1",
@@ -64,8 +63,7 @@ function Order(props) {
                 color: "#8C8C8C",
               }}
             >
-              {Orderdata.date}
-              {Orderdata.time}
+              {Orderdata.date} - {Orderdata.time}
             </Typography>
           </Box>
         </AccordionSummary>
@@ -110,9 +108,9 @@ function Order(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Orderdata1.map((row) => (
+                {Orderdata?.products?.map((row, index) => (
                   <TableRow
-                    // key={index}
+                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}

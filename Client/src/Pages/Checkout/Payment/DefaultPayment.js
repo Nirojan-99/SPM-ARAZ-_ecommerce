@@ -8,10 +8,15 @@ import { ToastContainer, toast } from "react-toastify";
 function DefaultPayment(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
   const { products, address } = useSelector((state) => state.order);
-  console.log(address);
+
+  //state
+  var orderID = "";
+
+  let OderProducts = products?.map((item) => {
+    return { ...item, orderStatus: "Processing" };
+  });
 
   const payment = props.data;
-  console.log(payment);
   const total = useSelector((state) => state.order.total);
 
   const baseURL = "http://localhost:5000/";
@@ -34,22 +39,8 @@ function DefaultPayment(props) {
     };
     // add transaction
     addTransaction(transactionData);
-    // order data
-    const Orderdata = {
-      userId: userID,
-      total: total,
-      payment: true,
-      address: address,
-      products: products,
-      date: FormatDate(new Date()),
-      time: time,
-      orderStatus: "Processing",
-    };
-    console.log(Orderdata);
-
     // addorder
-    addOrder(Orderdata);
-    props.next();
+    addOrder();
   };
 
   //add transaction
@@ -58,18 +49,43 @@ function DefaultPayment(props) {
       .post(`${baseURL}User/${userID}/transactions`, data)
       .then((res) => {
         toast("Payment successed", { type: "info" });
-        // props.handleNext();
       })
       .catch((er) => {
         toast("Payment failed", { type: "error" });
       });
   };
 
-  // add Order
-  const addOrder = (data1) => {
+  //empty cart
+  const emptyCart = () => {
     axios
-      .post(`http://localhost:5000/Order`, data1)
-      .then((res) => {})
+      .delete(`${baseURL}User/${userID}/cart`)
+      .then((res) => {
+        console.log(orderID);
+        props.next(orderID);
+      })
+      .catch((er) => {});
+  };
+
+  // add Order
+  const addOrder = () => {
+    const Orderdata = {
+      userId: userID,
+      total: total,
+      payment: true,
+      address: address,
+      products: OderProducts,
+      date: FormatDate(new Date()),
+      time: time,
+    };
+
+    axios
+      .post(`http://localhost:5000/Order`, Orderdata)
+      .then((res) => {
+        orderID = res.data;
+        console.log(res.data + "dd");
+        emptyCart();
+        //TODO empty store as well
+      })
       .catch((er) => {});
   };
 

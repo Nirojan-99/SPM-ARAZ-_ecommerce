@@ -36,7 +36,7 @@ public class StoreController {
 
         if (res) {
             User user = userService.getUser(store.getUserID());
-            user.setUserType("Seller");
+            user.setUserType("seller");
             userService.updateUser(user);
 
             storeResponse.setMsg("Store Created");

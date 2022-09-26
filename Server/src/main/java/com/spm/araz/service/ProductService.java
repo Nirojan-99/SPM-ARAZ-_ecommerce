@@ -94,6 +94,12 @@ public class ProductService {
         return products;
     }
 
+    //get all products from store
+    public List<Product> getStoreAllProducts(String id) {
+        List<Product> products = productRepository.findByStoreId(id);
+        return products;
+    }
+
     //find by store
     public int getStoreProductsCount(String id) {
         List<Product> products = productRepository.findByStoreId(id);

@@ -70,9 +70,9 @@ public class UserController {
     }
 
     //empty cart
-    @DeleteMapping("/cart")
-    public ResponseEntity<UserResponse> emptyCart(@RequestParam String userId) {
-        User user = userService.getUser(userId);
+    @DeleteMapping("/{id}/cart")
+    public ResponseEntity<UserResponse> emptyCart(@PathVariable("id") String id) {
+        User user = userService.getUser(id);
 
         UserResponse userResponse = new UserResponse();
 

@@ -67,16 +67,29 @@ function Payment(props) {
           {isLoaded ? (
             payment?.nameOnCard !== null && payment !== null ? (
               val ? (
-                <NewPayment next={props.handleNext} />
+                <NewPayment
+                  next={(id) => {
+                    console.log(id);
+                    props.handleNext(id);
+                  }}
+                />
               ) : (
                 <DefaultPayment
                   data={payment}
                   new={handleNew}
-                  next={props.handleNext}
+                  next={(id) => {
+                    console.log(id);
+                    props.handleNext(id);
+                  }}
                 />
               )
             ) : (
-              <NewPayment next={props.handleNext} />
+              <NewPayment
+                next={(id) => {
+                  console.log(id);
+                  props.handleNext(id);
+                }}
+              />
             )
           ) : null}
         </Box>

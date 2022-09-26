@@ -33,13 +33,10 @@ public class OrderController {
 
     // add order
     @PostMapping("")
-    public ResponseEntity<OrderResponse> addOrder(@RequestBody Order order) {
+    public ResponseEntity<String> addOrder(@RequestBody Order order) {
 
-
-        OrderResponse orderResponse = new OrderResponse();
-        orderService.addOrder(order);
-        orderResponse.setMsg("odercreate");
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+        String id = orderService.addOrder(order);
+        return new ResponseEntity<>(id, HttpStatus.OK);
 
 
     }

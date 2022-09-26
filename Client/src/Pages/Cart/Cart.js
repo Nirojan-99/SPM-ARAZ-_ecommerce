@@ -265,6 +265,7 @@ function Cart() {
                 <Button
                   onClick={handlecheckout}
                   disableElevation
+                  disabled={selectedProducts?.length === 0}
                   sx={{
                     width: { xs: "100%", sm: "auto" },
                     textTransform: "none",

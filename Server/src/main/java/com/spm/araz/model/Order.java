@@ -11,21 +11,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @Document("Order")
 public class Order {
     @Id
-   private String id;
+    private String id;
     private String userId;
     private String total;
     private boolean payment;
     private Address address;
-    private ArrayList<Order> products;
+    private ArrayList<OrderItem> products;
     private String date;
     private String time;
-    private String orderStatus;
 
-    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<Order> products, String date, String time, String orderStatus) {
+    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<OrderItem> products, String date, String time) {
         this.id = id;
         this.userId = userId;
         this.total = total;
@@ -34,7 +32,9 @@ public class Order {
         this.products = products;
         this.date = date;
         this.time = time;
-        this.orderStatus = orderStatus;
+    }
+
+    public Order() {
     }
 
     public String getId() {
@@ -77,11 +77,11 @@ public class Order {
         this.address = address;
     }
 
-    public ArrayList<Order> getProducts() {
+    public ArrayList<OrderItem> getProducts() {
         return products;
     }
 
-    public void setProducts(ArrayList<Order> products) {
+    public void setProducts(ArrayList<OrderItem> products) {
         this.products = products;
     }
 
@@ -101,11 +101,4 @@ public class Order {
         this.time = time;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 }

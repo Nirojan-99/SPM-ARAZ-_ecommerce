@@ -12,7 +12,10 @@ import Payment from "./Payment/Payment";
 const steps = ["ShippingAddress", "Payment"];
 function Checkout() {
   const [activeStep, setActiveStep] = useState(0);
-  const handleNext = () => {
+  const [orderID, setOrderID] = useState("");
+
+  const handleNext = (id) => {
+    setOrderID(id);
     setActiveStep(activeStep + 1);
   };
 
@@ -70,9 +73,9 @@ function Checkout() {
               </Typography>
               <Typography variant="subtitle1">
                 Your order number is{" "}
-                <span style={{ color: "green" }}>#{"63263262362744"}</span>. We
-                have emailed your order confirmation, and will send you an
-                update when your order has shipped.
+                <span style={{ color: "green" }}>#{orderID}</span>. We have
+                emailed your order confirmation, and will send you an update
+                when your order has shipped.
               </Typography>
               <Box
                 p={3}

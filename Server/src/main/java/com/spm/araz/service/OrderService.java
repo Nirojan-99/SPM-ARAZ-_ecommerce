@@ -13,10 +13,10 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public boolean addOrder(Order order) {
+    public String addOrder(Order order) {
 
-        orderRepository.save(order);
-        return true;
+        Order res = orderRepository.save(order);
+        return res.getId();
     }
 
     public java.util.List<Order> getUserOder(String userId) {

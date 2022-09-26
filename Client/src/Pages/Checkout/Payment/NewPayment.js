@@ -10,6 +10,7 @@ import FormatDate from "../../../Helper/formatDate";
 
 function NewPayment(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
+  const { products, address } = useSelector((state) => state.order);
 
   const baseURL = "http://localhost:5000/";
   const total = useSelector((state) => state.order.total);
@@ -20,6 +21,15 @@ function NewPayment(props) {
   const [expiryMonth, setExpiryMonth] = useState("");
   const [expiryYear, setExpieyYear] = useState("");
   const [cvc, setCVC] = useState("");
+  // time
+  const locale = "en";
+  const today = new Date();
+
+  const time = today.toLocaleTimeString(locale, {
+    hour: "numeric",
+    hour12: true,
+    minute: "numeric",
+  });
 
   //add payment
   const addPayment = () => {
@@ -62,6 +72,22 @@ function NewPayment(props) {
       .catch((er) => {
         toast("Invalid data", { type: "error" });
       });
+    // order data
+    const Orderdata = {
+      userId: userID,
+      total: total,
+      payment: true,
+      address: address,
+      products: products,
+      date: FormatDate(new Date()),
+      time: time,
+      orderStatus: "Processing",
+    };
+    console.log(Orderdata);
+    // addorder
+    addOrder(Orderdata);
+
+    props.next();
   };
 
   //add transaction
@@ -72,6 +98,13 @@ function NewPayment(props) {
         toast("Payment successed", { type: "info" });
         // props.handleNext();
       })
+      .catch((er) => {});
+  };
+  // add Order
+  const addOrder = (data1) => {
+    axios
+      .post(`http://localhost:5000/Order`, data1)
+      .then((res) => {})
       .catch((er) => {});
   };
 

@@ -73,7 +73,7 @@ function ProductDetails(props) {
   const handlefavorite = (val) => {
     axios
       .put(
-        `http://localhost:5000/User/Favorite?userId=63187f6429fe6a6deecec979&productId=${product.id}&val=${val}`
+        `http://localhost:5000/User/Favorite?userId=${userID}&productId=${product.id}&val=${val}`
       )
       .then((res) => {
         setFavorite((isFavorite) => !isFavorite);

@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -121,6 +123,7 @@ public class UserService {
     public Address checkDefaultAddress(User user, String defaultStatus) {
 
         return user.checkDefaultAddress(defaultStatus);
+
     }
 
     public void sendSimpleEmail(String toEmail,
@@ -140,17 +143,11 @@ public class UserService {
 
 
     // remove favorite list
-    public boolean removeFavoriteList(User user, String favorite){
+    public boolean removeFavoriteList(User user, String favorite) {
         user.removeFavoriteList(favorite);
         userRepository.save(user);
         return true;
     }
-
-
-
-
-
-
 
 
 }

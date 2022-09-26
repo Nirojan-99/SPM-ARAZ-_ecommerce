@@ -14,8 +14,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-function Order() {
-  const Orderdata = [
+function Order(props) {
+  const Orderdata = props.data;
+  // const productsdata = props.data?.products;
+  console.log(Orderdata.products);
+  const Orderdata1 = [
     {
       product: "Product1",
       qty: 3,
@@ -50,7 +53,7 @@ function Order() {
                 color: "#1A374D",
               }}
             >
-              Order:#2121212516
+              Order:{Orderdata.id}
             </Typography>
 
             <Typography
@@ -61,7 +64,8 @@ function Order() {
                 color: "#8C8C8C",
               }}
             >
-              12/02/2132
+              {Orderdata.date}
+              {Orderdata.time}
             </Typography>
           </Box>
         </AccordionSummary>
@@ -106,9 +110,9 @@ function Order() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Orderdata.map((row, index) => (
+                {Orderdata1.map((row) => (
                   <TableRow
-                    key={index}
+                    // key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}

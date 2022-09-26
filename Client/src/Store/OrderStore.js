@@ -25,6 +25,9 @@ const OrderStore = createSlice({
 
       localStorage.setItem("total", action.payload.total);
     },
+    // romoveAddress(state) {
+    //   localStorage.removeItem("address");
+    // },
   },
 });
 

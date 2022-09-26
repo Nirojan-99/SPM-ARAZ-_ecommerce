@@ -16,7 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 function Favorite_Product(props) {
-
+  console.log(props.data.id);
   const { userID, role } = useSelector((state) => state.loging);
   //url
   const baseURL = "http://localhost:5000/";
@@ -24,11 +24,12 @@ function Favorite_Product(props) {
   const Favorite = props.data;
 
   const [star, setStar] = useState(0);
+  const [count, setCount] = useState(1);
   useEffect(() => {
     setStar(calReview(Favorite?.reviews));
   }, []);
   // addshoppingcart fun
-  const AddShoppingCart = () => {};
+  // const AddShoppingCart = () => {};
   // delete fun
   const OnDelete = () => {
     axios
@@ -46,6 +47,29 @@ function Favorite_Product(props) {
         setTimeout(() => {}, 1000);
       })
       .catch((er) => {});
+  };
+  //add to cart
+  const addToCart = () => {
+    const data = {
+      productId: props.data.id,
+      count: count,
+      userId: userID,
+    };
+    // const data = new FormData();
+
+    // data.append("productId", props.index);
+    // data.append("count", count);
+    // data.append("userId", userID);
+    console.log(data);
+
+    axios
+      .post(`${baseURL}User/cart`, data)
+      .then((res) => {
+        toast("Added to cart", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to add to cart", { type: "error" });
+      });
   };
   return (
     <>
@@ -198,7 +222,7 @@ function Favorite_Product(props) {
               aria-label="delete"
               variant="contained"
               size="large"
-              onClick={AddShoppingCart}
+              onClick={addToCart}
               sx={{
                 justifycontent: "flex-start",
                 m: 1,

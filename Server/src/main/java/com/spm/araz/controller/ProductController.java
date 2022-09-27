@@ -5,7 +5,6 @@ import com.spm.araz.model.*;
 import com.spm.araz.response.ProductResponse;
 import com.spm.araz.service.ProductService;
 import com.spm.araz.service.StoreService;
-import com.spm.araz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -84,7 +83,6 @@ public class ProductController {
         List<Product> products;
         ProductResponse productResponse = new ProductResponse();
 
-        System.out.println(category);
         //get by category
         if (category != null) {
             products = productService.getProductsByCategory(category, page);

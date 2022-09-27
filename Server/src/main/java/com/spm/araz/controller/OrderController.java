@@ -48,7 +48,7 @@ public class OrderController {
 
         OrderResponse orderResponse = new OrderResponse();
         List<Order> orderList = orderService.getUserOder(userId);
-        System.out.println(orderList);
+
         orderResponse.setOrderList(orderList);
 
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
@@ -114,7 +114,6 @@ public class OrderController {
             orderResponse.setMsg("User is Not found");
             return new ResponseEntity<>(orderResponse, HttpStatus.NOT_FOUND);
         } else {
-            System.out.println(user.getProducts());
             ArrayList<String> products = user.getProducts();
             ArrayList<Order> orders = new ArrayList<>();
 

@@ -123,6 +123,28 @@ function Order(props) {
             </Table>
           </TableContainer>
         </AccordionDetails>
+        <Box
+          p={2}
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+          }}
+        >
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => {}}
+            sx={{
+              textAlign: "center",
+              fontFamily: "open sans",
+              fontWeight: "700",
+              textTransform: "none",
+            }}
+            endIcon={<DownloadIcon />}
+          >
+            Print in voice
+          </Button>
+        </Box>
       </Accordion>
       <br />
     </>

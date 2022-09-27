@@ -1,8 +1,8 @@
 package com.spm.araz.controller;
 
-import com.spm.araz.model.Store;
-import com.spm.araz.model.User;
+import com.spm.araz.model.*;
 import com.spm.araz.response.StoreResponse;
+import com.spm.araz.service.OrderService;
 import com.spm.araz.service.ProductService;
 import com.spm.araz.service.StoreService;
 import com.spm.araz.service.UserService;
@@ -25,6 +25,8 @@ public class StoreController {
     UserService userService;
     @Autowired
     ProductService productService;
+    @Autowired
+    OrderService orderService;
 
     //new store
     @PostMapping("")
@@ -150,5 +152,57 @@ public class StoreController {
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    //generate report
+    @GetMapping("/report/{id}")
+    public ResponseEntity<ArrayList<StoreReport>> getReportData(@PathVariable("id") String id) {
+        Store store = storeService.getStoreByUserID(id);
+
+        String storeID = store.getId();
+
+        List<Product> products = productService.getStoreAllProducts(storeID);
+
+        String[] productID = new String[products.size()];
+
+        int index = 0;
+        for (Product product : products) {
+            productID[index] = product.getId();
+            index++;
+        }
+
+        ArrayList<StoreReport> storeReports = new ArrayList<>();
+        StoreReport storeReport = new StoreReport();
+
+        for (String pid : productID) {
+
+            Product product = productService.getProduct(pid);
+
+            storeReport.setProductID(pid);
+            storeReport.setProductName(product.getTitle());
+
+            List<Order> orders = orderService.getAllOrdersOfProduct(pid);
+
+            int count = 0;
+
+            for (Order order : orders) {
+                for (OrderItem item : order.getProducts()) {
+                    if (item.getProductID().equals(pid)) {
+                        count += item.getCount();
+                    }
+                }
+
+            }
+
+            storeReport.setCount(count);
+            storeReport.setTotal(Float.parseFloat(count * product.getPrice() + ""));
+
+
+            storeReports.add(storeReport);
+            storeReport = new StoreReport();
+
+        }
+
+        return new ResponseEntity<>(storeReports, HttpStatus.OK);
     }
 }

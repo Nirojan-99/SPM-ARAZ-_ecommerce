@@ -33,6 +33,11 @@ public class OrderService {
 
     }
 
+    public List<Order> getAllOrdersOfProduct(String pid) {
+        List<Order> orders = orderRepository.findByProductID(pid);
+        return orders;
+    }
+
     //get seller orders
     public List<Order> getSellerOrders(String[] products) {
         List<Order> orders = orderRepository.getOrderByProductID(products);

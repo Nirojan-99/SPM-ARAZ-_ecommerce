@@ -6,7 +6,6 @@ import com.spm.araz.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,16 +26,23 @@ public class OrderService {
 
     }
 
-    public Order getOrderProduct(String productID) {
-        Order order = orderRepository.checkid(productID);
-        return order;
 
-    }
 
     //get seller orders
     public List<Order> getSellerOrders(String[] products) {
         List<Order> orders = orderRepository.getOrderByProductID(products);
         return orders;
+    }
+
+    public Order getOrder(String orderId){
+        Order order = (Order) orderRepository.getOrder(orderId);
+        return order;
+    }
+
+    // update order status
+    public boolean updateOrderStatus(Order order) {
+        orderRepository.save(order);
+        return true;
     }
 
 }

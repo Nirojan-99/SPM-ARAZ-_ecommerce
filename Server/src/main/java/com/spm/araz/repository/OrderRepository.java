@@ -15,15 +15,19 @@ public interface OrderRepository extends MongoRepository<Order, Integer> {
     })
     List<Order> findUserOder(String userId);
 
-    @Aggregation(pipeline = {
-            "{ '$match': {'products.productID':?0} }"
 
-    })
-    Order checkid(String productID);
 
     @Aggregation(pipeline = {
             "{ '$match': {'products.productID':{$in :?0}} }"
     })
     List<Order> getOrderByProductID(String[] productID);
+
+    @Aggregation(pipeline = {
+            "{ '$match': {'id':?0} }"
+
+    })
+  Order getOrder(String id);
+
+
 
 }

@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,40 +103,35 @@ public class OrderController {
     }
 
     //     seller manage order
-    @GetMapping("/seller")
-    public ResponseEntity<OrderResponse> getOrderSeller(@RequestParam("userId") String userId) {
-        User user = userService.getUser(userId);
-
-
+    @PutMapping("/sellerOrder")
+    public ResponseEntity<OrderResponse> getOrderSeller(@RequestParam("orderId") String orderId,
+                                                        @RequestParam("indexNo") int indexNo,
+                                                        @RequestParam("orderStatus") String orderStatus
+    ) {
+        Order order = orderService.getOrder(orderId);
         OrderResponse orderResponse = new OrderResponse();
-        if (user == null) {
-            orderResponse.setMsg("User is Not found");
+        if (order == null) {
+            orderResponse.setMsg("order is Not found");
             return new ResponseEntity<>(orderResponse, HttpStatus.NOT_FOUND);
         } else {
-            System.out.println(user.getProducts());
-            ArrayList<String> products = user.getProducts();
-            ArrayList<Order> orders = new ArrayList<>();
+
+            OrderItem order1 = order.getProducts().get(indexNo);
+            System.out.println(order1);
 
 
-//
-//            for (String pro :products) {
-//                  Order order = orderService.getOrderProduct(pro);
-//                  orders.add(order);
-//            }
-//
-//            System.out.println(orders);
-//            orderResponse.setOrderList(orders);
+            order1.setOrderStatus(orderStatus);
+
+            boolean res = orderService.updateOrderStatus(order);
+            if (res) {
+
+                orderResponse.setMsg("Updated");
+                return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+            } else {
+                orderResponse.setMsg("Unable to update");
+                return new ResponseEntity<>(orderResponse, HttpStatus.NOT_MODIFIED);
+            }
 
 
-//            ArrayList<Order> ordersid =
-//            ArrayList<Product> product = new ArrayList<>();
-//            for (String pro: products) {
-//                Product product1 = orderService;
-//                product.add(product1);
-//            }
-//            System.out.println(product);
-            orderResponse.setMsg("get user");
-            return new ResponseEntity<>(orderResponse, HttpStatus.OK);
         }
 
     }

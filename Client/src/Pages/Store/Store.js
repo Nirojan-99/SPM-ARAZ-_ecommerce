@@ -9,14 +9,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 //icon
 import SearchIcon from "@mui/icons-material/Search";
+import DownloadIcon from "@mui/icons-material/Download";
 
 import { useEffect, useState } from "react";
 import Product from "./Product";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import generatePDF from "./PdfReport";
 
 function Store() {
   const { token, role, userID } = useSelector((state) => state.loging);
@@ -24,13 +27,13 @@ function Store() {
   // delet
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
-  const loading = open && options.length === 0;
 
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
   const [products, setProducts] = useState([]);
   const [title, setTitle] = useState("");
   const [storeID, setStoreID] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   //pagination handler
   const handleChange = (event, value) => {
@@ -73,12 +76,28 @@ function Store() {
       .catch((er) => {});
   };
 
+  //generate report
+  const generateReport = () => {
+    setLoading(true);
+
+    axios
+      .get(`${baseURL}stores/report/${userID}`)
+      .then((res) => {
+        generatePDF(res.data);
+        setLoading(false);
+      })
+      .catch((er) => {
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <Box>
         <Container maxWidth="lg">
           {/* title */}
           <Box
+            py={1}
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -99,6 +118,25 @@ function Store() {
               Your Store
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
+            <LoadingButton
+              loading={isLoading}
+              load
+              onClick={generateReport}
+              variant="contained"
+              disableElevation
+              color="secondary"
+              endIcon={<DownloadIcon sx={{ color: "#fff" }} />}
+              sx={{
+                textTransform: "none",
+                color: "#1597BB",
+              }}
+            >
+              <Typography
+                sx={{ color: "#fff", fontWeight: 500, fontFamily: "open sans" }}
+              >
+                Generate Report
+              </Typography>
+            </LoadingButton>
             <Button
               href="/products/new"
               sx={{

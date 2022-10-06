@@ -14,9 +14,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import DownloadIcon from "@mui/icons-material/Download";
+import GeneratePDF from "./GeneratePDF";
 
 function Order(props) {
   const Orderdata = props.data;
+
 
   // const Orderdata1 = [
   //   {
@@ -133,7 +135,9 @@ function Order(props) {
           <Button
             variant="contained"
             size="small"
-            onClick={() => {}}
+            onClick={() => {
+              GeneratePDF(Orderdata, Orderdata.id);
+            }}
             sx={{
               textAlign: "center",
               fontFamily: "open sans",

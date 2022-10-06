@@ -4,6 +4,7 @@ package com.spm.araz.controller;
 import com.spm.araz.model.*;
 
 import com.spm.araz.response.OrderResponse;
+import com.spm.araz.response.ProductResponse;
 import com.spm.araz.service.OrderService;
 
 import com.spm.araz.service.ProductService;
@@ -42,15 +43,32 @@ public class OrderController {
 
     // customer get order
     @GetMapping("/user")
-    public ResponseEntity<OrderResponse> getOrderUser(@RequestParam("userId") String userId) {
+    public ResponseEntity<ArrayList<Order>> getOrderUser(@RequestParam("userId") String userId) {
 
 
         OrderResponse orderResponse = new OrderResponse();
         List<Order> orderList = orderService.getUserOder(userId);
-        System.out.println(orderList);
-        orderResponse.setOrderList(orderList);
+        orderResponse.setOrderList(new ArrayList<>());
+        ArrayList<Order> resOrders = new ArrayList<>();
+        for (Order order : orderList) {
+            ArrayList<OrderItem> orderItems = new ArrayList<>();
+            orderItems = order.getProducts();
 
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+            for (OrderItem item1 : orderItems) {
+
+                System.out.println(item1.getProductID());
+                Product product = productService.getProduct(item1.getProductID());
+                item1.setProductID(product.getTitle());
+                System.out.println(item1.getProductID());
+
+//                order.addProduct(item1);
+
+            }
+            resOrders.add(order);
+        }
+
+
+        return new ResponseEntity<>(resOrders, HttpStatus.OK);
 
 
     }
@@ -135,5 +153,6 @@ public class OrderController {
         }
 
     }
+
 
 }

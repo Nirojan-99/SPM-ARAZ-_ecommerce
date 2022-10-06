@@ -24,6 +24,4 @@ public interface UserRepository extends MongoRepository<User,Integer> {
 
     public Long deleteById(String id);
 
-
-
 }

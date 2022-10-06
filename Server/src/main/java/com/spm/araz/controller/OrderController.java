@@ -48,6 +48,7 @@ public class OrderController {
 
         OrderResponse orderResponse = new OrderResponse();
         List<Order> orderList = orderService.getUserOder(userId);
+
         orderResponse.setOrderList(new ArrayList<>());
         ArrayList<Order> resOrders = new ArrayList<>();
         for (Order order : orderList) {
@@ -56,10 +57,10 @@ public class OrderController {
 
             for (OrderItem item1 : orderItems) {
 
-                System.out.println(item1.getProductID());
+
                 Product product = productService.getProduct(item1.getProductID());
                 item1.setProductID(product.getTitle());
-                System.out.println(item1.getProductID());
+
 
 //                order.addProduct(item1);
 
@@ -133,10 +134,8 @@ public class OrderController {
             return new ResponseEntity<>(orderResponse, HttpStatus.NOT_FOUND);
         } else {
 
+
             OrderItem order1 = order.getProducts().get(indexNo);
-            System.out.println(order1);
-
-
             order1.setOrderStatus(orderStatus);
 
             boolean res = orderService.updateOrderStatus(order);

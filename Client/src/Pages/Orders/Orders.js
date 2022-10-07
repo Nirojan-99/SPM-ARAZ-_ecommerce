@@ -13,7 +13,7 @@ function Orders() {
     axios
       .get(`http://localhost:5000/Order/user?userId=${userID}`)
       .then((res) => {
-        setorderdata(res.data.orderList);
+        setorderdata(res.data);
       })
       .catch(() => {});
   }, []);

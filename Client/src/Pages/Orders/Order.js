@@ -3,7 +3,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Paper } from "@mui/material";
+import { Paper, TableFooter, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import Order_Product from "./Order_Product";
 
@@ -13,27 +13,30 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import DownloadIcon from "@mui/icons-material/Download";
+import GeneratePDF from "./GeneratePDF";
 
 function Order(props) {
   const Orderdata = props.data;
 
-  const Orderdata1 = [
-    {
-      product: "Product1",
-      qty: 3,
-      status: "Processing",
-    },
-    {
-      product: "Product2",
-      qty: 4,
-      status: "Delivered",
-    },
-    {
-      product: "Product3",
-      qty: 1,
-      status: "Shipped",
-    },
-  ];
+
+  // const Orderdata1 = [
+  //   {
+  //     product: "Product1",
+  //     qty: 3,
+  //     status: "Processing",
+  //   },
+  //   {
+  //     product: "Product2",
+  //     qty: 4,
+  //     status: "Delivered",
+  //   },
+  //   {
+  //     product: "Product3",
+  //     qty: 1,
+  //     status: "Shipped",
+  //   },
+  // ];
   return (
     <>
       <Accordion sx={{ bgcolor: "#D8D8D8" }}>
@@ -122,6 +125,30 @@ function Order(props) {
             </Table>
           </TableContainer>
         </AccordionDetails>
+        <Box
+          p={2}
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+          }}
+        >
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => {
+              GeneratePDF(Orderdata, Orderdata.id);
+            }}
+            sx={{
+              textAlign: "center",
+              fontFamily: "open sans",
+              fontWeight: "700",
+              textTransform: "none",
+            }}
+            endIcon={<DownloadIcon />}
+          >
+            Print in voice
+          </Button>
+        </Box>
       </Accordion>
       <br />
     </>

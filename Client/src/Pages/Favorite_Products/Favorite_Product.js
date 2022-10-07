@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 function Favorite_Product(props) {
   console.log(props.data.id);
   const { userID, role } = useSelector((state) => state.loging);
+
   //url
   const baseURL = "http://localhost:5000/";
 
@@ -38,11 +39,11 @@ function Favorite_Product(props) {
       )
       .then((res) => {
         setTimeout(() => {
-          toast("succesfully remove from Favorite", { type: "success" });
-        }, 1000);
+          toast("succesfully remove from Whishlist", { type: "info" });
+        }, 100);
         setTimeout(() => {
           window.location.reload();
-        }, 1300);
+        }, 2000);
 
         setTimeout(() => {}, 1000);
       })
@@ -55,16 +56,15 @@ function Favorite_Product(props) {
       count: count,
       userId: userID,
     };
-    // const data = new FormData();
 
-    // data.append("productId", props.index);
-    // data.append("count", count);
-    // data.append("userId", userID);
     console.log(data);
 
     axios
-      .post(`${baseURL}User/cart`, data)
+      .post(
+        `http://localhost:5000/User/cart?productId=${props.data.id}&count=${count}&userId=${userID}`
+      )
       .then((res) => {
+        console.log(res.data);
         toast("Added to cart", { type: "info" });
       })
       .catch((er) => {
@@ -123,7 +123,7 @@ function Favorite_Product(props) {
                 letterSpacing: -0.5,
               }}
             >
-              {Favorite?.description.substring(0, 70)}...
+              {Favorite?.description.substring(0, 60)}...
               {/* {desc} */}
             </Typography>
             {/* Rating */}

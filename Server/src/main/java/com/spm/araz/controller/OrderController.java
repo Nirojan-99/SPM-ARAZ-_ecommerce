@@ -4,6 +4,7 @@ package com.spm.araz.controller;
 import com.spm.araz.model.*;
 
 import com.spm.araz.response.OrderResponse;
+import com.spm.araz.response.ProductResponse;
 import com.spm.araz.service.OrderService;
 
 import com.spm.araz.service.ProductService;
@@ -14,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,15 +43,33 @@ public class OrderController {
 
     // customer get order
     @GetMapping("/user")
-    public ResponseEntity<OrderResponse> getOrderUser(@RequestParam("userId") String userId) {
+    public ResponseEntity<ArrayList<Order>> getOrderUser(@RequestParam("userId") String userId) {
 
 
         OrderResponse orderResponse = new OrderResponse();
         List<Order> orderList = orderService.getUserOder(userId);
 
-        orderResponse.setOrderList(orderList);
+        orderResponse.setOrderList(new ArrayList<>());
+        ArrayList<Order> resOrders = new ArrayList<>();
+        for (Order order : orderList) {
+            ArrayList<OrderItem> orderItems = new ArrayList<>();
+            orderItems = order.getProducts();
 
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+            for (OrderItem item1 : orderItems) {
+
+
+                Product product = productService.getProduct(item1.getProductID());
+                item1.setProductID(product.getTitle());
+
+
+//                order.addProduct(item1);
+
+            }
+            resOrders.add(order);
+        }
+
+
+        return new ResponseEntity<>(resOrders, HttpStatus.OK);
 
 
     }
@@ -104,41 +122,36 @@ public class OrderController {
     }
 
     //     seller manage order
-    @GetMapping("/seller")
-    public ResponseEntity<OrderResponse> getOrderSeller(@RequestParam("userId") String userId) {
-        User user = userService.getUser(userId);
-
-
+    @PutMapping("/sellerOrder")
+    public ResponseEntity<OrderResponse> getOrderSeller(@RequestParam("orderId") String orderId,
+                                                        @RequestParam("indexNo") int indexNo,
+                                                        @RequestParam("orderStatus") String orderStatus
+    ) {
+        Order order = orderService.getOrder(orderId);
         OrderResponse orderResponse = new OrderResponse();
-        if (user == null) {
-            orderResponse.setMsg("User is Not found");
+        if (order == null) {
+            orderResponse.setMsg("order is Not found");
             return new ResponseEntity<>(orderResponse, HttpStatus.NOT_FOUND);
         } else {
-            ArrayList<String> products = user.getProducts();
-            ArrayList<Order> orders = new ArrayList<>();
 
 
-//
-//            for (String pro :products) {
-//                  Order order = orderService.getOrderProduct(pro);
-//                  orders.add(order);
-//            }
-//
-//            System.out.println(orders);
-//            orderResponse.setOrderList(orders);
+            OrderItem order1 = order.getProducts().get(indexNo);
+            order1.setOrderStatus(orderStatus);
+
+            boolean res = orderService.updateOrderStatus(order);
+            if (res) {
+
+                orderResponse.setMsg("Updated");
+                return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+            } else {
+                orderResponse.setMsg("Unable to update");
+                return new ResponseEntity<>(orderResponse, HttpStatus.NOT_MODIFIED);
+            }
 
 
-//            ArrayList<Order> ordersid =
-//            ArrayList<Product> product = new ArrayList<>();
-//            for (String pro: products) {
-//                Product product1 = orderService;
-//                product.add(product1);
-//            }
-//            System.out.println(product);
-            orderResponse.setMsg("get user");
-            return new ResponseEntity<>(orderResponse, HttpStatus.OK);
         }
 
     }
+
 
 }

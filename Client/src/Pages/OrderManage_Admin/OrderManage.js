@@ -75,7 +75,7 @@ function OrderManage(props) {
                       color: "#1A374D",
                     }}
                   >
-                    qyt
+                    Qyt
                   </TableCell>
 
                   <TableCell
@@ -92,14 +92,17 @@ function OrderManage(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Orderdata.map((row, index) => (
+                {Orderdata.map((row, indexs, array) => (
                   <TableRow
-                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <Manage_Products data={row} />
+                    <Manage_Products
+                      data={row}
+                      indexes={indexs}
+                      orderId={props.data.id}
+                    />
                   </TableRow>
                 ))}
               </TableBody>

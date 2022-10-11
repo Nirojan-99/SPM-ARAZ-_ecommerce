@@ -98,7 +98,7 @@ function NewCategory() {
                 my: 1.5,
               }}
             >
-              Add New +
+              Add New Category
             </Typography>
             <Box p={1} mt={2} sx={{ display: "flex", flexDirection: "column" }}>
               {" "}

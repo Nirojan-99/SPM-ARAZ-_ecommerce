@@ -45,7 +45,7 @@ function UserTable() {
   }, []);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // using change the color after clicking
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
@@ -181,7 +181,6 @@ function UserTable() {
                     <TableRow>
                       <TablePagination
                         rowsPerPageOptions={[
-                          5,
                           10,
                           25,
                           { label: "All", value: -1 },

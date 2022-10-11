@@ -28,6 +28,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import User from "./User";
+import generateUserReport from "./generateUserReport";
 
 function UserTable() {
   const navigate = useNavigate();
@@ -88,6 +89,24 @@ function UserTable() {
                 >
                   All Users
                 </Typography>
+              </Box>
+              <br />
+              <Box mt={1} sx={{ textAlign: "right" }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => {
+                    generateUserReport(getAlladdress);
+                  }}
+                  sx={{
+                    fontFamily: "open sans",
+                    fontWeight: "700",
+                    textTransform: "none",
+                  }}
+                  style={{ backgroundColor: buttoncolor }}
+                >
+                  Generate Report
+                </Button>
               </Box>
 
               <br />

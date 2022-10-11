@@ -11,20 +11,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @Document("Order")
 public class Order {
     @Id
-   private String id;
+    private String id;
     private String userId;
     private String total;
     private boolean payment;
     private Address address;
     private ArrayList<OrderItem> products;
-    private Date date;
-    private Time time;
+    private String date;
+    private String time;
 
-    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<OrderItem> products, Date date, Time time) {
+    public Order(String id, String userId, String total, boolean payment, Address address, ArrayList<OrderItem> products, String date, String time) {
         this.id = id;
         this.userId = userId;
         this.total = total;
@@ -33,6 +32,13 @@ public class Order {
         this.products = products;
         this.date = date;
         this.time = time;
+    }
+
+    public Order() {
+    }
+
+    public void addProduct(OrderItem item) {
+        this.products.add(item);
     }
 
     public String getId() {
@@ -83,19 +89,20 @@ public class Order {
         this.products = products;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
+
 }

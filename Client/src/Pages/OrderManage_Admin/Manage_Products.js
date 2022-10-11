@@ -3,15 +3,34 @@ import { Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 
 import TableCell from "@mui/material/TableCell";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { Box } from "@mui/system";
 
 function Manage_Products(Props) {
-  const [Status, setStatus] = useState("Processing");
+  const baseURL = "http://localhost:5000/";
+  const [Status, setStatus] = useState(Props.data.orderStatus);
 
   const SatatusDATA = [
     { status: "Processing" },
     { status: "Shipped" },
     { status: "Delivered" },
   ];
+  console.log(Props.indexes);
+  console.log(Props.orderId);
+  const orderStatus = (sta) => {
+    axios
+      .put(
+        `${baseURL}Order/sellerOrder?orderId=${Props.orderId}&indexNo=${Props.indexes}&orderStatus=${sta}`
+      )
+      .then((res) => {
+        toast("change the order Status", { type: "info" });
+      })
+      .catch((er) => {
+        toast("Unable to remove product", { type: "error" });
+      });
+  };
+
   return (
     <>
       <TableCell
@@ -23,7 +42,7 @@ function Manage_Products(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.product}
+        {Props.data.productID}
       </TableCell>
       <TableCell
         align="left"
@@ -34,9 +53,8 @@ function Manage_Products(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.qty}
+        {Props?.data?.count ?? "0"}
       </TableCell>
-
       <TableCell
         style={{
           fontFamily: "open sans",
@@ -49,6 +67,7 @@ function Manage_Products(Props) {
           sx={{ color: "#FFF", fontWeight: "500", bgcolor: "#406882" }}
           onChange={(event) => {
             setStatus(event.target.value);
+            orderStatus(event.target.value);
           }}
           fullWidth
           required
@@ -74,6 +93,7 @@ function Manage_Products(Props) {
           })}
         </Select>
       </TableCell>
+      <ToastContainer />
     </>
   );
 }

@@ -30,6 +30,8 @@ public class UserController {
     @Autowired
     ProductService productService;
 
+    private Random random = new Random();
+
     //add to cart
     @PostMapping("/cart")
     public ResponseEntity<UserResponse> addToCart(@RequestParam("productId") String productId,
@@ -70,9 +72,9 @@ public class UserController {
     }
 
     //empty cart
-    @DeleteMapping("/cart")
-    public ResponseEntity<UserResponse> emptyCart(@RequestParam String userId) {
-        User user = userService.getUser(userId);
+    @DeleteMapping("/{id}/cart")
+    public ResponseEntity<UserResponse> emptyCart(@PathVariable("id") String id) {
+        User user = userService.getUser(id);
 
         UserResponse userResponse = new UserResponse();
 
@@ -302,7 +304,6 @@ public class UserController {
         String email = luser.getEmail();
         String password = luser.getPassword();
 
-        System.out.println(email+" : "+password);
         User user = userService.getByEmail(email);
 
         UserResponse userResponse = new UserResponse();
@@ -514,7 +515,6 @@ public class UserController {
         UserResponse userResponse = new UserResponse();
 
         if (user != null) {
-            Random random = new Random();
             int otp = random.nextInt(9999 + 999) + 999;
             String message = "This is your OTP: " + otp;
             user.setOtp(otp);
@@ -600,7 +600,6 @@ public class UserController {
             userResponse.setMsg("No user found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         } else {
-            Random random = new Random();
             int otp = random.nextInt(9999 + 999) + 999;
             String message = "This is your OTP: " + otp;
             exisitngUser.setOtp(otp);
@@ -635,7 +634,8 @@ public class UserController {
             addressResponse.setMsg("Not found");
             return new ResponseEntity<>(addressResponse, HttpStatus.NOT_FOUND);
         } else {
-            Address getAddress = (Address) userService.checkDefaultAddress(user, "default");
+            Address getAddress = userService.checkDefaultAddress(user, "default");
+
             addressResponse.setAddress(getAddress);
             addressResponse.setMsg("get");
             return new ResponseEntity<>(addressResponse, HttpStatus.OK);
@@ -719,12 +719,12 @@ public class UserController {
 
     //get all the users
     @GetMapping("")
-    public ResponseEntity<UserResponse> getUsers(){
+    public ResponseEntity<UserResponse> getUsers() {
         List<User> users;
-        users=userService.getAllUsers();
+        users = userService.getAllUsers();
 
 
-        UserResponse userResponse=new UserResponse();
+        UserResponse userResponse = new UserResponse();
         userResponse.setUserList(users);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
 
@@ -732,15 +732,14 @@ public class UserController {
 
     //delete user
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserResponse> deleteUser(@PathVariable(required = true, name = "id") String id){
-        boolean res=userService.deleteById(id);
-        UserResponse userResponse=new UserResponse();
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable(required = true, name = "id") String id) {
+        boolean res = userService.deleteById(id);
+        UserResponse userResponse = new UserResponse();
 
-        if(res){
+        if (res) {
             userResponse.setMsg("User Deleted");
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        }
-        else {
+        } else {
             userResponse.setMsg("Unable to delete");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
         }

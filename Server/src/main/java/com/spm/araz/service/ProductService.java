@@ -94,6 +94,12 @@ public class ProductService {
         return products;
     }
 
+    //get all products from store
+    public List<Product> getStoreAllProducts(String id) {
+        List<Product> products = productRepository.findByStoreId(id);
+        return products;
+    }
+
     //find by store
     public int getStoreProductsCount(String id) {
         List<Product> products = productRepository.findByStoreId(id);
@@ -136,5 +142,11 @@ public class ProductService {
     public int getProductCountByCategory(String category) {
         List<Product> products = productRepository.findByCategory(category);
         return products.size();
+    }
+
+    //delete products of store
+    public boolean deleteProductsOfStore(String id) {
+        productRepository.deleteByStoreID(id);
+        return true;
     }
 }

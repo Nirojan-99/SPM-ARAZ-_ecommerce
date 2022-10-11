@@ -65,14 +65,31 @@ function Payment(props) {
             </Typography>
           )}
           {isLoaded ? (
-            payment?.nameOnCard !== undefined ? (
+            payment?.nameOnCard !== null && payment !== null ? (
               val ? (
-                <NewPayment />
+                <NewPayment
+                  next={(id) => {
+                    console.log(id);
+                    props.handleNext(id);
+                  }}
+                />
               ) : (
-                <DefaultPayment data={payment} new={handleNew} />
+                <DefaultPayment
+                  data={payment}
+                  new={handleNew}
+                  next={(id) => {
+                    console.log(id);
+                    props.handleNext(id);
+                  }}
+                />
               )
             ) : (
-              <NewPayment />
+              <NewPayment
+                next={(id) => {
+                  console.log(id);
+                  props.handleNext(id);
+                }}
+              />
             )
           ) : null}
         </Box>

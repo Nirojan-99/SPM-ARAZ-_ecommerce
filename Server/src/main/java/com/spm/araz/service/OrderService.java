@@ -13,10 +13,10 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public boolean addOrder(Order order) {
+    public String addOrder(Order order) {
 
-        orderRepository.save(order);
-        return true;
+        Order res = orderRepository.save(order);
+        return res.getId();
     }
 
     public java.util.List<Order> getUserOder(String userId) {
@@ -26,11 +26,28 @@ public class OrderService {
 
     }
 
-    public Order getOrderProduct(String productID) {
-        Order order = orderRepository.checkid(productID);
-        return order;
 
+
+    public List<Order> getAllOrdersOfProduct(String pid) {
+        List<Order> orders = orderRepository.findByProductID(pid);
+        return orders;
     }
 
+    //get seller orders
+    public List<Order> getSellerOrders(String[] products) {
+        List<Order> orders = orderRepository.getOrderByProductID(products);
+        return orders;
+    }
+
+    public Order getOrder(String orderId){
+        Order order = (Order) orderRepository.getOrder(orderId);
+        return order;
+    }
+
+    // update order status
+    public boolean updateOrderStatus(Order order) {
+        orderRepository.save(order);
+        return true;
+    }
 
 }

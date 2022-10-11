@@ -1,15 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import TableCell from "@mui/material/TableCell";
+import axios from "axios";
 
 function Order_Product(Props) {
   const [Status, setStatus] = useState("processing");
 
-  const SatatusDATA = [
-    { status: "processing" },
-    { status: "shipped" },
-    { status: "delivered" },
-  ];
   return (
     <>
       <TableCell
@@ -21,7 +17,7 @@ function Order_Product(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.product}
+        {Props.data.productID}
       </TableCell>
       <TableCell
         align="left"
@@ -32,7 +28,7 @@ function Order_Product(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.qty}
+        {Props.data.count}
       </TableCell>
 
       <TableCell
@@ -44,7 +40,7 @@ function Order_Product(Props) {
           color: "#1A374D",
         }}
       >
-        {Props.data.status}
+        {Props.data.orderStatus}
       </TableCell>
     </>
   );

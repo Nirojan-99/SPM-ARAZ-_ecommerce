@@ -10,6 +10,14 @@ import FormatDate from "../../../Helper/formatDate";
 
 function NewPayment(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
+  const { products, address } = useSelector((state) => state.order);
+
+  //state
+  var orderID = "";
+
+  let OderProducts = products?.map((item) => {
+    return { ...item, orderStatus: "Processing" };
+  });
 
   const baseURL = "http://localhost:5000/";
   const total = useSelector((state) => state.order.total);
@@ -20,6 +28,15 @@ function NewPayment(props) {
   const [expiryMonth, setExpiryMonth] = useState("");
   const [expiryYear, setExpieyYear] = useState("");
   const [cvc, setCVC] = useState("");
+  // time
+  const locale = "en";
+  const today = new Date();
+
+  const time = today.toLocaleTimeString(locale, {
+    hour: "numeric",
+    hour12: true,
+    minute: "numeric",
+  });
 
   //add payment
   const addPayment = () => {
@@ -58,10 +75,12 @@ function NewPayment(props) {
       .then((res) => {
         //add transaction
         addTransaction(transactionData);
+        addOrder();
       })
       .catch((er) => {
         toast("Invalid data", { type: "error" });
       });
+
   };
 
   //add transaction
@@ -71,6 +90,38 @@ function NewPayment(props) {
       .then((res) => {
         toast("Payment successed", { type: "info" });
         // props.handleNext();
+      })
+      .catch((er) => {});
+  };
+
+  // add Order
+  const addOrder = () => {
+    const Orderdata = {
+      userId: userID,
+      total: total,
+      payment: true,
+      address: address,
+      products: OderProducts,
+      date: FormatDate(new Date()),
+      time: time,
+    };
+
+    axios
+      .post(`http://localhost:5000/Order`, Orderdata)
+      .then((res) => {
+        orderID = res.data;
+        emptyCart();
+        //TODO empty store as well
+      })
+      .catch((er) => {});
+  };
+
+  //empty cart
+  const emptyCart = () => {
+    axios
+      .delete(`${baseURL}User/${userID}/cart`)
+      .then((res) => {
+        props.next(orderID);
       })
       .catch((er) => {});
   };

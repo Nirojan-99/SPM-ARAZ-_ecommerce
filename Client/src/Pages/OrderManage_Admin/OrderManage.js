@@ -15,29 +15,8 @@ import TableRow from "@mui/material/TableRow";
 
 import Manage_Products from "./Manage_Products";
 
-function OrderManage() {
-  const Orderdata = [
-    {
-      product: "Product1",
-      qty: 5,
-      status: "Processing",
-    },
-    {
-      product: "Product4",
-      qty: 4,
-      status: "Shipped",
-    },
-    {
-      product: "Product3",
-      qty: 2,
-      status: "Processing",
-    },
-    {
-      product: "Product2",
-      qty: 1,
-      status: "Delivered",
-    },
-  ];
+function OrderManage(props) {
+  const Orderdata = props?.data?.products;
   return (
     <>
       <Accordion sx={{ bgcolor: "#D8D8D8" }}>
@@ -56,7 +35,7 @@ function OrderManage() {
                 color: "#1A374D",
               }}
             >
-              Order:#2121212516
+              Order: #{props.data.id}
             </Typography>
 
             <Typography
@@ -67,7 +46,7 @@ function OrderManage() {
                 color: "#8C8C8C",
               }}
             >
-              12/02/2132
+              {props.data.date} - {props.data.time}
             </Typography>
           </Box>
         </AccordionSummary>
@@ -96,7 +75,7 @@ function OrderManage() {
                       color: "#1A374D",
                     }}
                   >
-                    qyt
+                    Qyt
                   </TableCell>
 
                   <TableCell
@@ -113,14 +92,17 @@ function OrderManage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Orderdata.map((row, index) => (
+                {Orderdata.map((row, indexs, array) => (
                   <TableRow
-                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <Manage_Products data={row} />
+                    <Manage_Products
+                      data={row}
+                      indexes={indexs}
+                      orderId={props.data.id}
+                    />
                   </TableRow>
                 ))}
               </TableBody>

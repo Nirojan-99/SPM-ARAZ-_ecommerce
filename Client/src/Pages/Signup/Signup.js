@@ -98,7 +98,7 @@ function SignUp() {
       })
 
       .catch(() => {
-        toast("Invalid Email and Password", { type: "error" });
+        toast("Error Occured", { type: "error" });
       });
   };
 

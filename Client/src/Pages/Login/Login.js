@@ -54,14 +54,15 @@ function Login() {
           })
         );
         toast("Login Sucess", { type: "success" });
-        
+
         setTimeout(() => {
           navigate("/", { replace: true });
         }, 2500);
       })
 
-      .catch(() => {
+      .catch((er) => {
         toast("Invalid Email and Password", { type: "error" });
+        console.log(er);
       });
   };
   return (

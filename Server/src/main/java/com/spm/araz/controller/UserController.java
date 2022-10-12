@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+//import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ import java.util.Random;
 @RestController
 @RequestMapping("/User")
 public class UserController {
-
     @Autowired
     UserService userService;
 
@@ -281,6 +281,9 @@ public class UserController {
     //new user
     @PostMapping("")
     public ResponseEntity<UserResponse> addUser(@RequestBody(required = true) User user) {
+//        System.out.println(user);
+//        String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+//        user.setPassword(pw_hash);
         User res = userService.createUser(user);
 
         UserResponse userResponse = new UserResponse();

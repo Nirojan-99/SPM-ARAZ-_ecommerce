@@ -45,7 +45,7 @@ function CategoryTable() {
   }, []);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // using change the color after clicking
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
@@ -104,7 +104,7 @@ function CategoryTable() {
                   }}
                   style={{ backgroundColor: buttoncolor }}
                 >
-                  Add New Category
+                  Add New +
                 </Button>
               </Box>
               <br />
@@ -198,12 +198,13 @@ function CategoryTable() {
                     <TableRow>
                       <TablePagination
                         rowsPerPageOptions={[
-                          5,
                           10,
+                          15,
+                          20,
                           25,
                           { label: "All", value: -1 },
                         ]}
-                        colSpan={3}
+                        colSpan={2}
                         count={getAlladdress.length}
                         rowsPerPage={rowsPerPage}
                         page={page}

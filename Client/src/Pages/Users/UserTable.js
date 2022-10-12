@@ -28,6 +28,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import User from "./User";
+import generateUserReport from "./generateUserReport";
 
 function UserTable() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function UserTable() {
   }, []);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // using change the color after clicking
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
@@ -88,6 +89,24 @@ function UserTable() {
                 >
                   All Users
                 </Typography>
+              </Box>
+              <br />
+              <Box mt={1} sx={{ textAlign: "right" }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => {
+                    generateUserReport(getAlladdress);
+                  }}
+                  sx={{
+                    fontFamily: "open sans",
+                    fontWeight: "700",
+                    textTransform: "none",
+                  }}
+                  style={{ backgroundColor: buttoncolor }}
+                >
+                  Generate Report
+                </Button>
               </Box>
 
               <br />
@@ -181,7 +200,6 @@ function UserTable() {
                     <TableRow>
                       <TablePagination
                         rowsPerPageOptions={[
-                          5,
                           10,
                           25,
                           { label: "All", value: -1 },

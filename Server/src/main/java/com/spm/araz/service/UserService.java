@@ -162,5 +162,11 @@ public class UserService {
         return count > 0;
     }
 
+    //get the user by their contactNo
+    public User getByContactNo(int contactNo) {
+        User user = userRepository.findByContactNo(contactNo);
+        return user;
+    }
+
 
 }

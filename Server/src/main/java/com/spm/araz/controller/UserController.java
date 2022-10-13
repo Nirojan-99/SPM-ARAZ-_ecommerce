@@ -281,22 +281,36 @@ public class UserController {
     //new user
     @PostMapping("")
     public ResponseEntity<UserResponse> addUser(@RequestBody(required = true) User user) {
-//        System.out.println(user);
-//        String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-//        user.setPassword(pw_hash);
-        User res = userService.createUser(user);
-
+        String email=user.getEmail();
+        int contactNo=user.getContactNo();
         UserResponse userResponse = new UserResponse();
-        if (res.getId() != null) {
-            User user1 = new User();
-            user1.setId(res.getId());
-            user1.setUserType(res.getUserType());
-            userResponse.setUser(user1);
-            userResponse.setMsg("User created");
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("Unable to create User");
-            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
+
+        if(userService.getByEmail(email)==null){
+            if(userService.getByContactNo(contactNo)==null){
+//                String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+//                user.setPassword(pw_hash);
+                User res = userService.createUser(user);
+
+                if (res.getId() != null) {
+                    User user1 = new User();
+                    user1.setId(res.getId());
+                    user1.setUserType(res.getUserType());
+                    userResponse.setUser(user1);
+                    userResponse.setMsg("Registered Sucess");
+                    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+                } else {
+                    userResponse.setMsg("Unable to register. Try Again Later");
+                    return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
+                }
+
+            }else {
+                userResponse.setMsg("Contact Number is Already taken. Please try another one.");
+                return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
+            }
+
+        }else {
+            userResponse.setMsg("Email Already taken. Please try another one.");
+            return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
         }
     }
 
@@ -320,11 +334,11 @@ public class UserController {
                 user1.setId(user.getId());
                 user1.setUserType(user.getUserType());
                 userResponse.setUser(user1);
-                userResponse.setMsg("Valid Email and Password");
+                userResponse.setMsg("Login Sucess");
                 return new ResponseEntity<>(userResponse, HttpStatus.OK);
             } else {
 
-                userResponse.setMsg("Invalid Email and Password");
+                userResponse.setMsg("Invalid Password");
                 return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
 
             }

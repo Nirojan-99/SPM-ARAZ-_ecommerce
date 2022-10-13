@@ -36,7 +36,6 @@ function Profile_Details() {
       .get("http://localhost:5000/User/" + userID)
       .then((res) => {
         if (res) {
-          console.log(res.data.user.gender);
           setName(res.data.user.name);
           setEmail(res.data.user.email);
           setContactNo(res.data.user.contactNo);
@@ -175,8 +174,6 @@ function Profile_Details() {
         }, 1500);
       });
   };
-
-  console.log(otpPin);
 
   return (
     <>

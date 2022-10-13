@@ -89,7 +89,7 @@ function SignUp() {
           })
         );
         setTimeout(() => {
-          toast("Registered Sucess", { type: "success" });
+          toast(res.data.msg, { type: "success" });
         }, 1000);
 
         setTimeout(() => {
@@ -97,8 +97,8 @@ function SignUp() {
         }, 1500);
       })
 
-      .catch(() => {
-        toast("Error Occured", { type: "error" });
+      .catch((er) => {
+        toast(er.response.data.msg, { type: "error" });
       });
   };
 

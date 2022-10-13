@@ -53,7 +53,7 @@ function Login() {
             /*token: res.data.token*/
           })
         );
-        toast("Login Sucess", { type: "success" });
+        toast(res.data.msg, { type: "success" });
 
         setTimeout(() => {
           navigate("/", { replace: true });
@@ -61,8 +61,7 @@ function Login() {
       })
 
       .catch((er) => {
-        toast("Invalid Email and Password", { type: "error" });
-        console.log(er);
+        toast(er.response.data.msg, { type: "error" });
       });
   };
   return (

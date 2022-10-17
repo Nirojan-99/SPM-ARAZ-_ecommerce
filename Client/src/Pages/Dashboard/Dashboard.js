@@ -70,7 +70,7 @@ function Dashboard() {
     axios
       .get(url)
       .then((res) => {
-        setCount(Math.ceil(res.data / 4));
+        setCount(Math.ceil(res.data / 8));
         setLoded(true);
       })
       .catch((er) => {

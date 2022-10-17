@@ -31,6 +31,7 @@ function Store(props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    setCount(Math.floor(Math.random() * 10));
     axios
       .get(`${baseURL}products/stores/${props.data.id}?count=${true}`)
       .then((res) => {
@@ -38,6 +39,7 @@ function Store(props) {
       })
       .catch((er) => {});
   }, []);
+  console.log(props.data.id);
 
   //delete store
   const handleDelete = () => {

@@ -13,14 +13,18 @@ function OrderManages() {
 
   //state
   const [order, setOrder] = useState([]);
+  const [isLoaded, setLoded] = useState(false);
 
   useEffect(() => {
     axios
       .get(`${baseURL}Order/seller/${userID}`)
       .then((res) => {
         setOrder(res.data);
+        setLoded(true);
       })
-      .catch((er) => {});
+      .catch((er) => {
+        setLoded(true);
+      });
   }, []);
 
   return (
@@ -50,6 +54,20 @@ function OrderManages() {
           {order?.map((item, index) => {
             return <OrderManage key={index} data={item} />;
           })}
+          {isLoaded && order.length <= 0 && (
+            <Box sx={{ flex: 1, justifyContent: "center" }}>
+              <Typography sx={{ textAlign: "center", color: "#555" }}>
+                No Orders found
+              </Typography>
+            </Box>
+          )}
+          {!isLoaded && (
+            <Box sx={{ flex: 1, justifyContent: "center" }}>
+              <Typography sx={{ textAlign: "center", color: "#555" }}>
+                Loading ..
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Paper>
     </>

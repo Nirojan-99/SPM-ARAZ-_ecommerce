@@ -8,14 +8,18 @@ import { useSelector } from "react-redux";
 function Orders() {
   const { userID, role } = useSelector((state) => state.loging);
   const [orderdata, setorderdata] = useState([]);
+  const [isLoaded, setLoded] = useState(false);
 
   useEffect(() => {
     axios
       .get(`http://localhost:5000/Order/user?userId=${userID}`)
       .then((res) => {
         setorderdata(res.data);
+        setLoded(true);
       })
-      .catch(() => {});
+      .catch(() => {
+        setLoded(true);
+      });
   }, []);
 
   return (
@@ -46,6 +50,21 @@ function Orders() {
           {orderdata.map((row) => {
             return <Order data={row} />;
           })}
+
+          {isLoaded && orderdata.length <= 0 && (
+            <Box sx={{ flex: 1, justifyContent: "center" }}>
+              <Typography sx={{ textAlign: "center", color: "#555" }}>
+                No Orders found
+              </Typography>
+            </Box>
+          )}
+          {!isLoaded && (
+            <Box sx={{ flex: 1, justifyContent: "center" }}>
+              <Typography sx={{ textAlign: "center", color: "#555" }}>
+                Loading ..
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Paper>
     </>

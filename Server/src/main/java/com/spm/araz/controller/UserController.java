@@ -482,13 +482,27 @@ public class UserController {
                 exisitngUser.setName(user.getName());
             }
             if (user.getEmail() != null) {
-                exisitngUser.setEmail(user.getEmail());
+                if(userService.getByEmail(user.getEmail())==null){
+                    exisitngUser.setEmail(user.getEmail());
+                }
+                else {
+                    userResponse.setMsg("Email already exsist");
+                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+                }
+
             }
             if (user.getPassword() != null) {
                 exisitngUser.setPassword(user.getPassword());
             }
             if (user.getContactNo() != 0) {
-                exisitngUser.setContactNo(user.getContactNo());
+                if(userService.getByContactNo(user.getContactNo())==null){
+                    exisitngUser.setContactNo(user.getContactNo());
+                }
+                else {
+                    userResponse.setMsg("Contact No is already exsist");
+                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+                }
+
             }
             if (user.getAddress() != null) {
                 exisitngUser.setAddress(user.getAddress());

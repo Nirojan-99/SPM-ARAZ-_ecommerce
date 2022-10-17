@@ -91,7 +91,7 @@ function Profile_Details() {
       })
 
       .catch((er) => {
-        toast("Invalid User", { type: "error" });
+        toast(er.response.data.msg, { type: "error" });
       });
   };
 

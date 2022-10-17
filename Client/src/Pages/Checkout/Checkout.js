@@ -85,7 +85,7 @@ function Checkout() {
                 <Button variant="outlined" href="/">
                   Keep Shoping
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   href="/"
                   sx={{
@@ -95,7 +95,7 @@ function Checkout() {
                   }}
                 >
                   Print Invoice
-                </Button>
+                </Button> */}
                 {/* </Box> */}
               </Box>
             </Box>

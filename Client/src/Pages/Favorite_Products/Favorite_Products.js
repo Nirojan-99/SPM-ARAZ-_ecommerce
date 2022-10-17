@@ -8,19 +8,19 @@ import Favorite_Product from "./Favorite_Product";
 import { useSelector } from "react-redux";
 
 function Favorite_Products() {
-  const [dataempty, setdataempty] = useState(false);
   const { userID, role } = useSelector((state) => state.loging);
   const [favorite, setfavorite] = useState([]);
+  const [isLoaded, setLoded] = useState(false);
   useEffect(() => {
     axios
       .get("http://localhost:5000/User/favorite/" + userID)
       .then((res) => {
-        if (res.data.productList.length === 0) {
-          setdataempty(true);
-        }
         setfavorite(res.data.productList);
+        setLoded(true);
       })
-      .catch();
+      .catch((er) => {
+        setLoded(true);
+      });
   }, []);
   return (
     <>
@@ -63,7 +63,21 @@ function Favorite_Products() {
             {favorite.map((row, index) => {
               return <Favorite_Product index={index} data={row} />;
             })}
-            {dataempty && <Typography>no Favorite found </Typography>}
+            {isLoaded && favorite.length <= 0 && (
+              <Box sx={{ flex: 1, justifyContent: "center" }}>
+                <Typography sx={{ textAlign: "center", color: "#555" }}>
+                  No favorites found
+                </Typography>
+              </Box>
+            )}
+            {!isLoaded && (
+              <Box sx={{ flex: 1, justifyContent: "center" }}>
+                <Typography sx={{ textAlign: "center", color: "#555" }}>
+                  Loading ..
+                </Typography>
+              </Box>
+            )}
+            {/* {dataempty && <Typography>no Favorite found </Typography>} */}
           </Grid>
         </Container>
       </Box>
@@ -72,7 +86,7 @@ function Favorite_Products() {
         my={3}
         sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
       >
-        <Pagination shape="rounded" count={5} color="primary" />
+        <Pagination shape="rounded" count={1} color="primary" />
       </Box>
     </>
   );

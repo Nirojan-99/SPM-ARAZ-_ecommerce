@@ -7,8 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 function Address(props) {
-    const { userID, role } = useSelector((state) => state.loging);
-  // const userId = "63187f8829fe6a6deecec97a";
+  const { userID, role } = useSelector((state) => state.loging);
 
   const OnClickDeleteHandler = () => {
     axios
@@ -16,8 +15,6 @@ function Address(props) {
         `http://localhost:5000/User/addresses/?indexNo=${props.index}&userId=${userID}`
       )
       .then((res) => {
-        console.log(res.data.msg);
-
         toast("Succesfully delete address", { type: "success" });
       })
       .catch(() => {
@@ -69,8 +66,7 @@ function Address(props) {
             textTransform: "none",
           }}
           onClick={() => {
-            localStorage.removeItem("indexNo");
-            localStorage.clear();
+            // localStorage.removeItem("indexNo");
             localStorage.setItem("indexNo", props.index);
             navigator("/profile/editaddress");
           }}

@@ -10,17 +10,18 @@ import { useSelector } from "react-redux";
 
 import axios from "axios";
 function EditAddresss(props) {
-   const { userID, role } = useSelector((state) => state.loging);
-  // const userId = "63187f8829fe6a6deecec97a";
+  const { userID, role } = useSelector((state) => state.loging);
+
   const idd = localStorage.getItem("indexNo");
-  console.log("local storage");
+
   console.log(idd);
 
   const navigate = useNavigate();
   const [name, setname] = useState();
   const [contactNumber, setcontactNumber] = useState();
-  const [prog, setprog] = useState();
-  const [disg, setdisg] = useState();
+  const [districts, setDistricts] = useState([]);
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
   const [address, setaddress] = useState();
 
   const [nameError, setNameError] = useState(false);
@@ -28,9 +29,6 @@ function EditAddresss(props) {
   const [AddressesError, setAddressesError] = useState(false);
   // const [ProError, setProError] = useState(false);
 
-  const [Pro, setPro] = useState();
-  const [dis, setdis] = useState([]);
-  // const { id } = useParams();
   useEffect(() => {
     axios
       .get(
@@ -40,16 +38,24 @@ function EditAddresss(props) {
         console.log(res.data.address);
         setname(res.data.address.name);
         setcontactNumber(res.data.address.contactNumber);
-        setprog(res.data.address.province);
-        setdisg(res.data.address.district);
+        // setprog(res.data.address.province);
+        // setdisg(res.data.address.district);
         setaddress(res.data.address.address);
+        setDistrict(res.data.address.district);
+        setProvince(res.data.address.province);
+        setDistricts(() => {
+          let data = DATA.filter((item, index) => {
+            return item.province === res.data.address.province;
+          });
+          return data[0].districts;
+        });
       })
       .catch((er) => {
         console.log(er);
       });
   }, []);
 
-  const [district, setDistricts] = useState([]);
+  // const [district, setDistricts] = useState([]);
   const onUpdate = () => {
     console.log(contactNumber.length);
     setNameError(false);
@@ -77,8 +83,8 @@ function EditAddresss(props) {
 
     const data = {
       name: name,
-      province: Pro,
-      district: dis,
+      province: province,
+      district: district,
       address: address,
       contactNumber: contactNumber,
     };
@@ -153,15 +159,11 @@ function EditAddresss(props) {
             {/* province */}
             <Label for="province" title="Province" />
             <Select
+              value={province}
               // error={ProError}
               sx={{ mb: 1, color: "#1597BB", fontWeight: "500" }}
               onChange={(event) => {
-                setPro(() => {
-                  let data = DATA.filter((item, index) => {
-                    return item.province === event.target.value;
-                  });
-                  return data[0].province;
-                });
+                setProvince(event.target.value);
                 setDistricts(() => {
                   let data = DATA.filter((item, index) => {
                     return item.province === event.target.value;
@@ -174,21 +176,7 @@ function EditAddresss(props) {
               size="small"
               color="info"
               id="province"
-              value={prog}
             >
-              {/* <MenuItem value={prog}></MenuItem> */}
-              <MenuItem disabled value={prog}>
-                <em
-                  style={{
-                    fontFamily: "open sans",
-                    fontWeight: "800",
-                    fontSize: 13,
-                    color: "#1A374D",
-                  }}
-                >
-                  {prog}
-                </em>
-              </MenuItem>
               {DATA.map((row, index) => {
                 return (
                   <MenuItem
@@ -214,32 +202,10 @@ function EditAddresss(props) {
               size="small"
               color="info"
               id="district"
-              value={disg}
-              onChange={(event) => {
-                setdis(() => {
-                  let data = district.filter((item, index) => {
-                    if (item === event.target.value) {
-                      return item;
-                    }
-                  });
-
-                  return data[0];
-                });
-              }}
+              value={district}
+              onChange={(event) => setDistrict(event.target.value)}
             >
-              <MenuItem disabled value={disg}>
-                <em
-                  style={{
-                    fontFamily: "open sans",
-                    fontWeight: "800",
-                    fontSize: 13,
-                    color: "#1A374D",
-                  }}
-                >
-                  {disg}
-                </em>
-              </MenuItem>
-              {district.map((row, index) => {
+              {districts.map((row, index) => {
                 return (
                   <MenuItem
                     key={index}

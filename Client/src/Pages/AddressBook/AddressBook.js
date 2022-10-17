@@ -49,8 +49,9 @@ function AddressBook() {
   const [nameError, setNameError] = useState(false);
   const [ContactnumberError, setContactnumberError] = useState(false);
   const [AddressesError, setAddressesError] = useState(false);
+  const [isLoaded, setLoded] = useState(false);
 
-  // const [disError, setdisError] = useState(false);
+ 
 
   const onsubmitSave = () => {
     setNameError(false);
@@ -108,13 +109,16 @@ function AddressBook() {
     axios
       .get("http://localhost:5000/User/addresses/" + userID)
       .then((res) => {
-        if (res.data.addressList.length === 0) {
-          setdataempty(true);
-        }
+        // if (res.data.addressList.length === 0) {
+        //   setdataempty(true);
+        // }
         // setdataempty(false);
         setgetAlladdress(res.data.addressList);
+        setLoded(true);
       })
-      .catch(() => {});
+      .catch((er) => {
+        setLoded(true);
+      });
   });
 
   const [page, setPage] = useState(0);
@@ -142,8 +146,8 @@ function AddressBook() {
 
   return (
     <>
-      <ToastContainer />
       <Paper elevation={4}>
+        {/* <ToastContainer /> */}
         <Box
           p={3}
           sx={{ bgcolor: "#FFFFFF", borderRadius: "6px" }}
@@ -257,12 +261,27 @@ function AddressBook() {
                     <Address data={row} index={index} saya={array} />
                   </TableRow>
                 ))}
+                {isLoaded && getAlladdress.length <= 0 && (
+                  <Box m={2} sx={{ flex: 1, justifyContent: "center" }}>
+                    <Typography sx={{ textAlign: "center", color: "#555" }}>
+                      No Addresses found
+                    </Typography>
+                  </Box>
+                )}
+                {!isLoaded && (
+                  <Box sx={{ flex: 1, justifyContent: "center" }}>
+                    <Typography sx={{ textAlign: "center", color: "#555" }}>
+                      Loading ..
+                    </Typography>
+                  </Box>
+                )}
                 {emptyRows > 0 && (
                   <TableRow style={{ height: 53 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
-                {dataempty && (
+
+                {/* {dataempty && (
                   <Typography
                     style={{
                       textAlign: "center",
@@ -274,7 +293,7 @@ function AddressBook() {
                   >
                     no Address found
                   </Typography>
-                )}
+                )} */}
               </TableBody>
               <TableFooter>
                 <TableRow>
@@ -350,7 +369,7 @@ function AddressBook() {
                 type="text"
                 id="contact_number"
                 size="small"
-                autoFocus={true}
+                // autoFocus={true}
                 value={Contactnumber}
                 set={setContactnumber}
               />

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+//import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ import java.util.Random;
 @RestController
 @RequestMapping("/User")
 public class UserController {
-
     @Autowired
     UserService userService;
 
@@ -281,19 +281,36 @@ public class UserController {
     //new user
     @PostMapping("")
     public ResponseEntity<UserResponse> addUser(@RequestBody(required = true) User user) {
-        User res = userService.createUser(user);
-
+        String email=user.getEmail();
+        int contactNo=user.getContactNo();
         UserResponse userResponse = new UserResponse();
-        if (res.getId() != null) {
-            User user1 = new User();
-            user1.setId(res.getId());
-            user1.setUserType(res.getUserType());
-            userResponse.setUser(user1);
-            userResponse.setMsg("User created");
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        } else {
-            userResponse.setMsg("Unable to create User");
-            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
+
+        if(userService.getByEmail(email)==null){
+            if(userService.getByContactNo(contactNo)==null){
+//                String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+//                user.setPassword(pw_hash);
+                User res = userService.createUser(user);
+
+                if (res.getId() != null) {
+                    User user1 = new User();
+                    user1.setId(res.getId());
+                    user1.setUserType(res.getUserType());
+                    userResponse.setUser(user1);
+                    userResponse.setMsg("Registered Sucess");
+                    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+                } else {
+                    userResponse.setMsg("Unable to register. Try Again Later");
+                    return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
+                }
+
+            }else {
+                userResponse.setMsg("Contact Number is Already taken. Please try another one.");
+                return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
+            }
+
+        }else {
+            userResponse.setMsg("Email Already taken. Please try another one.");
+            return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
         }
     }
 
@@ -317,11 +334,11 @@ public class UserController {
                 user1.setId(user.getId());
                 user1.setUserType(user.getUserType());
                 userResponse.setUser(user1);
-                userResponse.setMsg("Valid Email and Password");
+                userResponse.setMsg("Login Sucess");
                 return new ResponseEntity<>(userResponse, HttpStatus.OK);
             } else {
 
-                userResponse.setMsg("Invalid Email and Password");
+                userResponse.setMsg("Invalid Password");
                 return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
 
             }
@@ -465,13 +482,21 @@ public class UserController {
                 exisitngUser.setName(user.getName());
             }
             if (user.getEmail() != null) {
-                exisitngUser.setEmail(user.getEmail());
-            }
+                    exisitngUser.setEmail(user.getEmail());
+                }
+
             if (user.getPassword() != null) {
                 exisitngUser.setPassword(user.getPassword());
             }
             if (user.getContactNo() != 0) {
-                exisitngUser.setContactNo(user.getContactNo());
+                if(userService.getByContactNo(user.getContactNo())==null || (id.equals(userService.getByContactNo(user.getContactNo()).getId()))){
+                    exisitngUser.setContactNo(user.getContactNo());
+                }
+                else {
+                    userResponse.setMsg("Contact No is already exsist");
+                    return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
+                }
+
             }
             if (user.getAddress() != null) {
                 exisitngUser.setAddress(user.getAddress());
@@ -599,6 +624,10 @@ public class UserController {
         if (exisitngUser == null) {
             userResponse.setMsg("No user found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else if (userService.getByEmail(user.getEmail())!=null) {
+            userResponse.setMsg("Email is already exist. Please try another one.");
+            return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
+
         } else {
             int otp = random.nextInt(9999 + 999) + 999;
             String message = "This is your OTP: " + otp;

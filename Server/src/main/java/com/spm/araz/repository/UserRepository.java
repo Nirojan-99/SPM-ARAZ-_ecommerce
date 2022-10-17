@@ -24,4 +24,10 @@ public interface UserRepository extends MongoRepository<User,Integer> {
 
     public Long deleteById(String id);
 
+    @Aggregation(pipeline = {
+            "{ '$match': {'contactNo':?0} }"
+
+    })
+    User findByContactNo(int contactNo);
+
 }

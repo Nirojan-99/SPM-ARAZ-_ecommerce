@@ -86,7 +86,7 @@ function Favorite_Products() {
         my={3}
         sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
       >
-        <Pagination shape="rounded" count={5} color="primary" />
+        <Pagination shape="rounded" count={1} color="primary" />
       </Box>
     </>
   );

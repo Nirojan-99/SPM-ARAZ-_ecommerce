@@ -482,25 +482,19 @@ public class UserController {
                 exisitngUser.setName(user.getName());
             }
             if (user.getEmail() != null) {
-                if(userService.getByEmail(user.getEmail())==null){
                     exisitngUser.setEmail(user.getEmail());
                 }
-                else {
-                    userResponse.setMsg("Email already exsist");
-                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
-                }
 
-            }
             if (user.getPassword() != null) {
                 exisitngUser.setPassword(user.getPassword());
             }
             if (user.getContactNo() != 0) {
-                if(userService.getByContactNo(user.getContactNo())==null){
+                if(userService.getByContactNo(user.getContactNo())==null || (id.equals(userService.getByContactNo(user.getContactNo()).getId()))){
                     exisitngUser.setContactNo(user.getContactNo());
                 }
                 else {
                     userResponse.setMsg("Contact No is already exsist");
-                    return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
                 }
 
             }
@@ -630,6 +624,10 @@ public class UserController {
         if (exisitngUser == null) {
             userResponse.setMsg("No user found");
             return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        } else if (userService.getByEmail(user.getEmail())!=null) {
+            userResponse.setMsg("Email is already exist. Please try another one.");
+            return new ResponseEntity<>(userResponse, HttpStatus.CONFLICT);
+
         } else {
             int otp = random.nextInt(9999 + 999) + 999;
             String message = "This is your OTP: " + otp;

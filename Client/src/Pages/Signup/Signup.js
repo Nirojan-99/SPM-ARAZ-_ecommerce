@@ -60,7 +60,7 @@ function SignUp() {
       toast("Enter valid Address", { type: "error" });
       return setError(true);
     }
-    if (!gender == "") {
+    if (!gender.trim() || gender.length < 3) {
       toast("Select a Gender", { type: "error" });
       return setError(true);
     }
@@ -94,7 +94,7 @@ function SignUp() {
 
         setTimeout(() => {
           navigate("/profile/details");
-        }, 1500);
+        }, 2000);
       })
 
       .catch((er) => {
@@ -195,11 +195,10 @@ function SignUp() {
               color="info"
               id="gender"
               value={gender}
-              set={setGender}
+              // set={setGender}
+              onChange={(event) => setGender(event.target.value)}
             >
-              <MenuItem value={"male"} selected>
-                Male
-              </MenuItem>
+              <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
             </Select>
             {/* dob */}

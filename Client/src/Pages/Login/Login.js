@@ -57,7 +57,7 @@ function Login() {
 
         setTimeout(() => {
           navigate("/", { replace: true });
-        }, 2500);
+        }, 2000);
       })
 
       .catch((er) => {

@@ -36,19 +36,16 @@ function Profile_Details() {
       .get("http://localhost:5000/User/" + userID)
       .then((res) => {
         if (res) {
-          console.log(res.data.user.gender);
           setName(res.data.user.name);
           setEmail(res.data.user.email);
           setContactNo(res.data.user.contactNo);
           setAddress(res.data.user.address);
           setGender(res.data.user.gender);
           setDob(res.data.user.dob);
-        } else {
-          toast("No user Found", { type: "error" });
         }
       })
       .catch((er) => {
-        toast("Error in Sever", { type: "error" });
+        toast(er.response.data.msg, { type: "error" });
       });
   }, []);
 
@@ -92,7 +89,7 @@ function Profile_Details() {
       })
 
       .catch((er) => {
-        toast("Invalid User", { type: "error" });
+        toast(er.response.data.msg, { type: "error" });
       });
   };
 
@@ -119,7 +116,7 @@ function Profile_Details() {
       })
 
       .catch((er) => {
-        toast("Invalid User", { type: "error" });
+        toast(er.response.data.msg, { type: "error" });
       });
   };
 
@@ -157,26 +154,22 @@ function Profile_Details() {
                   window.location.reload();
                 }, 1500);
               } else {
-                setTimeout(() => {
-                  toast("Sorry Cannot update your Email", { type: "error" });
-                }, 1500);
+                console.log("----Error----");
               }
             })
 
             .catch((er) => {
-              toast("Invalid User", { type: "error" });
+              toast(er.response.data.msg, { type: "error" });
             });
         }
       })
 
-      .catch(() => {
+      .catch((er) => {
         setTimeout(() => {
-          toast("Otp is not Matched. Try Again", { type: "error" });
+          toast(er.response.data.msg, { type: "error" });
         }, 1500);
       });
   };
-
-  console.log(otpPin);
 
   return (
     <>
@@ -202,7 +195,7 @@ function Profile_Details() {
                 textAlign: "center",
               }}
             >
-              Profile Picture
+              Profile
             </Typography>
             {/* user name */}
             <Label title="UserName" for="uname" />

@@ -41,7 +41,7 @@ function Options() {
               <ButtonMenu title="Your Orders" link={"/profile/order"} />
               <ButtonMenu title="Payments Options" link={"/profile/payment"} />
               <ButtonMenu title="Points" link={"/profile/loyalty"} />
-              <ButtonMenu title="Transactions" link={"/transaction"} />
+              <ButtonMenu title="Transactions" link={"/profile/transaction"} />
               <ButtonMenu title="Sell on Araz" link={"/stores/new"} />
             </>
           )}

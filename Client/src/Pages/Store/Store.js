@@ -48,7 +48,7 @@ function Store() {
     axios
       .get(`${baseURL}products/store/${userID}/count`)
       .then((res) => {
-        setCount(Math.ceil(res.data / 6));
+        setCount(Math.ceil(res.data / 8));
       })
       .catch((er) => {});
   }, [page]);

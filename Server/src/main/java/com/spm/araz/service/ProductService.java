@@ -16,8 +16,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-    private int limit = 4;
-    private int storeLimit = 6;
+    private int limit = 8;
+    private int storeLimit = 8;
     private Path foundFile;
 
     //create product

@@ -11,8 +11,8 @@ function Category(props) {
           bgcolor: props.id === props.clicked ? "#406882" : "#FEC260",
           cursor: "pointer",
           height: { xs: 45, md: 55 },
-          width: { xs: 45, md: 55 },
-          overflow: "hidden",
+          minWidth: { xs: 45, md: 55 },
+          // overflow: "hidden",
           textOverflow: "ellipsis",
           flex: 1,
           justifyContent: "center",
@@ -27,6 +27,8 @@ function Category(props) {
             fontSize: { xs: 10, md: 13 },
             fontWeight: 500,
             textAlign: "center",
+            color: props.id === props.clicked ? "#fff" : "#333",
+            cursor:"pointer"
           }}
         >
           {props?.data?.name}

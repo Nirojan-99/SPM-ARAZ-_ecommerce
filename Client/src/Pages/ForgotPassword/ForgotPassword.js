@@ -43,7 +43,7 @@ function ForgotPassword() {
 
           setTimeout(() => {
             navigate("/otp/" + res.data.user.id);
-          }, 2500);
+          }, 4000);
         }
       })
 

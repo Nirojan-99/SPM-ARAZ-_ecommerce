@@ -44,12 +44,12 @@ function OTP(props) {
 
         setTimeout(() => {
           navigate("/passwordReset/" + id, { replace: true });
-        }, 2500);
+        }, 4000);
       })
 
-      .catch(() => {
+      .catch((er) => {
         setTimeout(() => {
-          toast("Otp is not Matched. Try Again", { type: "error" });
+          toast(er.response.data.msg, { type: "error" });
         }, 1500);
       });
   };

@@ -58,7 +58,7 @@ function CategoryTable() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 20));
     setPage(0);
   };
 
@@ -198,10 +198,9 @@ function CategoryTable() {
                     <TableRow>
                       <TablePagination
                         rowsPerPageOptions={[
-                          10,
-                          15,
                           20,
                           25,
+                          30,
                           { label: "All", value: -1 },
                         ]}
                         colSpan={2}

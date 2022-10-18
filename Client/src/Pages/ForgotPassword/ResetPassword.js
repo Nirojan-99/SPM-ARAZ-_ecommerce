@@ -48,24 +48,17 @@ function ResetPassword() {
     axios
       .put("http://localhost:5000/User/" + id, data)
       .then((res) => {
-        dispatch(
-          login({
-            role: res.data.user.userType,
-            userID: res.data.user.id,
-            /*token: res.data.token*/
-          })
-        );
         setTimeout(() => {
           toast("Password reset  Sucess", { type: "success" });
         }, 1000);
 
         setTimeout(() => {
-          navigate("/profile/details");
-        }, 1500);
+          navigate("/login");
+        }, 3000);
       })
 
       .catch((er) => {
-        toast("Invalid User", { type: "error" });
+        toast(er.response.data.msg, { type: "error" });
       });
   };
 

@@ -1,4 +1,11 @@
-import { Paper, MenuItem, Button, Select, Typography } from "@mui/material";
+import {
+  Paper,
+  MenuItem,
+  Button,
+  Select,
+  Typography,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { Container } from "@mui/system";
 
@@ -30,23 +37,30 @@ import { ToastContainer, toast } from "react-toastify";
 import User from "./User";
 import generateUserReport from "./generateUserReport";
 
+import SearchIcon from "@mui/icons-material/Search";
+
 function UserTable() {
   const navigate = useNavigate();
 
   // take from fetching data
   const [getAlladdress, setgetAlladdress] = useState([]);
+  const [updatedList, setList] = useState(getAlladdress);
+  const [serchvalue, setSerchvalue] = useState();
+
+  const [isEmptyList, setEmpty] = useState(false);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/User")
       .then((res) => {
         setgetAlladdress(res.data.userList);
+        setList(res.data.userList);
       })
       .catch(() => {});
   }, []);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
 
   // using change the color after clicking
   const [buttoncolor, setbuttoncolor] = useState("#1A374D");
@@ -61,6 +75,28 @@ function UserTable() {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+  const getSearchValue = (value) => {
+    console.log(value);
+    if (!value.trim()) {
+      setEmpty(false);
+      setList(getAlladdress);
+      return;
+    }
+
+    const updated = getAlladdress.filter(
+      (user) =>
+        user.id.toUpperCase().includes(value.toUpperCase()) ||
+        user.name.toUpperCase().includes(value.toUpperCase()) ||
+        user.email.toUpperCase().includes(value.toUpperCase())
+    );
+    console.log(updated);
+    setList(updated);
+    if (updated.length === 0) {
+      setEmpty(true);
+    } else {
+      setEmpty(false);
+    }
   };
 
   return (
@@ -107,6 +143,40 @@ function UserTable() {
                 >
                   Generate Report
                 </Button>
+              </Box>
+              <Box
+                sx={{ display: "flex", flexDirection: "row" }}
+                px={1}
+                py={0}
+                m={0}
+              >
+                <TextField
+                  value={serchvalue}
+                  onChange={(event) => {
+                    console.log(event);
+                    setSerchvalue(event.target.value);
+                  }}
+                  color="status"
+                  fullWidth
+                  placeholder="search..."
+                  size="small"
+                  InputProps={{
+                    style: { color: "#333" },
+                  }}
+                />
+                <IconButton
+                  onClick={() => getSearchValue(serchvalue)}
+                  sx={{
+                    bgcolor: "#FEC260",
+                    borderRadius: 0.5,
+                    ml: 0.3,
+                    "&:hover": {
+                      bgcolor: "#1597BB",
+                    },
+                  }}
+                >
+                  <SearchIcon />
+                </IconButton>
               </Box>
 
               <br />
@@ -176,11 +246,11 @@ function UserTable() {
                   </TableHead>
                   <TableBody>
                     {(rowsPerPage > 0
-                      ? getAlladdress.slice(
+                      ? updatedList.slice(
                           page * rowsPerPage,
                           page * rowsPerPage + rowsPerPage
                         )
-                      : getAlladdress
+                      : updatedList
                     ).map((row) => (
                       <TableRow
                         sx={{
@@ -200,8 +270,9 @@ function UserTable() {
                     <TableRow>
                       <TablePagination
                         rowsPerPageOptions={[
-                          10,
+                          20,
                           25,
+                          30,
                           { label: "All", value: -1 },
                         ]}
                         colSpan={3}

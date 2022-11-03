@@ -16,6 +16,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TextField from "@mui/material/TextField";
+
 function Profile_Details() {
   const { userID, role } = useSelector((state) => state.loging);
 
@@ -65,7 +71,7 @@ function Profile_Details() {
       toast("Enter valid Address", { type: "error" });
       return setError(true);
     }
-    if (!dob.trim()) {
+    if (dob == "") {
       toast("Enter valid Date of birth", { type: "error" });
       return setError(true);
     }
@@ -231,7 +237,19 @@ function Profile_Details() {
             />
             {/* dob */}
             <Label title="Date of Birth" for="dob" />
-            <Input id="dob" size="small" type="date" value={dob} set={setDob} />
+            {/* <Input id="dob" size="small" type="date" value={dob} set={setDob} /> */}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                disableFuture
+                openTo="year"
+                views={["year", "month", "day"]}
+                value={dob}
+                onChange={(newValue) => {
+                  setDob(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
             {/* update button */}
             <Box mt={2} />
             <ButtonA fullWidth={true} title="UPDATE" handler={updateHandler} />
